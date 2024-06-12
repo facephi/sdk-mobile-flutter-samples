@@ -1,7 +1,7 @@
 # Uncomment this line to define a global platform for your project
 platform :ios, '13.0'
 
-plugin 'cocoapods-art', :sources => ['cocoa-dev-fphi']
+plugin 'cocoapods-art', :sources => ['cocoa-pro-fphi']
 source 'https://cdn.cocoapods.org/'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
