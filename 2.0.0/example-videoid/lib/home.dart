@@ -22,8 +22,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
 {
-  final CoreWidget _coreWidget              = CoreWidget();
-  final VideoIdWidget _videoIdWidget        = VideoIdWidget();
+  final CoreWidget _coreWidget        = CoreWidget();
+  final VideoIdWidget _videoIdWidget  = VideoIdWidget();
 
   String _message         = '';
   final Color _textColorMessage = const Color(0xFF0099af);
@@ -56,9 +56,7 @@ class _MyHomePageState extends State<MyHomePage>
         _message = l.toString();
       });
     }, (r) {
-      final coreResult = r;
-      // Manage Plugin process Status
-      print(coreResult);
+      print(r);
     });
   }
 
@@ -82,9 +80,7 @@ class _MyHomePageState extends State<MyHomePage>
         _message = l.toString();
       });
     }, (r) {
-      final tokenizeResult = r;
-      // Manage Plugin process Status
-      print(tokenizeResult);
+      print(r);
     });
   }
 
@@ -96,9 +92,7 @@ class _MyHomePageState extends State<MyHomePage>
         _message = l.toString();
       });
     }, (r) {
-      final videoIdResult = r;
-      // Manage Plugin process Status
-      print(videoIdResult);
+      print(r);
     });
   }
 
@@ -184,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Visibility(visible: _message != "", child: CustomLabel(text: _message, color: _textColorMessage),),
+                Visibility(visible: _message != "", child: CustomLabel(text: _message, color: _textColorMessage)),
                 CustomButton(text: "VideoId", function: _launchVideoId),
                 CustomButton(text: "Tokenize", function: _launchTokenize),
                 CustomButton(text: "Launch Flow", function: _launchFlow),
