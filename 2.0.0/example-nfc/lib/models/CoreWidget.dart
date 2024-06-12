@@ -33,7 +33,7 @@ class CoreWidget
       String apiKey = (Platform.isAndroid) ? LICENSE_APIKEY_ANDROID : LICENSE_APIKEY_IOS;
       String lic    = (Platform.isAndroid) ? LICENSE_ANDROID : LICENSE_IOS;
       final Map resultJson = await core.initSession(widgetConfigurationJSON: CoreConfigurationInitSession(
-          // mLicense: lic,
+          //mLicense: lic,
           mLicenseUrl: LICENSE_URL,
           mLicenseApiKey: apiKey,
           mEnableTracking: true
@@ -67,11 +67,7 @@ class CoreWidget
       final Map resultJson = await core.initOperation(
         widgetConfigurationJSON: TrackingConfiguration(mCustomerId: CUSTOMER_ID, mType: TrackingOperationType.ONBOARDING),
       );
-      if (resultJson != null) {
-        return Right(CoreResult.fromMap(resultJson));
-      } else {
-        throw Exception('Plugin internal error');
-      }
+      return Right(CoreResult.fromMap(resultJson));
     } on Exception catch (e) {
       return (Left(e));
     }

@@ -6,4 +6,4 @@ const LICENSE_APIKEY_ANDROID  = "";
 const LICENSE_APIKEY_IOS      = "";
 
 const LICENSE_ANDROID = "{}";
-const LICENSE_IOS = "";
+const LICENSE_IOS = "{}";

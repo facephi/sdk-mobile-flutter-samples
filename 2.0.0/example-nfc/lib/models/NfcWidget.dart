@@ -14,7 +14,8 @@ class NfcWidget
           widgetConfigurationJSON: NfcConfiguration(
             mBirthDate: "16/08/1979",
             mDocNumber: "AAI372468",
-            mExpirationDate: "15/11/2032"
+            mExpirationDate: "15/11/2032",
+            mShowTutorial: true,
           )
       );
       return Right(NfcResult.fromMap(resultJson));

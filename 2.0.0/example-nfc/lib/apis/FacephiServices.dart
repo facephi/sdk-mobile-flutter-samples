@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-String BASEURL_PLATFORM = '';
+String BASEURL_PLATFORM = 'external-selphid-sdk.facephi.pro';
 int TIMEOUT             = 30;
 
 class FacephiServices

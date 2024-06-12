@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:example/widgets/CustomButton.dart';
 import 'package:example/widgets/CustomLabel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'apis/FacephiServices.dart';
 import 'models/CoreWidget.dart';
 import 'models/VideoIdResult.dart';
 import 'models/VideoIdWidget.dart';
@@ -24,24 +22,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
 {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
   final CoreWidget _coreWidget              = CoreWidget();
   final VideoIdWidget _videoIdWidget        = VideoIdWidget();
 
-  Uint8List? _bestImage;
-
-  String _tokenFaceImage  = "";
-  String _extraData       = "";
   String _message         = '';
-
   final Color _textColorMessage = const Color(0xFF0099af);
-
-  Map<String, dynamic>? _ocrResult;
 
   @override
   void initState() {
@@ -86,31 +71,6 @@ class _MyHomePageState extends State<MyHomePage>
       });
     }, (r) {
       print(r);
-    });
-  }
-
-  void _launchGetExtraData() async
-  {
-    final coreWidgetResult = await _coreWidget.getExtraData();
-    coreWidgetResult.fold((l) {
-      setState(() {
-        _message = l.toString();
-      });
-    }, (r) async {
-      final coreResult = r;
-      // Manage Plugin process Status
-      print(coreResult);
-
-      if (coreResult.finishStatus == SdkFinishStatus.STATUS_OK) {
-        _extraData = coreResult.data!;
-
-        await FacephiServices().livenessRequest(extraData: _extraData, image: base64Encode(_bestImage!))
-            .then((value) => print("livenessRequest: $value"))
-            .catchError((e) => print("$e"));
-        await FacephiServices().matchingFacialRequest(docTemplate: _tokenFaceImage, extraData: _extraData, image: base64Encode(_bestImage!))
-            .then((value) => print("matchingFacialRequest: $value"))
-            .catchError((e) => print("$e"));
-      }
     });
   }
 
@@ -227,7 +187,6 @@ class _MyHomePageState extends State<MyHomePage>
                 Visibility(visible: _message != "", child: CustomLabel(text: _message, color: _textColorMessage),),
                 CustomButton(text: "VideoId", function: _launchVideoId),
                 CustomButton(text: "Tokenize", function: _launchTokenize),
-                CustomButton(text: "Get ExtraData", function: _launchGetExtraData),
                 CustomButton(text: "Launch Flow", function: _launchFlow),
                 CustomButton(text: "Next Step Flow", function: _launchNextStepFlow),
                 CustomButton(text: "Cancel Flow", function: _launchCancelFlow),
