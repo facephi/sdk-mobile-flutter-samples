@@ -50,9 +50,16 @@ dev_dependencies:
   # uuid: ^3.0.7
   http: ^0.13.5
   fphi_sdkmobile_core:
-    path: ../fphi_sdkmobile_core
+    hosted:
+      name: sdkcore
+      url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
+    version: ^2.0.0
   fphi_sdkmobile_videoid:
-    path: ../fphi_sdkmobile_videoid
+    #path: ../fphi_sdkmobile_videoid
+    hosted:
+      name: sdkvideoid
+      url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
+    version: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
