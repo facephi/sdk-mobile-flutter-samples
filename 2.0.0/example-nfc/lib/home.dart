@@ -1,10 +1,8 @@
-import 'dart:convert';
 import 'package:example/widgets/CustomButton.dart';
 import 'package:example/widgets/CustomLabel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'models/CoreWidget.dart';
-import 'models/NfcResult.dart';
 import 'models/NfcWidget.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_finish_status.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_operation_event.dart';
@@ -109,72 +107,6 @@ class _MyHomePageState extends State<MyHomePage>
     });
   }
 
-  void _launchNextStepFlow() async
-  {
-    final coreWidgetResult = await _coreWidget.nextStepFlow();
-    coreWidgetResult.fold((l) {
-      setState(() {
-        _message = l.toString();
-      });
-    }, (r) {
-      print(r);
-    });
-  }
-
-  void _launchCancelFlow() async
-  {
-    final coreWidgetResult = await _coreWidget.cancelFlow();
-    coreWidgetResult.fold((l) {
-      setState(() {
-        _message = l.toString();
-      });
-    }, (r) {
-      print(r);
-    });
-  }
-
-  void _launchFlow() async
-  {
-    const channel = BasicMessageChannel<dynamic>('core.flow', StringCodec());
-    channel.setMessageHandler((message) async
-    {
-      print(jsonDecode(message!));
-      if (jsonDecode(message!)['flow'] == "NFC")
-      {
-        print(NfcResult.fromMap(jsonDecode(message)));
-      }
-      else
-      {
-        print(jsonDecode(message));
-      }
-
-      return '';
-    });
-
-    _coreWidget.initFlow().then((r) async
-    {
-      r.map((r) async
-      {
-        if (r.finishStatus == SdkFinishStatus.STATUS_OK)
-        {
-          await _nfcCallWidget.setNfcFlow().then((value) => print(value));
-          await _coreWidget.startFlow().then((value)
-          {
-            print(value);
-          }
-          ).onError((error, stackTrace)
-          {
-            print(error);
-          });
-        }
-      });
-    }
-    ).onError((error, stackTrace)
-    {
-      print(error);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -194,9 +126,6 @@ class _MyHomePageState extends State<MyHomePage>
                 Visibility(visible: _message != "", child: CustomLabel(text: _message, color: _textColorMessage)),
                 CustomButton(text: "NFC", function: _launchNfc),
                 CustomButton(text: "Launch Tokenize", function: _launchTokenize),
-                CustomButton(text: "Launch Flow", function: _launchFlow),
-                CustomButton(text: "Next Step Flow", function: _launchNextStepFlow),
-                CustomButton(text: "Cancel Flow", function: _launchCancelFlow),
                 CustomButton(text: "Init Operation", function: _launchInitOperation),
                 CustomButton(text: "Init Session", function: _launchInitSession),
                 CustomButton(text: "Close Session", function: _launchCloseSession),
