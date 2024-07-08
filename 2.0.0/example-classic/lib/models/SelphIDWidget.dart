@@ -42,6 +42,7 @@ class SelphIDWidget
     configurationWidget.timeout                 = SelphIDTimeout.T_SHORT;
     configurationWidget.showDiagnostic          = true;
     configurationWidget.wizardMode              = true;
+    //configurationWidget.videoFilename         = "/storage/self/primary/Download/videoNameSelphid.mp4";
     return configurationWidget;
   }
 

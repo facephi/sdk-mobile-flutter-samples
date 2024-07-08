@@ -66,6 +66,7 @@ class FacephiServices
       if (extraData == "" || image == "")
       {
         print("extraData or image are empty...");
+        return;
       }
 
       final r = await client.post(uri, headers: header, body: jsonEncode({'extraData': extraData, 'image': image})).timeout(Duration(seconds: TIMEOUT));

@@ -34,9 +34,9 @@ class CoreWidget
       String apiKey = (Platform.isAndroid) ? LICENSE_APIKEY_ANDROID : LICENSE_APIKEY_IOS;
 
       final Map resultJson = await core.initSession(widgetConfigurationJSON: CoreConfigurationInitSession(
-          mLicense: lic,
-          //mLicenseUrl: LICENSE_URL,
-          //mLicenseApiKey: apiKey,
+          //mLicense: lic,
+          mLicenseUrl: LICENSE_URL,
+          mLicenseApiKey: apiKey,
           mEnableTracking: true
       ));
 

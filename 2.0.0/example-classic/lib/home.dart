@@ -59,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage>
     super.initState();
 
     _launchInitSession();
+    _launchListenerTrackingError();
   }
 
   void _launchSelphIDCapture() async
@@ -128,6 +129,16 @@ class _MyHomePageState extends State<MyHomePage>
     });
   }
 
+  void _launchListenerTrackingError() async
+  {
+    const channel = BasicMessageChannel<dynamic>('tracking.error.listener', StringCodec());
+    channel.setMessageHandler((message) async
+    {
+      print(jsonDecode(message!));
+      return '';
+    });
+  }
+
   void _launchInitOperation() async
   {
     final trackingWidgetResult = await _coreWidget.initOperation();
@@ -148,9 +159,8 @@ class _MyHomePageState extends State<MyHomePage>
         _message = l.toString();
       });
     }, (r) {
-      final coreResult = r;
       // Manage Plugin process Status
-      print(coreResult);
+      print(r);
     });
   }
 
@@ -199,9 +209,8 @@ class _MyHomePageState extends State<MyHomePage>
         _message = l.toString();
       });
     }, (r) {
-      final tokenizeResult = r;
       // Manage Plugin process Status
-      print(tokenizeResult);
+      print(r);
     });
   }
 

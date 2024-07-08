@@ -38,6 +38,7 @@ class SelphiFaceWidget {
     configurationWidget.logImages     = false;
     configurationWidget.jpgQuality    = 0.95;
     configurationWidget.enableGenerateTemplateRaw = true;
+    //configurationWidget.videoFilename           = "/storage/self/primary/Download/videoName.mp4";
     return configurationWidget;
   }
 
