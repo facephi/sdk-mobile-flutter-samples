@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'apis/FacephiServices.dart';
-import 'models/CoreResult.dart';
 import 'models/CoreWidget.dart';
 import 'models/SelphIDWidget.dart';
 import 'models/SelphiFaceWidget.dart';
@@ -134,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage>
     const channel = BasicMessageChannel<dynamic>('tracking.error.listener', StringCodec());
     channel.setMessageHandler((message) async
     {
-      print(jsonDecode(message!));
+      print('tracking.error.listener: ' + jsonDecode(message!));
       return '';
     });
   }
