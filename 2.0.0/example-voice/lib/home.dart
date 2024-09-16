@@ -36,18 +36,27 @@ class _MyHomePageState extends State<MyHomePage>
 
   void _launchInitOperation() async
   {
+    setState(() { _message = ""; });
+
     final trackingWidgetResult = await _coreWidget.initOperation();
     trackingWidgetResult.fold((l) {
       setState(() {
         _message = l.toString();
       });
     }, (r) {
-      print("initOperationResult: $r");
+      if (r.finishStatus == SdkFinishStatus.STATUS_ERROR) {
+        setState(() {
+          _message = r.errorDiagnostic;
+        });
+      }
+      print("initSessionResult: $r");
     });
   }
 
   void _launchInitSession() async
   {
+    setState(() { _message = ""; });
+
     final coreWidgetResult = await _coreWidget.initSession(); // SUCCESS/DENIED
     coreWidgetResult.fold((l) {
       setState(() {
@@ -55,7 +64,12 @@ class _MyHomePageState extends State<MyHomePage>
       });
     }, (r) {
       // Manage Plugin process Status
-      print(r);
+      if (r.finishStatus == SdkFinishStatus.STATUS_ERROR) {
+        setState(() {
+          _message = r.errorDiagnostic;
+        });
+      }
+      print("initSessionResult: $r");
     });
   }
 
@@ -67,34 +81,25 @@ class _MyHomePageState extends State<MyHomePage>
         _message = l.toString();
       });
     }, (r) {
-      print(r);
-    });
-  }
-
-  void _launchTokenize() async
-  {
-    final tokenizeWidgetResult = await _coreWidget.tokenize();
-    tokenizeWidgetResult.fold((l) {
-      setState(() {
-        _message = l.toString();
-      });
-    }, (r) {
-      print(r);
+      setState(() { _message = ""; });
+      print("closeSessionResult: $r");
     });
   }
 
   void _launchVoice() async
   {
+    setState(() { _message = ""; });
+
     final voiceWidgetResult = await _voiceWidget.launchVoice();
     voiceWidgetResult.fold((l) {
       setState(() { _message = l.toString(); });
     }, (r) {
-      print(r);
       if (r.finishStatus == SdkFinishStatus.STATUS_ERROR) {
         setState(() {
           _message = r.errorDiagnostic;
         });
       }
+      print("launchVoiceResult: $r");
     });
   }
 

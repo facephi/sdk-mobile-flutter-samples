@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'models/CoreWidget.dart';
 import 'models/VideoIdWidget.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_operation_event.dart';
+import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_finish_status.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title, required this.notifier, required this.mode});
@@ -35,30 +36,46 @@ class _MyHomePageState extends State<MyHomePage>
 
   void _launchInitOperation() async
   {
+    setState(() { _message = ""; });
+
     final trackingWidgetResult = await _coreWidget.initOperation();
     trackingWidgetResult.fold((l) {
       setState(() {
         _message = l.toString();
       });
     }, (r) {
+      if (r.finishStatus == SdkFinishStatus.STATUS_ERROR) {
+        setState(() {
+          _message = r.errorDiagnostic;
+        });
+      }
       print("initOperationResult: $r");
     });
   }
 
   void _launchInitSession() async
   {
+    setState(() { _message = ""; });
+
     final coreWidgetResult = await _coreWidget.initSession(); // SUCCESS/DENIED
     coreWidgetResult.fold((l) {
       setState(() {
         _message = l.toString();
       });
     }, (r) {
-      print(r);
+      if (r.finishStatus == SdkFinishStatus.STATUS_ERROR) {
+        setState(() {
+          _message = r.errorDiagnostic;
+        });
+      }
+      print("initSessionResult: $r");
     });
   }
 
   void _launchCloseSession() async
   {
+    setState(() { _message = ""; });
+
     final coreWidgetResult = await _coreWidget.closeSession(SdkOperationEvent.SUCCESS); // SUCCESS/DENIED
     coreWidgetResult.fold((l) {
       setState(() {
@@ -69,27 +86,22 @@ class _MyHomePageState extends State<MyHomePage>
     });
   }
 
-  void _launchTokenize() async
-  {
-    final tokenizeWidgetResult = await _coreWidget.tokenize();
-    tokenizeWidgetResult.fold((l) {
-      setState(() {
-        _message = l.toString();
-      });
-    }, (r) {
-      print(r);
-    });
-  }
-
   void _launchVideoId() async
   {
+    setState(() { _message = ""; });
+
     final videoIdWidgetResult = await _videoIdWidget.launchVideoId();
     videoIdWidgetResult.fold((l) {
       setState(() {
         _message = l.toString();
       });
     }, (r) {
-      print(r);
+      if (r.finishStatus == SdkFinishStatus.STATUS_ERROR) {
+        setState(() {
+          _message = r.errorDiagnostic;
+        });
+      }
+      print("launchVideoIdResult: $r");
     });
   }
 
@@ -111,7 +123,6 @@ class _MyHomePageState extends State<MyHomePage>
               children: <Widget>[
                 Visibility(visible: _message != "", child: CustomLabel(text: _message, color: _textColorMessage)),
                 CustomButton(text: "VideoId", function: _launchVideoId),
-                CustomButton(text: "Tokenize", function: _launchTokenize),
                 CustomButton(text: "Init Operation", function: _launchInitOperation),
                 CustomButton(text: "Init Session", function: _launchInitSession),
                 CustomButton(text: "Close Session", function: _launchCloseSession),

@@ -30,8 +30,8 @@ class VideoIdWidget
   {
     VideoIdConfiguration configurationWidget;
     configurationWidget = VideoIdConfiguration();
-    configurationWidget.mSectionTime  = 5000;
-    configurationWidget.mMode         = VideoMode.DT_FACE_DOCUMENT_FRONT_BACK;
+    configurationWidget.mSectionTime  = 50000;
+    configurationWidget.mMode         = VideoMode.DT_ONLY_FACE;
     configurationWidget.mShowTutorial = false;
     return configurationWidget;
   }
