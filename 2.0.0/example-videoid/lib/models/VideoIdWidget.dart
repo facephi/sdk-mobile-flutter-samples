@@ -7,16 +7,24 @@ import 'package:fphi_sdkmobile_videoid/fphi_sdkmobile_videoid_mode.dart';
 /// This sample class calls the Tracking Plugin and launch the native widget. Return the result to the UI
 class VideoIdWidget
 {
-  Future<Either<Exception, VideoIdResult>> launchVideoId() async {
-    return launchVideoIdWithConfiguration(createStandardConfiguration());
-  }
-
-  Future<Either<Exception, VideoIdResult>>
-    launchVideoIdWithConfiguration(VideoIdConfiguration configuration) async {
+  Future<Either<Exception, VideoIdResult>> launchSignatureVideoId() async {
     try
     {
       FphiSdkmobileVideoid videoId = FphiSdkmobileVideoid();
-      final Map resultJson = await videoId.startVideoIdComponent(widgetConfigurationJSON: configuration);
+      final Map resultJson = await videoId.startSignatureVideoIdComponent(widgetConfigurationJSON: createStandardConfiguration());
+
+      return Right(VideoIdResult.fromMap(resultJson));
+    }
+    on Exception catch (e) {
+      return (Left(e));
+    }
+  }
+
+  Future<Either<Exception, VideoIdResult>> launchVideoId() async {
+    try
+    {
+      FphiSdkmobileVideoid videoId = FphiSdkmobileVideoid();
+      final Map resultJson = await videoId.startVideoIdComponent(widgetConfigurationJSON: createStandardConfiguration());
 
       return Right(VideoIdResult.fromMap(resultJson));
     }
@@ -30,7 +38,7 @@ class VideoIdWidget
   {
     VideoIdConfiguration configurationWidget;
     configurationWidget = VideoIdConfiguration();
-    configurationWidget.mSectionTime  = 50000;
+    configurationWidget.mSectionTime  = 10000;
     configurationWidget.mMode         = VideoMode.DT_ONLY_FACE;
     configurationWidget.mShowTutorial = false;
     return configurationWidget;
