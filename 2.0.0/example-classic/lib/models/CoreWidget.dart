@@ -4,7 +4,6 @@ import 'package:example/license.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_operation_event.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_configuration.dart';
-import 'package:fphi_sdkmobile_core/fphi_sdkmobile_tokenize_configuration.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_tracking_configuration.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_tracking_operation_type.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_flow_configuration.dart';
