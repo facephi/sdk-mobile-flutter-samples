@@ -4,7 +4,6 @@ import 'package:example/license.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_operation_event.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_configuration.dart';
-import 'package:fphi_sdkmobile_core/fphi_sdkmobile_tokenize_configuration.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_tracking_configuration.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_tracking_operation_type.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_flow_configuration.dart';
@@ -67,25 +66,8 @@ class CoreWidget
       final Map resultJson = await core.initOperation(
         widgetConfigurationJSON: TrackingConfiguration(mCustomerId: CUSTOMER_ID, mType: TrackingOperationType.ONBOARDING),
       );
-      if (resultJson != null) {
-        return Right(CoreResult.fromMap(resultJson));
-      } else {
-        throw Exception('Plugin internal error');
-      }
-    } on Exception catch (e) {
-      return (Left(e));
-    }
-  }
-
-  Future<Either<Exception, CoreResult>> tokenize() async
-  {
-    try
-    {
-      FphiSdkmobileCore core = FphiSdkmobileCore();
-      final Map resultJson = await core.tokenize(widgetConfigurationJSON: TokenizeConfiguration(mStringToTokenize: "Something to tokenize ..."));
       return Right(CoreResult.fromMap(resultJson));
-    }
-    on Exception catch (e) {
+    } on Exception catch (e) {
       return (Left(e));
     }
   }

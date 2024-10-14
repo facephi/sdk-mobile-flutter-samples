@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget
             fontFamily: 'CircularStdBold',
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
-          home: MyHomePage(title: 'Full Example', notifier: _notifier, mode: mode),
+          home: MyHomePage(title: 'NFC Example', notifier: _notifier, mode: mode),
         );
       }
     );

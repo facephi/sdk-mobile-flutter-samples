@@ -95,18 +95,6 @@ class _MyHomePageState extends State<MyHomePage>
     });
   }
 
-  void _launchTokenize() async
-  {
-    final tokenizeWidgetResult = await _coreWidget.tokenize();
-    tokenizeWidgetResult.fold((l) {
-      setState(() {
-        _message = l.toString();
-      });
-    }, (r) {
-      print(r);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,7 +113,6 @@ class _MyHomePageState extends State<MyHomePage>
               children: <Widget>[
                 Visibility(visible: _message != "", child: CustomLabel(text: _message, color: _textColorMessage)),
                 CustomButton(text: "NFC", function: _launchNfc),
-                CustomButton(text: "Launch Tokenize", function: _launchTokenize),
                 CustomButton(text: "Init Operation", function: _launchInitOperation),
                 CustomButton(text: "Init Session", function: _launchInitSession),
                 CustomButton(text: "Close Session", function: _launchCloseSession),
