@@ -200,19 +200,6 @@ class _MyHomePageState extends State<MyHomePage>
     });
   }
 
-  void _launchTokenize() async
-  {
-    final tokenizeWidgetResult = await _coreWidget.tokenize();
-    tokenizeWidgetResult.fold((l) {
-      setState(() {
-        _message = l.toString();
-      });
-    }, (r) {
-      // Manage Plugin process Status
-      print(r);
-    });
-  }
-
   void _launchNextStepFlow() async
   {
     final coreWidgetResult = await _coreWidget.nextStepFlow();
@@ -321,7 +308,6 @@ class _MyHomePageState extends State<MyHomePage>
                 Visibility(visible: _message != "", child: CustomLabel(text: _message, color: _textColorMessage)),
                 CustomButton(text: "Selphi", function: _launchSelphiAuthenticate),
                 CustomButton(text: "SelphID", function: _launchSelphIDCapture),
-                CustomButton(text: "Tokenize", function: _launchTokenize),
                 CustomButton(text: "Get ExtraData", function: _launchGetExtraData),
                 CustomButton(text: "Launch Flow", function: _launchFlow),
                 CustomButton(text: "Next Step Flow", function: _launchNextStepFlow),

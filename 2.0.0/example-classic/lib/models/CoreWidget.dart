@@ -74,19 +74,6 @@ class CoreWidget
     }
   }
 
-  Future<Either<Exception, CoreResult>> tokenize() async
-  {
-    try
-    {
-      FphiSdkmobileCore core = FphiSdkmobileCore();
-      final Map resultJson = await core.tokenize(widgetConfigurationJSON: TokenizeConfiguration(mStringToTokenize: "Something to tokenize ..."));
-      return Right(CoreResult.fromMap(resultJson));
-    }
-    on Exception catch (e) {
-      return (Left(e));
-    }
-  }
-
   Future<Either<Exception, CoreResult>> initFlow() async
   {
     try
