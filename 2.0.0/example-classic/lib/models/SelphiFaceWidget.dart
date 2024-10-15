@@ -5,22 +5,14 @@ import 'package:fphi_sdkmobile_selphi/fphi_sdkmobile_selphi.dart';
 import 'SelphiFaceResult.dart';
 
 /// This sample class calls the Selphi Plugin and launch the native widget. Return the result to the UI
-class SelphiFaceWidget {
-  Future<Either<Exception, SelphiFaceResult>> launchSelphiAuthenticate(
-      String resourcesPath) async {
-    return launchSelphiAuthenticateWithConfiguration(resourcesPath, createStandardConfiguration());
-  }
-
-  Future<Either<Exception, SelphiFaceResult>>
-      launchSelphiAuthenticateWithConfiguration(
-          String resourcesPath, SelphiFaceConfiguration configuration) async {
+class SelphiFaceWidget
+{
+  Future<Either<Exception, SelphiFaceResult>> launchSelphiAuthenticate(String resourcesPath) async
+  {
     try
     {
       FphiSdkmobileSelphi selphi = FphiSdkmobileSelphi();
-      final Map resultJson = await selphi.startSelphiFaceWidget(
-          resourcesPath: resourcesPath,
-          widgetConfigurationJSON: configuration);
-
+      final Map resultJson = await selphi.startSelphiFaceWidget(resourcesPath: resourcesPath, widgetConfigurationJSON: createStandardConfiguration());
       return Right(SelphiFaceResult.fromMap(resultJson));
     }
     on Exception catch (e) {

@@ -9,20 +9,12 @@ import 'SelphIDResult.dart';
 /// This sample class calls the Selphi Plugin and launch the native widget. Return the result to the UI
 class SelphIDWidget
 {
-  Future<Either<Exception, SelphIDResult>> launchSelphIDCapture(String resourcesPath) async {
-    return launchSelphIDCaptureWithConfiguration(resourcesPath, createStandardConfiguration());
-  }
-
-  Future<Either<Exception, SelphIDResult>> launchSelphIDCaptureWithConfiguration(String resourcesPath, SelphIDConfiguration configuration) async
+  Future<Either<Exception, SelphIDResult>> launchSelphIDCapture(String resourcesPath) async
   {
     try
     {
       FphiSdkmobileSelphid selphid = FphiSdkmobileSelphid();
-      final Map resultJson = await selphid.startSelphIDWidget(
-          resourcesPath: resourcesPath,
-          widgetConfigurationJSON: configuration
-      );
-
+      final Map resultJson = await selphid.startSelphIDWidget(resourcesPath: resourcesPath, widgetConfigurationJSON: createStandardConfiguration());
       return Right(SelphIDResult.fromMap(resultJson));
     }
     on Exception catch (e) {
