@@ -49,19 +49,19 @@ dev_dependencies:
     hosted:
       name: sdkcore
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
-    version: ^2.0.0
+    version: ^2.1.0
   fphi_sdkmobile_selphi:
     #path: ../fphi_sdkmobile_selphi
     hosted:
       name: sdkselphi
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
-    version: ^2.0.0
+    version: ^2.1.0
   fphi_sdkmobile_selphid:
     #path: ../fphi_sdkmobile_selphid
     hosted:
       name: sdkselphid
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
-    version: ^2.0.0
+    version: ^2.1.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
