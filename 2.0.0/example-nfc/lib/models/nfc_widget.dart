@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:fphi_sdkmobile_nfc/fphi_sdkmobile_nfc_configuration.dart';
 import 'package:fphi_sdkmobile_nfc/fphi_sdkmobile_nfc.dart';
-import 'NfcResult.dart';
+import 'nfc_result.dart';
 
 /// This sample class calls the Selphi Plugin and launch the native widget. Return the result to the UI
 class NfcWidget

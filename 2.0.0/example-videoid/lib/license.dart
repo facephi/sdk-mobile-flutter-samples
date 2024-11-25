@@ -1,9 +1,9 @@
-const String SELPHI_RESOURCE_PATH = 'fphi-selphid-widget-resources-selphid-1.0';
-const String CUSTOMER_ID          = "flutter@facephi.com";
+const String selphiResoucePath 	= 'fphi-selphid-widget-resources-selphid-1.0';
+const String customerId     	= "flutter@facephi.com";
 
-const LICENSE_APIKEY_ANDROID     = "";
-const LICENSE_APIKEY_IOS         = "";
-const LICENSE_URL                = "";
+const licenseApiKeyAndroid	= "";
+const licenseApiKeyIOS    	= "";
+const licenseUrl           	= "";
 
-const LICENSE_ANDROID = "{}";
-const LICENSE_IOS     = "{}";
+const licenseAndroid = "{}";
+const licenseIOS     = "{}";

@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers_configuration.dart';
 import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers.dart';
 import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers_reticle_orientation.dart';
-import 'PhingersResult.dart';
+import 'phingers_result.dart';
 
 /// This sample class calls the Selphi Plugin and launch the native widget. Return the result to the UI
 class PhingersWidget

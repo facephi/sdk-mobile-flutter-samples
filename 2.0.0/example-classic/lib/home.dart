@@ -1,20 +1,19 @@
 import 'dart:convert';
-import 'dart:typed_data';
-
-import 'package:example/models/SelphIDResult.dart';
-import 'package:example/models/SelphiFaceResult.dart';
-import 'package:example/widgets/CustomButton.dart';
-import 'package:example/widgets/CustomLabel.dart';
-import 'package:example/widgets/SelphIDImage.dart';
-import 'package:example/widgets/SelphIDList.dart';
-import 'package:example/widgets/SelphiImage.dart';
+import 'package:example/models/selphid_result.dart';
+import 'package:example/models/selphi_face_result.dart';
+import 'package:example/widgets/custom_button.dart';
+import 'package:example/widgets/custom_label.dart';
+import 'package:example/widgets/selphid_image.dart';
+import 'package:example/widgets/selphid_list.dart';
+import 'package:example/widgets/selphi_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'apis/FacephiServices.dart';
-import 'models/CoreWidget.dart';
-import 'models/SelphIDWidget.dart';
-import 'models/SelphiFaceWidget.dart';
+import 'apis/facephi_services.dart';
+import 'models/core_widget.dart';
+import 'models/selphid_widget.dart';
+import 'models/selphi_face_widget.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_finish_status.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_error_type.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_operation_event.dart';
@@ -79,11 +78,11 @@ class _MyHomePageState extends State<MyHomePage>
         case SdkFinishStatus.STATUS_OK: // OK
           setState(() {
             _message = '';
-            _frontDocumentImage = selphIDResult.frontDocumentImage != null ? base64Decode(selphIDResult.frontDocumentImage) : null;
-            _backDocumentImage = selphIDResult.backDocumentImage != null ? base64Decode(selphIDResult.backDocumentImage) : null;
-            _faceImage = (selphIDResult.faceImage != null && selphIDResult.faceImage != "") ? base64Decode(selphIDResult.faceImage) : null;
-            _ocrResult      = json.decode(selphIDResult.documentData);
-            _tokenFaceImage = selphIDResult.tokenFaceImage;
+            _frontDocumentImage = base64Decode(selphIDResult.frontDocumentImage);
+            _backDocumentImage  = base64Decode(selphIDResult.backDocumentImage);
+            _faceImage          = base64Decode(selphIDResult.faceImage);
+            _ocrResult          = json.decode(selphIDResult.documentData);
+            _tokenFaceImage     = selphIDResult.tokenFaceImage;
           });
           break;
         case SdkFinishStatus.STATUS_ERROR: // Error
@@ -133,7 +132,9 @@ class _MyHomePageState extends State<MyHomePage>
     const channel = BasicMessageChannel<dynamic>('tracking.error.listener', StringCodec());
     channel.setMessageHandler((message) async
     {
-      print('tracking.error.listener: ' + jsonDecode(message!));
+      if (kDebugMode) {
+        print('tracking.error.listener: ${jsonDecode(message!)}');
+      }
       return '';
     });
   }
@@ -146,7 +147,9 @@ class _MyHomePageState extends State<MyHomePage>
         _message = l.toString();
       });
     }, (r) {
-      print("initOperationResult: $r");
+      if (kDebugMode) {
+        print("initOperationResult: $r");
+      }
     });
   }
 
@@ -159,7 +162,9 @@ class _MyHomePageState extends State<MyHomePage>
       });
     }, (r) {
       // Manage Plugin process Status
-      print(r);
+      if (kDebugMode) {
+        print(r);
+      }
     });
   }
 
@@ -171,7 +176,9 @@ class _MyHomePageState extends State<MyHomePage>
         _message = l.toString();
       });
     }, (r) {
-      print(r);
+      if (kDebugMode) {
+        print(r);
+      }
     });
   }
 
@@ -183,19 +190,35 @@ class _MyHomePageState extends State<MyHomePage>
         _message = l.toString();
       });
     }, (r) async {
-      final coreResult = r;
-      // Manage Plugin process Status
-      print(coreResult);
+      if (kDebugMode) {
+        print(r);
+      }
 
-      if (coreResult.finishStatus == SdkFinishStatus.STATUS_OK) {
-        _extraData = coreResult.data!;
+      if (r.finishStatus == SdkFinishStatus.STATUS_OK) {
+        _extraData = r.data!;
 
         await FacephiServices().livenessRequest(extraData: _extraData, image: base64Encode(_bestImage!))
-            .then((value) => print("livenessRequest: $value"))
-            .catchError((e) => print("$e"));
+          .then((value) {
+            if (kDebugMode) {
+              print("livenessRequest: $value");
+            }
+          })
+          .catchError((e) {
+            if (kDebugMode) {
+              print("$e");
+            }
+          });
         await FacephiServices().matchingFacialRequest(docTemplate: _tokenFaceImage, extraData: _extraData, image: base64Encode(_bestImage!))
-            .then((value) => print("matchingFacialRequest: $value"))
-            .catchError((e) => print("$e"));
+          .then((value) {
+            if (kDebugMode) {
+              print("matchingFacialRequest: $value");
+            }
+          })
+          .catchError((e) {
+            if (kDebugMode) {
+              print("$e");
+            }
+          });
       }
     });
   }
@@ -208,7 +231,9 @@ class _MyHomePageState extends State<MyHomePage>
         _message = l.toString();
       });
     }, (r) {
-      print(r);
+      if (kDebugMode) {
+        print(r);
+      }
     });
   }
 
@@ -220,7 +245,9 @@ class _MyHomePageState extends State<MyHomePage>
         _message = l.toString();
       });
     }, (r) {
-      print(r);
+      if (kDebugMode) {
+        print(r);
+      }
     });
   }
 
@@ -229,17 +256,21 @@ class _MyHomePageState extends State<MyHomePage>
     const channel = BasicMessageChannel<dynamic>('core.flow', StringCodec());
     channel.setMessageHandler((message) async
     {
-      print(jsonDecode(message!));
+      if (kDebugMode) {
+        print(jsonDecode(message!));
+      }
       if (jsonDecode(message!)['flow'] == "SELPHID")
       {
-        print(SelphIDResult.fromMap(jsonDecode(message)));
-        print(SelphIDResult.fromMap(jsonDecode(message)).documentData);
+        if (kDebugMode) {
+          print(SelphIDResult.fromMap(jsonDecode(message)));
+        }
       }
       else if (jsonDecode(message!)['flow'] == "SELPHI")
       {
-        print(SelphiFaceResult.fromMap(jsonDecode(message)));
+        if (kDebugMode) {
+          print(SelphiFaceResult.fromMap(jsonDecode(message)));
+        }
       }
-
       return '';
     });
 
@@ -249,23 +280,32 @@ class _MyHomePageState extends State<MyHomePage>
       {
         if (r.finishStatus == SdkFinishStatus.STATUS_OK)
         {
-          await _selphiFaceWidget.setSelphiFlow().then((value) => print(value));
-          await _selphIDWidget.setSelphidFlow().then((value) => print(value));
+          await _selphiFaceWidget.setSelphiFlow().then((value) {
+            if (kDebugMode) {
+              print(value);
+            }
+          });
+          await _selphIDWidget.setSelphidFlow().then((value) {
+            if (kDebugMode) {
+              print(value);
+            }
+          });
 
-          await _coreWidget.startFlow().then((value)
-          {
-            print(value);
-          }
-          ).onError((error, stackTrace)
-          {
-            print(error);
+          await _coreWidget.startFlow().then((value) {
+            if (kDebugMode) {
+              print(value);
+            }
+          }).onError((error, stackTrace) {
+            if (kDebugMode) {
+              print(error);
+            }
           });
         }
       });
-    }
-    ).onError((error, stackTrace)
-    {
-      print(error);
+    }).onError((error, stackTrace) {
+      if (kDebugMode) {
+        print(error);
+      }
     });
   }
 

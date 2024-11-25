@@ -1,9 +1,9 @@
-import 'package:example/widgets/CustomButton.dart';
-import 'package:example/widgets/CustomLabel.dart';
+import 'package:example/widgets/custom_button.dart';
+import 'package:example/widgets/custom_label.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'models/CoreWidget.dart';
-import 'models/VoiceWidget.dart';
+import 'models/core_widget.dart';
+import 'models/voice_widget.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_finish_status.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_operation_event.dart';
 
@@ -49,7 +49,9 @@ class _MyHomePageState extends State<MyHomePage>
           _message = r.errorDiagnostic;
         });
       }
-      print("initSessionResult: $r");
+      if (kDebugMode) {
+        print("initSessionResult: $r");
+      }
     });
   }
 
@@ -69,7 +71,9 @@ class _MyHomePageState extends State<MyHomePage>
           _message = r.errorDiagnostic;
         });
       }
-      print("initSessionResult: $r");
+      if (kDebugMode) {
+        print("initSessionResult: $r");
+      }
     });
   }
 
@@ -82,7 +86,9 @@ class _MyHomePageState extends State<MyHomePage>
       });
     }, (r) {
       setState(() { _message = ""; });
-      print("closeSessionResult: $r");
+      if (kDebugMode) {
+        print("closeSessionResult: $r");
+      }
     });
   }
 
@@ -99,7 +105,9 @@ class _MyHomePageState extends State<MyHomePage>
           _message = r.errorDiagnostic;
         });
       }
-      print("launchVoiceResult: $r");
+      if (kDebugMode) {
+        print("launchVoiceResult: $r");
+      }
     });
   }
 

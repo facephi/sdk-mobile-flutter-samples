@@ -1,9 +1,9 @@
-import 'package:example/widgets/CustomButton.dart';
-import 'package:example/widgets/CustomLabel.dart';
+import 'package:example/widgets/custom_button.dart';
+import 'package:example/widgets/custom_label.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'models/CoreWidget.dart';
-import 'models/NfcWidget.dart';
+import 'models/core_widget.dart';
+import 'models/nfc_widget.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_finish_status.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_operation_event.dart';
 
@@ -67,7 +67,9 @@ class _MyHomePageState extends State<MyHomePage>
         _message = l.toString();
       });
     }, (r) {
-      print("initOperationResult: $r");
+      if (kDebugMode) {
+        print("initOperationResult: $r");
+      }
     });
   }
 
@@ -79,7 +81,9 @@ class _MyHomePageState extends State<MyHomePage>
         _message = l.toString();
       });
     }, (r) {
-      print(r);
+      if (kDebugMode) {
+        print(r);
+      }
     });
   }
 
@@ -91,7 +95,9 @@ class _MyHomePageState extends State<MyHomePage>
         _message = l.toString();
       });
     }, (r) {
-      print(r);
+      if (kDebugMode) {
+        print(r);
+      }
     });
   }
 

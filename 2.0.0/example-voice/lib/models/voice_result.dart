@@ -24,7 +24,7 @@ class VoiceResult {
     return {
       'finishStatus': finishStatus.toInt(),
       'finishStatusDescription': finishStatusDescription,
-      'errorDiagnostic': errorDiagnostic ?? '',
+      'errorDiagnostic': errorDiagnostic,
       'errorMessage': errorMessage ?? '',
       'data': data ?? '',
       'audios': audios ?? '',

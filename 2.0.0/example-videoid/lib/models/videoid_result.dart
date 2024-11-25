@@ -19,10 +19,10 @@ class VideoIdResult {
   Map<String, dynamic> toMap() {
     return {
       'finishStatus': finishStatus.toInt(),
-      'finishStatusDescription': finishStatusDescription ?? "",
-      'errorDiagnostic': errorDiagnostic ?? "",
+      'finishStatusDescription': finishStatusDescription,
+      'errorDiagnostic': errorDiagnostic,
       'errorMessage': errorMessage,
-      'data': data ?? '',
+      'data': data,
     };
   }
 

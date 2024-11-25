@@ -1,6 +1,5 @@
 import 'dart:core';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_finish_status.dart';
-import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_error_type.dart';
 
 class NfcResult
 {
@@ -40,7 +39,7 @@ class NfcResult
     return {
       'finishStatus': finishStatus.toInt(),
       'finishStatusDescription': finishStatusDescription,
-      'errorDiagnostic': errorDiagnostic ?? "",
+      'errorDiagnostic': errorDiagnostic,
       'errorMessage': errorMessage ?? "",
       'timeoutStatus': timeoutStatus,
       //'nfcCertificateData': nfcCertificateData,

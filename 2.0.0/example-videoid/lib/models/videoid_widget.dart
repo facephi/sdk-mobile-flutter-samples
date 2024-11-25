@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:example/models/VideoIdResult.dart';
+import 'package:example/models/videoid_result.dart';
 import 'package:fphi_sdkmobile_videoid/fphi_sdkmobile_videoid_configuration.dart';
 import 'package:fphi_sdkmobile_videoid/fphi_sdkmobile_videoid.dart';
 import 'package:fphi_sdkmobile_videoid/fphi_sdkmobile_videoid_mode.dart';

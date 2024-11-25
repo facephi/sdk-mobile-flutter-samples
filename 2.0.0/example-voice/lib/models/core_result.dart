@@ -28,7 +28,7 @@ class CoreResult
     return {
       'finishStatus': finishStatus.toInt(),
       'finishStatusDescription': finishStatusDescription,
-      'errorDiagnostic': errorDiagnostic ?? "",
+      'errorDiagnostic': errorDiagnostic,
       'errorMessage': errorMessage ?? "",
       'flow': flow ?? "",
       'timeoutStatus': timeoutStatus,

@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:fphi_sdkmobile_voice/fphi_sdkmobile_voice_configuration.dart';
 import 'package:fphi_sdkmobile_voice/fphi_sdkmobile_voice.dart';
-import 'VoiceResult.dart';
+import 'voice_result.dart';
 
 /// This sample class calls the Tracking Plugin and launch the native widget. Return the result to the UI
 class VoiceWidget

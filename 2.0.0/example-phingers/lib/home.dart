@@ -1,9 +1,9 @@
-import 'package:example/widgets/CustomButton.dart';
-import 'package:example/widgets/CustomLabel.dart';
+import 'package:example/widgets/custom_button.dart';
+import 'package:example/widgets/custom_label.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'models/CoreWidget.dart';
-import 'models/PhingersWidget.dart';
+import 'models/core_widget.dart';
+import 'models/phingers_widget.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_finish_status.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_operation_event.dart';
 
@@ -42,7 +42,9 @@ class _MyHomePageState extends State<MyHomePage>
         _message = l.toString();
       });
     }, (r) {
-      print(r);
+      if (kDebugMode) {
+        print(r);
+      }
       // Manage Plugin process Status
       switch (r.finishStatus) {
         case SdkFinishStatus.STATUS_OK: // OK
@@ -65,7 +67,9 @@ class _MyHomePageState extends State<MyHomePage>
         _message = l.toString();
       });
     }, (r) {
-      print("initOperationResult: $r");
+      if (kDebugMode) {
+        print("initOperationResult: $r");
+      }
     });
   }
 
@@ -77,9 +81,10 @@ class _MyHomePageState extends State<MyHomePage>
         _message = l.toString();
       });
     }, (r) {
-      final coreResult = r;
       // Manage Plugin process Status
-      print(coreResult);
+      if (kDebugMode) {
+        print(r);
+      }
     });
   }
 
@@ -91,7 +96,9 @@ class _MyHomePageState extends State<MyHomePage>
         _message = l.toString();
       });
     }, (r) {
-      print(r);
+      if (kDebugMode) {
+        print(r);
+      }
     });
   }
 

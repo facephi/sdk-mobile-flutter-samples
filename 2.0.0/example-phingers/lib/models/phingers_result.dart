@@ -32,7 +32,7 @@ class PhingersResult
     return {
       'finishStatus': finishStatus.toInt(),
       'finishStatusDescription': finishStatusDescription,
-      'errorDiagnostic': errorDiagnostic ?? "",
+      'errorDiagnostic': errorDiagnostic,
       'errorMessage': errorMessage ?? "",
       'fullFrameImage': fullFrameImage,
       'focusQuality': focusQuality,

@@ -30,7 +30,7 @@ class SelphiFaceResult {
     return {
       'finishStatus': finishStatus.toInt(),
       'finishStatusDescription': finishStatusDescription,
-      'errorDiagnostic': errorDiagnostic ?? "",
+      'errorDiagnostic': errorDiagnostic,
       'errorMessage': errorMessage ?? "",
       'templateRaw': templateRaw,
       'qrData': qrData,
