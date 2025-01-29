@@ -15,6 +15,8 @@ class SelphIDResult
   final String fingerprintImage;
   final String faceImage;
   final String signatureImage;
+  final String tokenRawBackDocument;
+  final String tokenRawFrontDocument;
   final String tokenFrontDocument;
   final String tokenBackDocument;
   final String tokenFaceImage;
@@ -35,6 +37,8 @@ class SelphIDResult
     required this.fingerprintImage,
     required this.faceImage,
     required this.signatureImage,
+    required this.tokenRawBackDocument,
+    required this.tokenRawFrontDocument,
     required this.tokenFrontDocument,
     required this.tokenBackDocument,
     required this.tokenFaceImage,
@@ -57,8 +61,10 @@ class SelphIDResult
       'fingerprintImage': fingerprintImage,
       'faceImage': faceImage,
       'signatureImage': signatureImage,
-      'tokenFrontDocumentImage': tokenFrontDocument,
-      'tokenBackDocumentImage': tokenBackDocument,
+      'tokenFrontDocument': tokenFrontDocument,
+      'tokenBackDocument': tokenBackDocument,
+      'tokenRawFrontDocument': tokenRawFrontDocument,
+      'tokenRawBackDocument': tokenRawBackDocument,
       'tokenFaceImage': tokenFaceImage,
       'documentData': documentData,
       'tokenOCR': tokenOCR,
@@ -82,6 +88,8 @@ class SelphIDResult
       signatureImage: map['signatureImage'] ?? "",
       tokenFrontDocument: map['tokenFrontDocument'] ?? "",
       tokenBackDocument: map['tokenBackDocument'] ?? "",
+      tokenRawBackDocument: map["tokenRawBackDocument"] ?? "",
+      tokenRawFrontDocument: map["tokenRawFrontDocument"] ?? "",
       tokenFaceImage: map['tokenFaceImage'] ?? "",
       documentData: map['documentData'] ?? "",
       tokenOCR: map['tokenOCR'] ?? "",
