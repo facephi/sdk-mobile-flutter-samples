@@ -15,8 +15,8 @@ class CoreWidget
   Future<Either<Exception, CoreResult>> closeSession(SdkOperationEvent event) async
   {
     try {
-      final Map resultJson = await FphiSdkmobileCore().closeSession();
-      return Right(CoreResult.fromMap(resultJson));
+      final Map m = await FphiSdkmobileCore().closeSession();
+      return Right(CoreResult.fromMap(m));
     } on Exception catch (e) {
       return (Left(e));
     }
@@ -26,16 +26,14 @@ class CoreWidget
   {
     try
     {
-      String apiKey = (Platform.isAndroid) ? licenseApiKeyAndroid : licenseApiKeyIOS;
-      String lic    = (Platform.isAndroid) ? licenseAndroid : licenseIOS;
-      final Map resultJson = await FphiSdkmobileCore().initSession(widgetConfigurationJSON: CoreConfigurationInitSession(
-          //mLicense: lic,
+      final Map m = await FphiSdkmobileCore().initSession(widgetConfigurationJSON: CoreConfigurationInitSession(
+          //mLicense: (Platform.isAndroid) ? licenseAndroid : licenseIOS,
           mLicenseUrl: licenseUrl,
-          mLicenseApiKey: apiKey,
+          mLicenseApiKey: (Platform.isAndroid) ? licenseApiKeyAndroid : licenseApiKeyIOS,
           mEnableTracking: true
       ));
 
-      return Right(CoreResult.fromMap(resultJson));
+      return Right(CoreResult.fromMap(m));
     } on Exception catch (e) {
       return (Left(e));
     }
@@ -45,8 +43,8 @@ class CoreWidget
   {
     try
     {
-      final Map resultJson = await FphiSdkmobileCore().getExtraData();
-      return Right(CoreResult.fromMap(resultJson));
+      final Map m = await FphiSdkmobileCore().getExtraData();
+      return Right(CoreResult.fromMap(m));
     }
     on Exception catch (e) {
       return (Left(e));
@@ -57,10 +55,10 @@ class CoreWidget
   {
     try
     {
-      final Map resultJson = await FphiSdkmobileCore().initOperation(
+      final Map m = await FphiSdkmobileCore().initOperation(
         widgetConfigurationJSON: TrackingConfiguration(mCustomerId: customerId, mType: TrackingOperationType.ONBOARDING),
       );
-      return Right(CoreResult.fromMap(resultJson));
+      return Right(CoreResult.fromMap(m));
     } on Exception catch (e) {
       return (Left(e));
     }
@@ -70,10 +68,10 @@ class CoreWidget
   {
     try
     {
-      final Map resultJson = await FphiSdkmobileCore().initFlow(widgetConfigurationJSON: FlowConfiguration(
+      final Map m = await FphiSdkmobileCore().initFlow(widgetConfigurationJSON: FlowConfiguration(
           mCustomerId: customerId, mFlow: "acc560f0-8cbc-475b-b479-1f22ae5cdae8", mPreview: false)
       );
-      return Right(CoreResult.fromMap(resultJson));
+      return Right(CoreResult.fromMap(m));
     }
     on Exception catch (e) {
       return (Left(e));
@@ -84,8 +82,8 @@ class CoreWidget
   {
     try
     {
-      final Map resultJson = await FphiSdkmobileCore().startFlow();
-      return Right(CoreResult.fromMap(resultJson));
+      final Map m = await FphiSdkmobileCore().startFlow();
+      return Right(CoreResult.fromMap(m));
     }
     on Exception catch (e) {
       return (Left(e));
@@ -96,8 +94,8 @@ class CoreWidget
   {
     try
     {
-      final Map resultJson = await FphiSdkmobileCore().cancelFlow();
-      return Right(CoreResult.fromMap(resultJson));
+      final Map m = await FphiSdkmobileCore().cancelFlow();
+      return Right(CoreResult.fromMap(m));
     }
     on Exception catch (e) {
       return (Left(e));
@@ -108,8 +106,8 @@ class CoreWidget
   {
     try
     {
-      final Map resultJson = await FphiSdkmobileCore().nextStep();
-      return Right(CoreResult.fromMap(resultJson));
+      final Map m = await FphiSdkmobileCore().nextStep();
+      return Right(CoreResult.fromMap(m));
     }
     on Exception catch (e) {
       return (Left(e));
