@@ -9,10 +9,8 @@ class VoiceWidget
   Future<Either<Exception, VoiceResult>> setVoiceFlow() async {
     try
     {
-      FphiSdkmobileVoice voice = FphiSdkmobileVoice();
-      Map? resultJson = await voice.setVoiceFlow();
-
-      return Right(VoiceResult.fromMap(resultJson));
+      Map? m = await FphiSdkmobileVoice().setVoiceFlow();
+      return Right(VoiceResult.fromMap(m));
     }
     on Exception catch (e) {
       return (Left(e));
@@ -26,10 +24,8 @@ class VoiceWidget
   Future<Either<Exception, VoiceResult>> launchVoiceWithConfiguration(VoiceConfiguration configuration) async {
     try
     {
-      FphiSdkmobileVoice voice = FphiSdkmobileVoice();
-      final Map resultJson = await voice.startVoiceComponent(widgetConfigurationJSON: configuration);
-
-      return Right(VoiceResult.fromMap(resultJson));
+      final Map m = await FphiSdkmobileVoice().startVoiceComponent(widgetConfigurationJSON: configuration);
+      return Right(VoiceResult.fromMap(m));
     }
     on Exception catch (e) {
       return (Left(e));
@@ -39,12 +35,10 @@ class VoiceWidget
   /// Sample of standard plugin configuration
   VoiceConfiguration createStandardConfiguration()
   {
-    VoiceConfiguration configurationWidget;
-    configurationWidget = VoiceConfiguration();
-    configurationWidget.mVibrationEnabled = true;
-    configurationWidget.mShowTutorial     = true;
-    configurationWidget.mPhrases          = "Hola hello world|Chau voice component|Hola voice component";
-
+    VoiceConfiguration configurationWidget  = VoiceConfiguration();
+    configurationWidget.mVibrationEnabled   = true;
+    configurationWidget.mShowTutorial       = true;
+    configurationWidget.mPhrases            = "Hola hello world|Chau voice component|Hola voice component";
     return configurationWidget;
   }
 }

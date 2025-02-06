@@ -11,8 +11,7 @@ class SelphiFaceWidget
   {
     try
     {
-      FphiSdkmobileSelphi selphi = FphiSdkmobileSelphi();
-      final Map resultJson = await selphi.startSelphiFaceWidget(resourcesPath: resourcesPath, widgetConfigurationJSON: createStandardConfiguration());
+      final Map resultJson = await FphiSdkmobileSelphi().startSelphiFaceWidget(resourcesPath: resourcesPath, widgetConfigurationJSON: createStandardConfiguration());
       return Right(SelphiFaceResult.fromMap(resultJson));
     }
     on Exception catch (e) {
@@ -23,12 +22,11 @@ class SelphiFaceWidget
   /// Sample of standard plugin configuration
   SelphiFaceConfiguration createStandardConfiguration()
   {
-    SelphiFaceConfiguration configurationWidget;
-    configurationWidget = SelphiFaceConfiguration();
-    configurationWidget.livenessMode  = SelphiFaceLivenessMode.LM_PASSIVE; // Liveness mode
-    configurationWidget.fullscreen    = true;
-    configurationWidget.logImages     = false;
-    configurationWidget.jpgQuality    = 0.95;
+    SelphiFaceConfiguration configurationWidget   = SelphiFaceConfiguration();
+    configurationWidget.livenessMode              = SelphiFaceLivenessMode.LM_PASSIVE; // Liveness mode
+    configurationWidget.fullscreen                = true;
+    configurationWidget.logImages                 = false;
+    configurationWidget.jpgQuality                = 0.95;
     configurationWidget.enableGenerateTemplateRaw = true;
     //configurationWidget.videoFilename           = "/storage/self/primary/Download/videoName.mp4";
     return configurationWidget;
@@ -38,9 +36,7 @@ class SelphiFaceWidget
   {
     try
     {
-      FphiSdkmobileSelphi selphi = FphiSdkmobileSelphi();
-      final Map resultJson = await selphi.setSelphiFlow();
-
+      final Map resultJson = await FphiSdkmobileSelphi().setSelphiFlow();
       return Right(SelphiFaceResult.fromMap(resultJson));
     }
     on Exception catch (e) {

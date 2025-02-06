@@ -10,9 +10,7 @@ class VideoIdWidget
   Future<Either<Exception, VideoIdResult>> launchSignatureVideoId() async {
     try
     {
-      FphiSdkmobileVideoid videoId = FphiSdkmobileVideoid();
-      final Map resultJson = await videoId.startSignatureVideoIdComponent(widgetConfigurationJSON: createStandardConfiguration());
-
+      final Map resultJson = await FphiSdkmobileVideoid().startSignatureVideoIdComponent(widgetConfigurationJSON: createStandardConfiguration());
       return Right(VideoIdResult.fromMap(resultJson));
     }
     on Exception catch (e) {
@@ -23,9 +21,7 @@ class VideoIdWidget
   Future<Either<Exception, VideoIdResult>> launchVideoId() async {
     try
     {
-      FphiSdkmobileVideoid videoId = FphiSdkmobileVideoid();
-      final Map resultJson = await videoId.startVideoIdComponent(widgetConfigurationJSON: createStandardConfiguration());
-
+      final Map resultJson = await FphiSdkmobileVideoid().startVideoIdComponent(widgetConfigurationJSON: createStandardConfiguration());
       return Right(VideoIdResult.fromMap(resultJson));
     }
     on Exception catch (e) {
@@ -36,20 +32,17 @@ class VideoIdWidget
   /// Sample of standard plugin configuration
   VideoIdConfiguration createStandardConfiguration()
   {
-    VideoIdConfiguration configurationWidget;
-    configurationWidget = VideoIdConfiguration();
-    configurationWidget.mSectionTime  = 10000;
-    configurationWidget.mMode         = VideoMode.DT_ONLY_FACE;
-    configurationWidget.mShowTutorial = false;
+    VideoIdConfiguration configurationWidget  = VideoIdConfiguration();
+    configurationWidget.mSectionTime          = 10000;
+    configurationWidget.mMode                 = VideoMode.DT_ONLY_FACE;
+    configurationWidget.mShowTutorial         = false;
     return configurationWidget;
   }
 
   Future<Either<Exception, VideoIdResult>> setVideoIdFlow() async {
     try
     {
-      FphiSdkmobileVideoid videoid = FphiSdkmobileVideoid();
-      Map? resultJson = await videoid.setVideoIdFlow();
-
+      Map? resultJson = await FphiSdkmobileVideoid().setVideoIdFlow();
       return Right(VideoIdResult.fromMap(resultJson));
     } on Exception catch (e) {
       return (Left(e));

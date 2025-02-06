@@ -13,8 +13,7 @@ class SelphIDWidget
   {
     try
     {
-      FphiSdkmobileSelphid selphid = FphiSdkmobileSelphid();
-      final Map resultJson = await selphid.startSelphIDWidget(resourcesPath: resourcesPath, widgetConfigurationJSON: createStandardConfiguration());
+      final Map resultJson = await FphiSdkmobileSelphid().startSelphIDWidget(resourcesPath: resourcesPath, widgetConfigurationJSON: createStandardConfiguration());
       return Right(SelphIDResult.fromMap(resultJson));
     }
     on Exception catch (e) {
@@ -24,8 +23,7 @@ class SelphIDWidget
 
   /// Sample of standard plugin configuration 
   SelphIDConfiguration createStandardConfiguration() {
-    SelphIDConfiguration configurationWidget;
-    configurationWidget = SelphIDConfiguration();
+    SelphIDConfiguration configurationWidget    = SelphIDConfiguration();
     configurationWidget.documentType            = SelphIDDocumentType.DT_IDCARD; // IDCard, Passport, DriverLic or ForeignCard
     configurationWidget.fullscreen              = true;
     configurationWidget.scanMode                = SelphIDScanMode.CAP_MODE_SEARCH;
@@ -41,9 +39,7 @@ class SelphIDWidget
   Future<Either<Exception, SelphIDResult>> setSelphidFlow() async {
     try
     {
-      FphiSdkmobileSelphid selphid = FphiSdkmobileSelphid();
-      final Map resultJson = await selphid.setSelphidFlow();
-
+      final Map resultJson = await FphiSdkmobileSelphid().setSelphidFlow();
       return Right(SelphIDResult.fromMap(resultJson));
     } on Exception catch (e) {
       return (Left(e));

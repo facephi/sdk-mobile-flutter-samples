@@ -9,8 +9,7 @@ class NfcWidget
   Future<Either<Exception, NfcResult>> launchNfc() async {
     try
     {
-      FphiSdkmobileNfc nfc = FphiSdkmobileNfc();
-      Map? resultJson = await nfc.startNfcComponent(
+      Map? resultJson = await FphiSdkmobileNfc().startNfcComponent(
           widgetConfigurationJSON: NfcConfiguration(
             mBirthDate: "16/08/1979",
             mDocNumber: "AAI372468",
@@ -30,9 +29,7 @@ class NfcWidget
   {
     try
     {
-      FphiSdkmobileNfc nfc = FphiSdkmobileNfc();
-      Map? resultJson = await nfc.setNfcFlow();
-
+      Map? resultJson = await FphiSdkmobileNfc().setNfcFlow();
       return Right(NfcResult.fromMap(resultJson));
     } on Exception catch (e) {
       return (Left(e));

@@ -10,9 +10,7 @@ class PhingersWidget
   Future<Either<Exception, PhingersResult>> setPhingersFlow() async {
     try
     {
-      FphiSdkmobilePhingers phingers = FphiSdkmobilePhingers();
-      Map? resultJson = await phingers.setPhingersFlow();
-
+      Map? resultJson = await FphiSdkmobilePhingers().setPhingersFlow();
       return Right(PhingersResult.fromMap(resultJson));
     } on Exception catch (e) {
       return (Left(e));
@@ -27,9 +25,7 @@ class PhingersWidget
     launchPhingersWithConfiguration(PhingersConfiguration configuration) async {
     try
     {
-      FphiSdkmobilePhingers phingers = FphiSdkmobilePhingers();
-      Map? resultJson = await phingers.startPhingersComponent(widgetConfigurationJSON: configuration);
-
+      Map? resultJson = await FphiSdkmobilePhingers().startPhingersComponent(widgetConfigurationJSON: configuration);
       return Right(PhingersResult.fromMap(resultJson));
     } on Exception catch (e) {
       return (Left(e));
