@@ -18,14 +18,9 @@ class PhingersWidget
   }
 
   Future<Either<Exception, PhingersResult>> launchPhingers() async {
-    return launchPhingersWithConfiguration(createStandardConfiguration());
-  }
-
-  Future<Either<Exception, PhingersResult>>
-    launchPhingersWithConfiguration(PhingersConfiguration configuration) async {
     try
     {
-      Map? resultJson = await FphiSdkmobilePhingers().startPhingersComponent(widgetConfigurationJSON: configuration);
+      Map? resultJson = await FphiSdkmobilePhingers().startPhingersComponent(widgetConfigurationJSON: createStandardConfiguration());
       return Right(PhingersResult.fromMap(resultJson));
     } on Exception catch (e) {
       return (Left(e));
@@ -34,15 +29,10 @@ class PhingersWidget
 
   /// Sample of standard plugin configuration 
   PhingersConfiguration createStandardConfiguration() {
-    PhingersConfiguration configurationWidget;
-    configurationWidget = PhingersConfiguration();
+    PhingersConfiguration configurationWidget = PhingersConfiguration();
     configurationWidget.mReticleOrientation   = PhingersReticleOrientation.DT_LEFT; // LEFT, RIGHT or THUMB
-    configurationWidget.mReturnFullFrameImage = true;
-    configurationWidget.mReturnProcessedImage = true;
-    configurationWidget.mReturnRawImage       = true;
-    configurationWidget.mUseFlash             = true;
     configurationWidget.mUseLiveness          = true;
-    configurationWidget.mExtractionTimeout    = 5000;
+    configurationWidget.mExtractionTimeout    = 50000;
     configurationWidget.mShowTutorial         = false;
     return configurationWidget;
   }
