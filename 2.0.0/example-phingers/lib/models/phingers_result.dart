@@ -8,24 +8,16 @@ class PhingersResult
   final String finishStatusDescription;
   final String errorDiagnostic;
   final String? errorMessage;
-  final String? fullFrameImage;
-  final dynamic focusQuality;
-  final dynamic livenessConfidence;
-  final dynamic processedFingers;
-  final dynamic rawImages;
-  final dynamic wsq;
+  final dynamic fingers;
+  final dynamic slapImages;
 
   const PhingersResult({
     required this.finishStatus,
     required this.finishStatusDescription,
     required this.errorDiagnostic,
     required this.errorMessage,
-    required this.fullFrameImage,
-    required this.focusQuality,
-    required this.livenessConfidence,
-    required this.processedFingers,
-    required this.rawImages,
-    required this.wsq,
+    required this.fingers,
+    required this.slapImages,
   });
 
   Map<String, dynamic> toMap() {
@@ -34,12 +26,8 @@ class PhingersResult
       'finishStatusDescription': finishStatusDescription,
       'errorDiagnostic': errorDiagnostic,
       'errorMessage': errorMessage ?? "",
-      'fullFrameImage': fullFrameImage,
-      'focusQuality': focusQuality,
-      'livenessConfidence': livenessConfidence,
-      'processedFingers': processedFingers,
-      'rawImages': rawImages,
-      'wsq': wsq,
+      'fingers': fingers,
+      'slapImages': slapImages,
     };
   }
 
@@ -49,17 +37,13 @@ class PhingersResult
       finishStatusDescription: map['finishStatusDescription'],
       errorDiagnostic: map['errorDiagnostic'] ?? "",
       errorMessage: map['errorMessage'] ?? "",
-      fullFrameImage: map['fullFrameImage'] ?? "",
-      focusQuality: map['focusQuality'] ?? "",
-      livenessConfidence: map['livenessConfidence'] ?? "",
-      processedFingers: map['processedFingers'] ?? "",
-      rawImages: map['rawImages'] ?? "",
-      wsq: map['wsq'] ?? "",
+      fingers: map['fingers'] ?? "",
+      slapImages: map['slapImages'] ?? "",
     );
   }
 
   @override
   String toString() {
-    return 'PhingersResult(finishStatus: $finishStatus, errorDiagnostic: $errorDiagnostic, errorMessage: $errorMessage, finishStatusDescription: $finishStatusDescription, fullFrameImage: $fullFrameImage)';
+    return 'PhingersResult(finishStatus: $finishStatus, errorDiagnostic: $errorDiagnostic, errorMessage: $errorMessage, finishStatusDescription: $finishStatusDescription)';
   }
 }
