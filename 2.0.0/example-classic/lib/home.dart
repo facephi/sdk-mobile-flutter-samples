@@ -31,13 +31,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
 {
-  final SelphIDWidget _selphIDWidget        = SelphIDWidget();
-  final SelphiFaceWidget _selphiFaceWidget  = SelphiFaceWidget();
-  final CoreWidget _coreWidget              = CoreWidget();
-
-  final String _resourcesPath         = "fphi-selphi-widget-resources-sdk.zip";
-  final String _resourcesPathSelphid  = "fphi-selphid-widget-resources-sdk.zip";
-
   Uint8List? _bestImage;
   Uint8List? _frontDocumentImage;
   Uint8List? _backDocumentImage;
@@ -46,8 +39,6 @@ class _MyHomePageState extends State<MyHomePage>
   String _tokenFaceImage  = "";
   String _extraData       = "";
   String _message         = '';
-
-  final Color _textColorMessage = const Color(0xFF0099af);
 
   Map<String, dynamic>? _ocrResult;
 
@@ -62,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage>
 
   void _launchSelphIDCapture() async
   {
-    final selphIDWidgetResult = await _selphIDWidget.launchSelphIDCapture(_resourcesPathSelphid);
+    final selphIDWidgetResult = await SelphIDWidget().launchSelphIDCapture();
     selphIDWidgetResult.fold((l) {
       setState(() {
         _message            = l.toString();
@@ -101,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage>
 
   void _launchSelphiAuthenticate() async
   {
-    final selphiFaceWidgetResult = await _selphiFaceWidget.launchSelphiAuthenticate(_resourcesPath);
+    final selphiFaceWidgetResult = await SelphiFaceWidget().launchSelphiAuthenticate();
     selphiFaceWidgetResult.fold((l) {
       setState(() {
         _message    = l.toString();
@@ -141,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage>
 
   void _launchInitOperation() async
   {
-    final trackingWidgetResult = await _coreWidget.initOperation();
+    final trackingWidgetResult = await CoreWidget().initOperation();
     trackingWidgetResult.fold((l) {
       setState(() {
         _message = l.toString();
@@ -155,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage>
 
   void _launchInitSession() async
   {
-    final coreWidgetResult = await _coreWidget.initSession(); // SUCCESS/DENIED
+    final coreWidgetResult = await CoreWidget().initSession(); // SUCCESS/DENIED
     coreWidgetResult.fold((l) {
       setState(() {
         _message = l.toString();
@@ -170,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage>
 
   void _launchCloseSession() async
   {
-    final coreWidgetResult = await _coreWidget.closeSession(SdkOperationEvent.SUCCESS); // SUCCESS/DENIED
+    final coreWidgetResult = await CoreWidget().closeSession(SdkOperationEvent.SUCCESS); // SUCCESS/DENIED
     coreWidgetResult.fold((l) {
       setState(() {
         _message = l.toString();
@@ -184,7 +175,7 @@ class _MyHomePageState extends State<MyHomePage>
 
   void _launchGetExtraData() async
   {
-    final coreWidgetResult = await _coreWidget.getExtraData();
+    final coreWidgetResult = await CoreWidget().getExtraData();
     coreWidgetResult.fold((l) {
       setState(() {
         _message = l.toString();
@@ -225,7 +216,7 @@ class _MyHomePageState extends State<MyHomePage>
 
   void _launchNextStepFlow() async
   {
-    final coreWidgetResult = await _coreWidget.nextStepFlow();
+    final coreWidgetResult = await CoreWidget().nextStepFlow();
     coreWidgetResult.fold((l) {
       setState(() {
         _message = l.toString();
@@ -239,7 +230,7 @@ class _MyHomePageState extends State<MyHomePage>
 
   void _launchCancelFlow() async
   {
-    final coreWidgetResult = await _coreWidget.cancelFlow();
+    final coreWidgetResult = await CoreWidget().cancelFlow();
     coreWidgetResult.fold((l) {
       setState(() {
         _message = l.toString();
@@ -274,24 +265,24 @@ class _MyHomePageState extends State<MyHomePage>
       return '';
     });
 
-    _coreWidget.initFlow().then((r) async
+    CoreWidget().initFlow().then((r) async
     {
       r.map((r) async
       {
         if (r.finishStatus == SdkFinishStatus.STATUS_OK)
         {
-          await _selphiFaceWidget.setSelphiFlow().then((value) {
+          await SelphiFaceWidget().setSelphiFlow().then((value) {
             if (kDebugMode) {
               print(value);
             }
           });
-          await _selphIDWidget.setSelphidFlow().then((value) {
+          await SelphIDWidget().setSelphidFlow().then((value) {
             if (kDebugMode) {
               print(value);
             }
           });
 
-          await _coreWidget.startFlow().then((value) {
+          await CoreWidget().startFlow().then((value) {
             if (kDebugMode) {
               print(value);
             }
@@ -345,7 +336,7 @@ class _MyHomePageState extends State<MyHomePage>
                     ],
                   ),
                 ),
-                Visibility(visible: _message != "", child: CustomLabel(text: _message, color: _textColorMessage)),
+                Visibility(visible: _message != "", child: CustomLabel(text: _message, color: const Color(0xFF0099af))),
                 CustomButton(text: "Selphi", function: _launchSelphiAuthenticate),
                 CustomButton(text: "SelphID", function: _launchSelphIDCapture),
                 CustomButton(text: "Get ExtraData", function: _launchGetExtraData),

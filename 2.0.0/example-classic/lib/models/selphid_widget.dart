@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:example/license.dart';
 import 'package:fphi_sdkmobile_selphid/fphi_sdkmobile_selphid_configuration.dart';
 import 'package:fphi_sdkmobile_selphid/fphi_sdkmobile_selphid.dart';
 import 'package:fphi_sdkmobile_selphid/fphi_sdkmobile_selphid_document_type.dart';
@@ -9,12 +10,12 @@ import 'selphid_result.dart';
 /// This sample class calls the Selphi Plugin and launch the native widget. Return the result to the UI
 class SelphIDWidget
 {
-  Future<Either<Exception, SelphIDResult>> launchSelphIDCapture(String resourcesPath) async
+  Future<Either<Exception, SelphIDResult>> launchSelphIDCapture() async
   {
     try
     {
-      final Map resultJson = await FphiSdkmobileSelphid().startSelphIDWidget(resourcesPath: resourcesPath, widgetConfigurationJSON: createStandardConfiguration());
-      return Right(SelphIDResult.fromMap(resultJson));
+      final Map r = await FphiSdkmobileSelphid().startSelphIDWidget(resourcesPath: resourcesPathSelphid, widgetConfigurationJSON: createStandardConfiguration());
+      return Right(SelphIDResult.fromMap(r));
     }
     on Exception catch (e) {
       return (Left(e));
@@ -39,8 +40,8 @@ class SelphIDWidget
   Future<Either<Exception, SelphIDResult>> setSelphidFlow() async {
     try
     {
-      final Map resultJson = await FphiSdkmobileSelphid().setSelphidFlow();
-      return Right(SelphIDResult.fromMap(resultJson));
+      final Map r = await FphiSdkmobileSelphid().setSelphidFlow();
+      return Right(SelphIDResult.fromMap(r));
     } on Exception catch (e) {
       return (Left(e));
     }

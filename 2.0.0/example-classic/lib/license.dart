@@ -1,5 +1,6 @@
-const String selphiResourcePath = 'fphi-selphid-widget-resources-selphid-1.0';
-const String customerId     	= "flutter@facephi.com";
+const String resourcesPath        = "fphi-selphi-widget-resources-sdk.zip";
+final String resourcesPathSelphid = "fphi-selphid-widget-resources-sdk.zip";
+const String customerId           = "flutter@facephi.com";
 
 const licenseUrl            = "";
 const licenseApiKeyAndroid  = "";

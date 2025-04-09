@@ -11,6 +11,7 @@ class SelphiFaceResult {
   final String? bestImage;
   final String? bestImageCropped;
   final String? bestImageTemplateRaw;
+  final String? livenessDiagnostic;
   final dynamic images;
 
   const SelphiFaceResult({
@@ -23,6 +24,7 @@ class SelphiFaceResult {
     required this.bestImage,
     required this.bestImageCropped,
     required this.bestImageTemplateRaw,
+    required this.livenessDiagnostic,
     this.images
   });
 
@@ -37,6 +39,7 @@ class SelphiFaceResult {
       'bestImage': bestImage,
       'bestImageCropped': bestImageCropped,
       'bestImageTemplateRaw': bestImageTemplateRaw,
+      'livenessDiagnostic': livenessDiagnostic ?? "",
       'images': images,
     };
   }
@@ -53,6 +56,7 @@ class SelphiFaceResult {
       bestImage: map['bestImage'],
       bestImageCropped: map['bestImageCropped'],
       bestImageTemplateRaw: map['bestImageTemplateRaw'],
+      livenessDiagnostic: map['livenessDiagnostic'] ?? "",
       images: map['images'],
     );
   }
