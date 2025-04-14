@@ -15,7 +15,7 @@ class FacephiServices
     dynamic response;
     try
     {
-      final uri     = Uri.https(baseUrlPlatform, "/v5/api/v1/selphid/authenticate-facial/document/face-image");
+      final uri     = Uri.https(baseUrlPlatform, "/");
       final header  = <String, String> {
         'Content-Type': 'application/json; charset=UTF-8',
         //'client-id': CLIENTEID,
@@ -59,7 +59,7 @@ class FacephiServices
     dynamic response;
     try
     {
-      final uri     = Uri.https(baseUrlPlatform, "/v5/api/v1/selphid/passive-liveness/evaluate");
+      final uri     = Uri.https(baseUrlPlatform, "/");
       final header  = <String, String> {
         'Content-Type': 'application/json; charset=UTF-8',
         //'client-id': CLIENTEID,

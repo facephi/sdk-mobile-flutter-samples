@@ -81,7 +81,7 @@ void launchGetExtraData(
       print(r);
     }
 
-    if (r.finishStatus == SdkFinishStatus.STATUS_OK)
+    if (r.finishStatus == SdkFinishStatus.STATUS_OK && bestImage.value != null)
     {
       await FacephiServices().livenessRequest(extraData: r.data!, image: base64Encode(bestImage.value!)).then((value) {
         if (kDebugMode) {
