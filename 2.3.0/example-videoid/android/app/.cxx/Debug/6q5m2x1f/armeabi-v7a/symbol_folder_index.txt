@@ -1,0 +1,1 @@
+/Users/leandroariel/proyects/sdkMobile/flutter/example-2.0.0/example-videoid/build/app/intermediates/cxx/Debug/6q5m2x1f/obj/armeabi-v7a

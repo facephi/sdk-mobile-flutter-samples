@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/leandroariel/development/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/leandroariel/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/leandroariel/proyects/sdkMobile/flutter/example-2.0.0/example-videoid/android/app/.cxx/Debug/1m656965/arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/leandroariel/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/leandroariel/proyects/sdkMobile/flutter/example-2.0.0/example-videoid/android/app/.cxx/Debug/1m656965/arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}
