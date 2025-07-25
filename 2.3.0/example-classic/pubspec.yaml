@@ -42,19 +42,19 @@ dependencies:
     hosted:
       name: sdkcore
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
-    version: ^2.2.0
+    version: ^2.3.0
   fphi_sdkmobile_selphi:
     #path: ../fphi_sdkmobile_selphi
     hosted:
-      name: sdkselphi
+      name: fphi_sdkmobile_core
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
-    version: ^2.2.0
+    version: ^2.3.0
   fphi_sdkmobile_selphid:
     #path: ../fphi_sdkmobile_selphid
     hosted:
-      name: sdkselphid
+      name: fphi_sdkmobile_selphid
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
-    version: ^2.2.0
+    version: ^2.3.0
 
 dev_dependencies:
   flutter_test:
