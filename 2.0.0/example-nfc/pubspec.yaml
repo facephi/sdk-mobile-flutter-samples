@@ -41,13 +41,13 @@ dependencies:
     hosted:
       name: fphi_sdkmobile_core
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
-    version: ^2.2.0
+    version: '<=2.2.99'
   fphi_sdkmobile_nfc:
     #path: ../fphi_sdkmobile_nfc
     hosted:
       name: fphi_sdkmobile_nfc
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
-    version: ^2.2.0
+    version: '<=2.2.99'
 
 dev_dependencies:
   flutter_test:
