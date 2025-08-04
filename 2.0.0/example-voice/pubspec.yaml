@@ -42,13 +42,13 @@ dependencies:
     hosted:
       name: fphi_sdkmobile_core
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
-    version: ^2.2.0
+    version: '<=2.2.99'
   fphi_sdkmobile_voice:
     #path: ../fphi_sdkmobile_voice
     hosted:
       name: fphi_sdkmobile_voice
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
-    version: ^2.2.0
+    version: '<=2.2.99'
 
 dev_dependencies:
   flutter_test:
