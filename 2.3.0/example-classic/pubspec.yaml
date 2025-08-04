@@ -40,13 +40,13 @@ dependencies:
   fphi_sdkmobile_core:
     #path: ../fphi_sdkmobile_core
     hosted:
-      name: sdkcore
+      name: fphi_sdkmobile_core
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
     version: ^2.3.0
   fphi_sdkmobile_selphi:
     #path: ../fphi_sdkmobile_selphi
     hosted:
-      name: fphi_sdkmobile_core
+      name: fphi_sdkmobile_selphi
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
     version: ^2.3.0
   fphi_sdkmobile_selphid:
