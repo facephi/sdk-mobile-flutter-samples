@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:example/license.dart';
-import 'package:fphi_sdkmobile_selphid/fphi_sdkmobile_selphid_configuration.dart';
-import 'package:fphi_sdkmobile_selphid/fphi_sdkmobile_selphid.dart';
-import 'package:fphi_sdkmobile_selphid/fphi_sdkmobile_selphid_document_type.dart';
-import 'package:fphi_sdkmobile_selphid/fphi_sdkmobile_selphid_scan_mode.dart';
-import 'package:fphi_sdkmobile_selphid/fphi_sdkmobile_selphid_timeout.dart';
+import 'package:fphi_sdkmobile_selphid_mbsdr/fphi_sdkmobile_selphid_configuration.dart';
+import 'package:fphi_sdkmobile_selphid_mbsdr/fphi_sdkmobile_selphid.dart';
+import 'package:fphi_sdkmobile_selphid_mbsdr/fphi_sdkmobile_selphid_document_type.dart';
+import 'package:fphi_sdkmobile_selphid_mbsdr/fphi_sdkmobile_selphid_scan_mode.dart';
+import 'package:fphi_sdkmobile_selphid_mbsdr/fphi_sdkmobile_selphid_timeout.dart';
 import 'selphid_result.dart';
 
 /// This sample class calls the Selphi Plugin and launch the native widget. Return the result to the UI
