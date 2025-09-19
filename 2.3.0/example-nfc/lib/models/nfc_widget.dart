@@ -12,9 +12,11 @@ class NfcWidget
       Map? resultJson = await FphiSdkmobileNfc().startNfcComponent(
           widgetConfigurationJSON: NfcConfiguration(
             mBirthDate: "16/08/1979",
-            mDocNumber: "AAI372468",
-            mExpirationDate: "15/11/2032",
+            mDocNumber: "YB7606398",
+            mExpirationDate: "09/11/2030",
             mShowTutorial: true,
+            mVibrationEnabled: true,
+            mDocType: NfcDocumentType.PASSPORT
           )
       );
       return Right(NfcResult.fromMap(resultJson));

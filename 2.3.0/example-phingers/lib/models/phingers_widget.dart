@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers_configuration.dart';
 import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers.dart';
+import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers_filter.dart';
 import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers_reticle_orientation.dart';
 import 'phingers_result.dart';
 
@@ -32,8 +33,9 @@ class PhingersWidget
     PhingersConfiguration configurationWidget = PhingersConfiguration();
     configurationWidget.mReticleOrientation   = PhingersReticleOrientation.DT_LEFT; // LEFT, RIGHT or THUMB
     configurationWidget.mUseLiveness          = true;
-    configurationWidget.mExtractionTimeout    = 50000;
+    configurationWidget.mExtractionTimeout    = 10000;
     configurationWidget.mShowTutorial         = false;
+    configurationWidget.mFingersFilter        = FingersFilter.DT_ALL_4_FINGERS_ONE_BY_ONE;
     return configurationWidget;
   }
 }

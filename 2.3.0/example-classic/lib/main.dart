@@ -20,9 +20,7 @@ class MyApp extends StatelessWidget
         return MaterialApp(
           title: 'SdkMobile Example',
           themeMode: mode,
-          darkTheme: ThemeData(
-            brightness: Brightness.dark
-          ),
+          darkTheme: ThemeData(brightness: Brightness.dark),
           theme: ThemeData(
             brightness: Brightness.light,
             primarySwatch: Colors.blue,

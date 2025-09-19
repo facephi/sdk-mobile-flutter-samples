@@ -27,10 +27,11 @@ class CoreWidget
     try
     {
       final Map m = await FphiSdkmobileCore().initSession(widgetConfigurationJSON: CoreConfigurationInitSession(
-          //mLicense: (Platform.isAndroid) ? licenseAndroid : licenseIOS,
-          mLicenseUrl: licenseUrl,
-          mLicenseApiKey: (Platform.isAndroid) ? licenseApiKeyAndroid : licenseApiKeyIOS,
-          mEnableTracking: true
+        //mLicense: (Platform.isAndroid) ? licenseAndroid : licenseIOS,
+        mLicenseUrl: licenseUrl,
+        mLicenseApiKey: (Platform.isAndroid) ? licenseApiKeyAndroid : licenseApiKeyIOS,
+        mEnableTracking: true,
+        //mLocale: 'en'
       ));
       return Right(CoreResult.fromMap(m));
     } on Exception catch (e) {
