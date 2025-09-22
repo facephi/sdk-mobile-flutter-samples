@@ -12,8 +12,8 @@ import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_operation_event.dart';
 
 void launchInitSession(void Function(VoidCallback fn) setState, ValueNotifier<String> message) async
 {
-  final coreWidgetResult = await CoreWidget().initSession(); // SUCCESS/DENIED
-  coreWidgetResult.fold((l) {
+  final wgtResult = await CoreWidget().initSession(); // SUCCESS/DENIED
+  wgtResult.fold((l) {
     setState(() {
       message.value = l.toString();
     });
@@ -50,8 +50,8 @@ void launchInitOperation(void Function(VoidCallback fn) setState, ValueNotifier<
 
 void launchCloseSession(void Function(VoidCallback fn) setState, ValueNotifier<String> message) async
 {
-  final coreWidgetResult = await CoreWidget().closeSession(SdkOperationEvent.SUCCESS); // SUCCESS/DENIED
-  coreWidgetResult.fold((l) {
+  final coreResult = await CoreWidget().closeSession(SdkOperationEvent.SUCCESS); // SUCCESS/DENIED
+  coreResult.fold((l) {
     setState(() {
       message.value = l.toString();
     });
