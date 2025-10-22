@@ -69,7 +69,7 @@ class CoreWidget
     try
     {
       final Map m = await FphiSdkmobileCore().initFlow(widgetConfigurationJSON: FlowConfiguration(
-          mCustomerId: customerId, mFlow: "acc560f0-8cbc-475b-b479-1f22ae5cdae8", mPreview: false)
+          mCustomerId: customerId, mFlow: "acc560f0-8cbc-475b-b479-1f22ae5cdae8")
       );
       return Right(CoreResult.fromMap(m));
     }
