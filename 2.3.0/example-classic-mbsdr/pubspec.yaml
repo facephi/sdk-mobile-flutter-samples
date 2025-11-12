@@ -36,25 +36,25 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   dartz: ^0.10.1
-  http: ^1.4.0
+  http: ^1.5.0
   fphi_sdkmobile_core:
-    #path: ../2.3.0/fphi_sdkmobile_core
+    #path: ../2.4.0/fphi_sdkmobile_core
     hosted:
       name: fphi_sdkmobile_core
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
-    version: ^2.3.0
+    version: ^2.4.0
   fphi_sdkmobile_selphi:
-    #path: ../2.3.0/fphi_sdkmobile_selphi
+    #path: ../2.4.0/fphi_sdkmobile_selphi
     hosted:
       name: fphi_sdkmobile_selphi
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
-    version: ^2.3.0
+    version: ^2.4.0
   fphi_sdkmobile_selphid_mbsdr:
-    #path: ../2.3.0/fphi_sdkmobile_selphid_mbsdr
+    #path: ../2.4.0/fphi_sdkmobile_selphid_mbsdr
     hosted:
       name: fphi_sdkmobile_selphid_mbsdr
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
-    version: ^2.3.0
+    version: ^2.4.0
 
 dev_dependencies:
   flutter_test:
