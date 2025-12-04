@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:example/license.dart';
-import 'package:fphi_sdkmobile_selphi/fphi_sdkmobile_selphi_configuration.dart';
-import 'package:fphi_sdkmobile_selphi/fphi_sdkmobile_selphi_liveness_mode.dart';
-import 'package:fphi_sdkmobile_selphi/fphi_sdkmobile_selphi.dart';
+import 'package:fphi_sdkmobile_selphi_iad/fphi_sdkmobile_selphi_configuration.dart';
+import 'package:fphi_sdkmobile_selphi_iad/fphi_sdkmobile_selphi_liveness_mode.dart';
+import 'package:fphi_sdkmobile_selphi_iad/fphi_sdkmobile_selphi.dart';
 import 'selphi_face_result.dart';
 
 /// This sample class calls the Selphi Plugin and launch the native widget. Return the result to the UI

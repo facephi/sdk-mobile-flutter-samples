@@ -31,8 +31,9 @@ class CoreWidget
         mLicenseUrl: licenseUrl,
         mLicenseApiKey: (Platform.isAndroid) ? licenseApiKeyAndroid : licenseApiKeyIOS,
         mEnableTracking: true,
-        //mLocale: 'en'
+        // mLocale: 'es'
       ));
+
       return Right(CoreResult.fromMap(m));
     } on Exception catch (e) {
       return (Left(e));

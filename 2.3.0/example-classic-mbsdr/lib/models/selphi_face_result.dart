@@ -12,6 +12,7 @@ class SelphiFaceResult {
   final String? bestImageCropped;
   final String? bestImageTemplateRaw;
   final String? livenessDiagnostic;
+  final String? iad;
   final dynamic images;
 
   const SelphiFaceResult({
@@ -25,6 +26,7 @@ class SelphiFaceResult {
     required this.bestImageCropped,
     required this.bestImageTemplateRaw,
     required this.livenessDiagnostic,
+    required this.iad,
     this.images
   });
 
@@ -41,6 +43,7 @@ class SelphiFaceResult {
       'bestImageTemplateRaw': bestImageTemplateRaw,
       'livenessDiagnostic': livenessDiagnostic ?? "",
       'images': images,
+      'iad': iad
     };
   }
 
@@ -58,11 +61,12 @@ class SelphiFaceResult {
       bestImageTemplateRaw: map['bestImageTemplateRaw'],
       livenessDiagnostic: map['livenessDiagnostic'] ?? "",
       images: map['images'],
+      iad: map['iad'],
     );
   }
 
   @override
   String toString() {
-    return 'SelphiFaceResult(finishStatus: $finishStatus, errorDiagnostic: $errorDiagnostic, errorMessage: $errorMessage, finishStatusDescription: $finishStatusDescription, templateRaw: $templateRaw, qrData: $qrData, bestImage: $bestImage, bestImageCropped: $bestImageCropped, bestImageTemplateRaw: $bestImageTemplateRaw)';
+    return 'SelphiFaceResult(finishStatus: $finishStatus, errorDiagnostic: $errorDiagnostic, errorMessage: $errorMessage, finishStatusDescription: $finishStatusDescription, templateRaw: $templateRaw, qrData: $qrData, bestImage: $bestImage, bestImageCropped: $bestImageCropped, bestImageTemplateRaw: $bestImageTemplateRaw, iad: $iad)';
   }
 }
