@@ -21,7 +21,7 @@ plugins {
     //id "com.android.application" version "8.2.2" apply false // SDK <= 2.2.x
     //id "com.android.application" version "8.6.0" apply false // SDK >= 2.3.x
     id "com.android.application" version "8.9.3" apply false // SDK >= 2.4.x
-    id "org.jetbrains.kotlin.android" version "2.1.0" apply false // MIN KOTLIN VERSION
+    id "org.jetbrains.kotlin.android" version "2.2.0" apply false // MIN KOTLIN VERSION
 }
 
 include ":app"
