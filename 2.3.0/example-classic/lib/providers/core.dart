@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:example/models/core_result.dart';
 import 'package:flutter/services.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_finish_status.dart';
 import 'package:example/models/core_widget.dart';
@@ -12,56 +13,66 @@ import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_operation_event.dart';
 
 void launchInitSession(void Function(VoidCallback fn) setState, ValueNotifier<String> message) async
 {
-  final wgtResult = await CoreWidget().initSession(); // SUCCESS/DENIED
-  wgtResult.fold((l) {
-    setState(() {
-      message.value = l.toString();
-    });
-  }, (r) {
+  CoreWidget().initSession().then((res)
+  {
+    CoreResult r = CoreResult.fromMap(res);
     if (kDebugMode) {
-      print("launchInitSession r: $r");
-      setState(() {
-        if (r.finishStatus == SdkFinishStatus.STATUS_ERROR) {
-          message.value = r.errorDiagnostic.toString();
-        }
-      });
+      print(r);
     }
+    setState(() {
+      if (r.finishStatus == SdkFinishStatus.STATUS_ERROR) {
+        message.value = r.errorDiagnostic.toString();
+      }
+    });
+  }).catchError((e) {
+    setState(() {
+      message.value = e.toString();
+    });
   });
 }
 
 void launchInitOperation(void Function(VoidCallback fn) setState, ValueNotifier<String> message) async
 {
-  final tracking = await CoreWidget().initOperation();
-  tracking.fold((l) {
-    setState(() {
-      message.value = l.toString();
-    });
-  }, (r) {
+  CoreWidget().initOperation()
+  .then((res)
+  {
+    CoreResult r = CoreResult.fromMap(res);
     if (kDebugMode) {
-      print("launchInitOperation r: $r");
-      setState(() {
-        if (r.finishStatus == SdkFinishStatus.STATUS_ERROR) {
-          message.value = r.errorDiagnostic.toString();
-        }
-      });
+      print(r);
     }
+    setState(() {
+      if (r.finishStatus == SdkFinishStatus.STATUS_ERROR) {
+        message.value = r.errorDiagnostic.toString();
+      }
+    });
+  })
+  .catchError((e) {
+    setState(() {
+      message.value = e.toString();
+    });
   });
 }
 
-void launchCloseSession(void Function(VoidCallback fn) setState, ValueNotifier<String> message) async
+void launchCloseSession(
+    void Function(VoidCallback fn) setState,
+    ValueNotifier<String> message,
+    ValueNotifier<SelphIDResult?> selphidResult,
+    ValueNotifier<Uint8List?> bestImage) async
 {
-  final coreResult = await CoreWidget().closeSession(SdkOperationEvent.SUCCESS); // SUCCESS/DENIED
-  coreResult.fold((l) {
-    setState(() {
-      message.value = l.toString();
-    });
-  }, (r) {
+  CoreWidget().closeSession(SdkOperationEvent.SUCCESS)
+  .then((res) {
     if (kDebugMode) {
-      print("launchCloseSession r: $r");
+      print("launchCloseSession r: $res");
       setState(() {
-        message.value = "";
+        message.value       = "";
+        selphidResult.value = null;
+        bestImage.value     = null;
       });
     }
+  }).catchError((e) {
+    setState(() {
+      message.value = e.toString();
+    });
   });
 }
 
@@ -69,19 +80,12 @@ void launchGetExtraData(
     void Function(VoidCallback fn) setState,
     ValueNotifier<String> message,
     ValueNotifier<Uint8List?> bestImage,
-    ValueNotifier<String> tokenFaceImage) async
+    String? tokenFaceImage) async
 {
-  final coreResult = await CoreWidget().getExtraData();
-  coreResult.fold((l) {
-    setState(() {
-      message.value = l.toString();
-    });
-  }, (r) async {
-    if (kDebugMode) {
-      print(r);
-    }
-
-    if (r.finishStatus == SdkFinishStatus.STATUS_OK && bestImage.value != null)
+  CoreWidget().getExtraData().then((res) async
+  {
+    CoreResult r = CoreResult.fromMap(res);
+    if (r.finishStatus == SdkFinishStatus.STATUS_OK && bestImage.value != null && tokenFaceImage != null)
     {
       await FacephiServices().livenessRequest(extraData: r.data!, image: base64Encode(bestImage.value!)).then((value) {
         if (kDebugMode) {
@@ -92,7 +96,7 @@ void launchGetExtraData(
           print("$e");
         }
       });
-      await FacephiServices().matchingFacialRequest(docTemplate: tokenFaceImage.value, extraData: r.data!, image: base64Encode(bestImage.value!)).then((value) {
+      await FacephiServices().matchingFacialRequest(docTemplate: tokenFaceImage, extraData: r.data!, image: base64Encode(bestImage.value!)).then((value) {
         if (kDebugMode) {
           print("matchingFacialRequest: $value");
         }
@@ -102,34 +106,38 @@ void launchGetExtraData(
         }
       });
     }
+  }).catchError((e) {
+    setState(() {
+      message.value = e.toString();
+    });
   });
 }
 
 void launchCancelFlow(void Function(VoidCallback fn) setState, ValueNotifier<String> message) async
 {
-  final coreResult = await CoreWidget().cancelFlow();
-  coreResult.fold((l) {
-    setState(() {
-      message.value = l.toString();
-    });
-  }, (r) {
+  CoreWidget().cancelFlow().then((res)
+  {
     if (kDebugMode) {
-      print(r);
+      print(res);
     }
+  }).catchError((e) {
+    setState(() {
+      message.value = e.toString();
+    });
   });
 }
 
 void launchNextStepFlow(void Function(VoidCallback fn) setState, ValueNotifier<String> message) async
 {
-  final coreResult = await CoreWidget().nextStepFlow();
-  coreResult.fold((l) {
-    setState(() {
-      message.value = l.toString();
-    });
-  }, (r) {
+  CoreWidget().nextStepFlow().then((res) {
     if (kDebugMode) {
-      print(r);
+      print(res);
     }
+  })
+  .catchError((e) {
+    setState(() {
+      message.value = e.toString();
+    });
   });
 }
 
@@ -156,34 +164,32 @@ void launchFlow() async
     return '';
   });
 
-  CoreWidget().initFlow().then((r) async
+  CoreWidget().initFlow().then((res) async
   {
-    r.map((r) async
+    CoreResult r = CoreResult.fromMap(res);
+    if (r.finishStatus == SdkFinishStatus.STATUS_OK)
     {
-      if (r.finishStatus == SdkFinishStatus.STATUS_OK)
-      {
-        await SelphiFaceWidget().setSelphiFlow().then((value) {
-          if (kDebugMode) {
-            print(value);
-          }
-        });
-        await SelphIDWidget().setSelphidFlow().then((value) {
-          if (kDebugMode) {
-            print(value);
-          }
-        });
+      await SelphiFaceWidget().setSelphiFlow().then((value) {
+        if (kDebugMode) {
+          print(value);
+        }
+      });
+      await SelphIDWidget().setSelphidFlow().then((value) {
+        if (kDebugMode) {
+          print(value);
+        }
+      });
 
-        await CoreWidget().startFlow().then((value) {
-          if (kDebugMode) {
-            print(value);
-          }
-        }).onError((error, stackTrace) {
-          if (kDebugMode) {
-            print(error);
-          }
-        });
-      }
-    });
+      await CoreWidget().startFlow().then((value) {
+        if (kDebugMode) {
+          print(value);
+        }
+      }).onError((error, stackTrace) {
+        if (kDebugMode) {
+          print(error);
+        }
+      });
+    }
   }).onError((error, stackTrace) {
     if (kDebugMode) {
       print(error);

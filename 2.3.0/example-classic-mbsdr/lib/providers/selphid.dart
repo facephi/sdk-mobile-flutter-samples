@@ -28,9 +28,9 @@ void launchSelphIDCapture(
       case SdkFinishStatus.STATUS_OK: // OK
         setState(() {
           message.value             = '';
-          frontDocumentImage.value  = base64Decode(r.frontDocumentImage);
-          backDocumentImage.value   = base64Decode(r.backDocumentImage);
-          faceImage.value           = base64Decode(r.faceImage);
+          frontDocumentImage.value  = r.frontDocumentImage != null ? base64Decode(r.frontDocumentImage!) : null;
+          backDocumentImage.value   = r.backDocumentImage != null ? base64Decode(r.backDocumentImage!) : null;
+          faceImage.value           = r.frontDocumentImage != null ? base64Decode(r.faceImage!) : null;
           ocrResult.value           = json.decode(r.documentData);
           tokenFaceImage.value      = r.tokenFaceImage;
         });

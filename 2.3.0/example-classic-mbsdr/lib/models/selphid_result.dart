@@ -1,6 +1,5 @@
 import 'dart:core';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_finish_status.dart';
-//import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_error_type.dart';
 
 class SelphIDResult
 {
@@ -8,12 +7,9 @@ class SelphIDResult
   final String finishStatusDescription;
   final String errorDiagnostic;
   final String? errorMessage;
-  final String frontDocumentImage;
-  final String backDocumentImage;
   final String rawBackDocument;
   final String rawFrontDocument;
   final String fingerprintImage;
-  final String faceImage;
   final String signatureImage;
   final String tokenRawBackDocument;
   final String tokenRawFrontDocument;
@@ -24,8 +20,12 @@ class SelphIDResult
   final String tokenOCR;
   final String documentCaptured;
   final double matchingSidesScore;
+  String? statistics;
+  String? frontDocumentImage;
+  String? backDocumentImage;
+  String? faceImage;
   
-  const SelphIDResult({
+  SelphIDResult({
     required this.finishStatus,
     required this.finishStatusDescription,
     required this.errorDiagnostic,
@@ -45,6 +45,7 @@ class SelphIDResult
     required this.documentData,
     required this.tokenOCR,
     required this.documentCaptured,
+    required this.statistics,
     required this.matchingSidesScore,
   });
 
@@ -69,6 +70,7 @@ class SelphIDResult
       'documentData': documentData,
       'tokenOCR': tokenOCR,
       'documentCaptured': documentCaptured,
+      'statistics': statistics,
       'matchingSidesScore': matchingSidesScore,
     };
   }
@@ -94,6 +96,7 @@ class SelphIDResult
       documentData: map['documentData'] ?? "",
       tokenOCR: map['tokenOCR'] ?? "",
       documentCaptured: map['documentCaptured'] ?? "",
+      statistics: map['statistics'] ?? "",
       matchingSidesScore: map['matchingSidesScore'] ?? 0.00,
     );
   }

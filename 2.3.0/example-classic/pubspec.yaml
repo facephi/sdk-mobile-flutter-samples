@@ -35,27 +35,27 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  dartz: ^0.10.1
-  http: ^1.4.0
+  # dartz: ^0.10.1
+  http: ^1.6.0
   fphi_sdkmobile_core:
-    #path: ../2.3.0/fphi_sdkmobile_core
+    #path: ../2.6.0/fphi_sdkmobile_core
     hosted:
       name: fphi_sdkmobile_core
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
     #version: '<=2.2.99'
-    version: ^2.4.0
+    version: ^2.6.0
   fphi_sdkmobile_selphi:
-    #path: ../2.3.0/fphi_sdkmobile_selphi
+    #path: ../2.6.0/fphi_sdkmobile_selphi
     hosted:
       name: fphi_sdkmobile_selphi
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
-    version: ^2.4.0
+    version: ^2.6.0
   fphi_sdkmobile_selphid:
-    #path: ../2.3.0/fphi_sdkmobile_selphid
+    #path: ../2.6.0/fphi_sdkmobile_selphid
     hosted:
       name: fphi_sdkmobile_selphid
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
-    version: ^2.4.0
+    version: ^2.6.0
 
 dev_dependencies:
   flutter_test:

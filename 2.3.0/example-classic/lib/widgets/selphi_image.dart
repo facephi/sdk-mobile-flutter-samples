@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'custom_label.dart';
 
 class SelphiImage extends StatelessWidget
 {
@@ -9,37 +10,31 @@ class SelphiImage extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: <Widget> [
-      const Spacer(flex: 1),
-      if (_bestImage != null)
-        Expanded(
-          flex: 8,
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.2,
-            child: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(fit: BoxFit.cover, image: MemoryImage(_bestImage!)),
-                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                color: Colors.blueGrey[100],
-              ),
-            ),
+    return Visibility(
+      visible: _bestImage != null,
+      child: Column(
+        children: [
+          const CustomLabel(text: "Best Image", color: Color(0xff2196f3)),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.30,
+                  width: MediaQuery.of(context).size.width * 0.50,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: _bestImage != null ? MemoryImage(_bestImage!) : const AssetImage('assets/placeholder.png') as ImageProvider,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
           ),
-        )
-      else
-        Expanded (
-          flex: 9,
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.2,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                color: Colors.blueGrey[100],
-              ),
-            )
-          ),
-        ),
-        const Spacer(flex: 1)
-      ]
+        ],
+      ),
     );
   }
 }

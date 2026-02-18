@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:example/license.dart';
 import 'package:fphi_sdkmobile_selphid_mbsdr/fphi_sdkmobile_selphid_configuration.dart';
 import 'package:fphi_sdkmobile_selphid_mbsdr/fphi_sdkmobile_selphid.dart';
+import 'package:fphi_sdkmobile_selphid_mbsdr/fphi_sdkmobile_selphid_document_side.dart';
 import 'package:fphi_sdkmobile_selphid_mbsdr/fphi_sdkmobile_selphid_document_type.dart';
 import 'package:fphi_sdkmobile_selphid_mbsdr/fphi_sdkmobile_selphid_scan_mode.dart';
 import 'package:fphi_sdkmobile_selphid_mbsdr/fphi_sdkmobile_selphid_timeout.dart';
