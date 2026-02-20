@@ -8,15 +8,16 @@ class NfcResult
   final String errorDiagnostic;
   final String? errorMessage;
   final int timeoutStatus;
-  final String facialImage;
-  final String fingerprintImage;
-  final String signatureImage;
+  final String? facialImage;
+  final String? signatureImage;
+  final String tokenFacialImage;
+  final String tokenSignatureImage;
+  final String tokenOCR;
   final dynamic nfcDocumentInformation;
   final dynamic nfcRawData;
   final dynamic nfcSecurityData;
   final dynamic nfcValidations;
   final dynamic nfcPersonalInformation;
-  //final dynamic nfcCertificateData;
 
   const NfcResult({
     required this.finishStatus,
@@ -24,10 +25,11 @@ class NfcResult
     required this.errorDiagnostic,
     required this.errorMessage,
     required this.timeoutStatus,
-    //required this.nfcCertificateData,
+    required this.tokenOCR,
     required this.facialImage,
     required this.signatureImage,
-    required this.fingerprintImage,
+    required this.tokenFacialImage,
+    required this.tokenSignatureImage,
     required this.nfcDocumentInformation,
     required this.nfcRawData,
     required this.nfcPersonalInformation,
@@ -42,10 +44,11 @@ class NfcResult
       'errorDiagnostic': errorDiagnostic,
       'errorMessage': errorMessage ?? "",
       'timeoutStatus': timeoutStatus,
-      //'nfcCertificateData': nfcCertificateData,
+      'tokenOCR': tokenOCR,
       'facialImage': facialImage,
       'signatureImage': signatureImage,
-      'fingerprintImage': fingerprintImage,
+      'tokenFacialImage': tokenFacialImage,
+      'tokenSignatureImage': tokenSignatureImage,
       'nfcDocumentInformation': nfcDocumentInformation,
       'nfcRawData': nfcRawData,
       'nfcPersonalInformation': nfcPersonalInformation,
@@ -61,10 +64,11 @@ class NfcResult
       errorDiagnostic: map['errorDiagnostic'] ?? "",
       errorMessage: map['errorMessage'] ?? "",
       timeoutStatus: map['timeoutStatus'] ?? 0,
-      //nfcCertificateData: map['nfcCertificateData'] ?? "",
+      tokenOCR: map['tokenOCR'] ?? "",
       facialImage: map['facialImage'] ?? "",
       signatureImage: map['signatureImage'] ?? "",
-      fingerprintImage: map['fingerprintImage'] ?? "",
+      tokenFacialImage: map['tokenFacialImage'] ?? "",
+      tokenSignatureImage: map['tokenSignatureImage'] ?? "",
       nfcDocumentInformation: map['nfcDocumentInformation'] ?? "",
       nfcRawData: map['nfcRawData'] ?? "",
       nfcPersonalInformation: map['nfcPersonalInformation'] ?? "",
