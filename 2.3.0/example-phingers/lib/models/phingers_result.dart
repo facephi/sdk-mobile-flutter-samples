@@ -16,7 +16,7 @@ class PhingersResult
     required this.errorDiagnostic,
     required this.errorMessage,
     required this.fingers,
-    required this.slapImages,
+    required this.slapImages
   });
 
   Map<String, dynamic> toMap() {
@@ -26,7 +26,7 @@ class PhingersResult
       'errorDiagnostic': errorDiagnostic,
       'errorMessage': errorMessage ?? "",
       'fingers': fingers,
-      'slapImages': slapImages,
+      'slapImages': slapImages
     };
   }
 

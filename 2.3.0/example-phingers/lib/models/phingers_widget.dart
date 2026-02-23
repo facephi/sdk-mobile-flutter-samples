@@ -1,8 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers_configuration.dart';
 import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers.dart';
-import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers_filter.dart';
 import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers_reticle_orientation.dart';
+import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers_filter.dart';
+import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers_selector_options.dart';
+import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers_selector_hand_orientation.dart';
 import 'phingers_result.dart';
 
 /// This sample class calls the Selphi Plugin and launch the native widget. Return the result to the UI
@@ -30,12 +32,15 @@ class PhingersWidget
 
   /// Sample of standard plugin configuration 
   PhingersConfiguration createStandardConfiguration() {
-    PhingersConfiguration configurationWidget = PhingersConfiguration();
-    configurationWidget.mReticleOrientation   = PhingersReticleOrientation.DT_LEFT; // LEFT, RIGHT or THUMB
-    configurationWidget.mUseLiveness          = true;
-    configurationWidget.mExtractionTimeout    = 10000;
-    configurationWidget.mShowTutorial         = false;
-    configurationWidget.mFingersFilter        = FingersFilter.DT_ALL_4_FINGERS_ONE_BY_ONE;
-    return configurationWidget;
+    PhingersConfiguration cfg           = PhingersConfiguration();
+    cfg.mReticleOrientation             = PhingersReticleOrientation.DT_LEFT; // LEFT, or RIGHT.
+    cfg.mUseLiveness                    = true;
+    cfg.mExtractionTimeout              = 50000;
+    cfg.mShowTutorial                   = false;
+    cfg.mFingersFilter                  = FingersFilter.DT_ALL_5_FINGERS_ONE_BY_ONE;
+    cfg.mFingerSelectorHandOrientation  = PhingerSelectorHandOrientation.DT_LEFT;
+    // cfg.mFingerSelectorOptions       = [PhingerSelectorOptions.ALL_4_FINGERS_ONE_BY_ONE.toString(), PhingerSelectorOptions.ALL_5_FINGERS_ONE_BY_ONE.toString()];
+
+    return cfg;
   }
 }
