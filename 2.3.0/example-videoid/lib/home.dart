@@ -96,8 +96,8 @@ class _MyHomePageState extends State<MyHomePage>
   {
     setState(() { _message = ""; });
 
-    final videoIdWidgetResult = await _videoIdWidget.launchVideoId();
-    videoIdWidgetResult.fold((l) {
+    final r = await _videoIdWidget.launchVideoId();
+    r.fold((l) {
       setState(() {
         _message = l.toString();
       });

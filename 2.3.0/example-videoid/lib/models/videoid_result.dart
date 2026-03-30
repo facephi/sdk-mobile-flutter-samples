@@ -8,8 +8,11 @@ class VideoIdResult {
   final String? errorMessage;
   final dynamic ocrMap;
   final String? faceImage;
+  final String? documentType;
   final double? matchingSidesScore;
   final String? speechText;
+  final String? faceImageTokenized;
+  final String? documentFaceImageTokenized;
   final dynamic personalData;
   final dynamic frontDocumentData;
   final dynamic backDocumentData;
@@ -21,8 +24,11 @@ class VideoIdResult {
     required this.errorMessage,
     required this.ocrMap,
     required this.faceImage,
+    required this.documentType,
     required this.matchingSidesScore,
     required this.speechText,
+    required this.faceImageTokenized,
+    required this.documentFaceImageTokenized,
     required this.personalData,
     required this.backDocumentData,
     required this.frontDocumentData
@@ -35,7 +41,10 @@ class VideoIdResult {
       'errorDiagnostic': errorDiagnostic,
       'errorMessage': errorMessage,
       'ocrMap': ocrMap,
+      'documentType': documentType,
       'faceImage': faceImage,
+      'faceImageTokenized': faceImageTokenized,
+      'documentFaceImageTokenized': documentFaceImageTokenized,
       'matchingSidesScore': matchingSidesScore,
       'speechText': speechText,
       'personalData': personalData,
@@ -53,11 +62,14 @@ class VideoIdResult {
       errorMessage: map['errorMessage'] ?? "",
       ocrMap: map['ocrMap'] ?? "",
       faceImage: map['faceImage'] ?? "",
-      matchingSidesScore: map['matchingSidesScore'] ?? "",
+      documentType: map['documentType'] ?? "",
+      matchingSidesScore: map['matchingSidesScore'] ?? 0.00,
       speechText: map['speechText'] ?? "",
       personalData: map['personalData'] ?? "",
       backDocumentData: map['backDocumentData'] ?? "",
       frontDocumentData: map['frontDocumentData'] ?? "",
+      faceImageTokenized: map['faceImageTokenized'] ?? "",
+      documentFaceImageTokenized: map['documentFaceImageTokenized'] ?? ""
     );
   }
 

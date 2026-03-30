@@ -33,9 +33,10 @@ class VideoIdWidget
   VideoIdConfiguration createStandardConfiguration()
   {
     VideoIdConfiguration cfg  = VideoIdConfiguration();
-    cfg.mSectionTime          = 20000;
+    cfg.mSectionTime          = 10000;
     cfg.mMode                 = VideoMode.DT_FACE_DOCUMENT_FRONT_BACK;
-    //cfg.countryFilter       = ["AR"];
+    // cfg.countryFilter      = ["AR"];
+    // cfg.documentFilter     = ["IDC"];
     return cfg;
   }
 
