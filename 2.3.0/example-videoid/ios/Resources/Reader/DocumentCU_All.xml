@@ -501,6 +501,62 @@
         </Version>
     </DocumentID>
 
+  <DocumentID id="CA" iso="CAN">
+    <Version id="CAN-QC-CUS-0000-RAM-01-01" type="TD1" document_type="CUS" document_id="CAN-QC-CUS-0000-RAM-01-01">
+      <Front>
+        <FACE/>
+        <ML cols="1" c_separation="2" split_by="elements">
+          <!--Static optional field "[Régie de]"-->
+          <calculateOffset x="0.242" y="0.056" w="0.114" h="0.040" content="Régie de" threshold="0.3"/>
+          <!--Static optional field "[l'assurance maladie]"-->
+          <calculateOffset x="0.245" y="0.098" w="0.259" h="0.036" content="l'assurance maladie" threshold="0.3"/>
+          <!--Static mandatory field "[Québec]"-->
+          <calculateOffset x="0.316" y="0.143" w="0.210" h="0.103" content="Québec" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var2" x="0.316" y="0.143" w="0.210" h="0.103"/>
+          <assignIfContent overwrite="false" src="ml1_var2" dst="ml1_found2" value="Y" op="distance" param="Québec" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found2"/>
+          <!--Static optional field "[NUMERO D'ASSURANCE MALADIE]"-->
+          <calculateOffset x="0.031" y="0.478" w="0.326" h="0.024" content="NUMERO D'ASSURANCE MALADIE" threshold="0.3"/>
+          <!--Static optional field "[Y PRÉNOM ET NOM À LA NAISSANCE Y]"-->
+          <calculateOffset x="0.031" y="0.626" w="0.371" h="0.034" content="Y PRÉNOM ET NOM À LA NAISSANCE Y" threshold="0.3"/>
+          <!--Dynamic mandatory field "DocumentNumber"-->
+          <findElementsIntersecting dst="ml1_var5" x="0.027" y="0.562" w="0.630" h="0.001"/>
+          <assignField src="ml1_var5" field="DocumentNumber"/>
+          <rejectIfNotValid src="ml1_var5"/>
+          <!--Dynamic mandatory field "FullName"-->
+          <findElementsIntersecting dst="ml1_var6" x="0.034" y="0.699" w="0.623" h="0.001"/>
+          <assignField src="ml1_var6" field="FullName"/>
+          <rejectIfNotValid src="ml1_var6"/>
+          <!--Static optional field "[EXPIRATION]"-->
+          <calculateOffset x="0.848" y="0.767" w="0.122" h="0.032" content="EXPIRATION" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfExpiry"-->
+          <findElementsIntersecting dst="ml1_match_var8" x="0.651" y="0.773" w="0.181" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var8" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])" value="([N]$2)/([N]$1)" dst="ml1_var8"/>
+          <assignField src="ml1_var8" field="DateOfExpiry"/>
+          <rejectIfNotValid src="ml1_var8"/>
+          <!--Static optional field "[SEXE]"-->
+          <calculateOffset x="0.335" y="0.955" w="0.056" h="0.034" content="SEXE" threshold="0.3"/>
+          <!--Dynamic optional field "Gender"-->
+          <findElementsIntersecting dst="ml1_var10" x="0.343" y="0.908" w="0.044" h="0.001"/>
+          <assignField src="ml1_var10" field="Gender"/>
+          <!--Static optional field "[NAISSANCE]"-->
+          <calculateOffset x="0.033" y="0.959" w="0.112" h="0.032" content="NAISSANCE" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfBirth"-->
+          <findElementsIntersecting dst="ml1_match_var12" x="0.030" y="0.905" w="0.246" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var12" regex="([0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([]$3)/([N]$2)/([YP]$1)" dst="ml1_var12"/>
+          <assignField src="ml1_var12" field="DateOfBirth"/>
+          <rejectIfNotValid src="ml1_var12"/>
+        </ML>
+        <CROP>
+          <region id="Signature" x="0.580" y="0.809" w="0.405" h="0.178"/>
+        </CROP>
+      </Front>
+      <Back>
+        <PDF417 optional="yes" decode="custom:AAMVA"/>
+      </Back>
+    </Version>
+  </DocumentID>
+
 
     <!-- TESTING -->
     <DocumentID id="XX" iso="XXX">

@@ -27,24 +27,13 @@
                     <findLineContent dst="snfn" content="SEXO@SEX@NACIONALIDAD@NATIONALITY@FECHA@NAC@BIRTH@DATE" threshold="0.2"/>
                     <findLineContent dst="gener" content="SEXO@SEX" threshold="0.2"/>
                     <findLineContent dst="nacio" content="NACIONALIDAD@NATIONALITY" threshold="0.2"/>
-                    <findLineContent dst="permi" content="TIPO@DE@PERMISO@TYPE@OF@PERMIT" threshold="0.2" overwrite="false"/>
                     <findLineContent dst="permi" content="TIPO@DE@PERMISO@TYPE@OF@PERMIT@VALIDEZ@TARJETA@CARD@EXPIRY" threshold="0.2" overwrite="false"/>
+                    <findLineContent dst="permi" content="TIPO@DE@PERMISO@TYPE@OF@PERMIT" threshold="0.2" overwrite="false"/>
 
-                    <assignIfValid dst="lastName" src="name" offset="+1" overwrite="false"/>
-                    <assignIfValid dst="firstName" src="name" offset="+2" overwrite="false"/>
-                    <jumpIfNotValid src="firstName" dst="NOT_VALID_FN"/>
-                        <rejectIfNotValid src="lastName"/>
-                        <rejectIfNotValid src="firstName"/>
-                        <assignIfValid dst="fullname" src="firstName" overwrite="false"/>
-                        <concatenateIfValid dst="fullname" src="lastName" prefix=" " suffix=""/>
-                        <assignField src="lastName" field="LastName"/>
-                        <assignField src="firstName" field="FirstName"/>
-                        <jump dst="VALID_FN"/>
-                    <label src="NOT_VALID_FN"/>
-                        <rejectIfNotValid src="lastName"/>
-                        <assignIfValid dst="fullname" src="lastName" overwrite="false"/>
-                    <label src="VALID_FN"/>
-
+                    <assignIfValid dst="fullName1" src="name" offset="+1" overwrite="false"/>
+                    <assignIfValid dst="fullName2" src="name" offset="+2" overwrite="false"/>
+                    <assignIfValid dst="fullname" src="fullName1" overwrite="false"/>
+                    <concatenateIfValid dst="fullname" src="fullName2" prefix=" " suffix=""/>
                     <assignField src="fullname" field="FullName"/>
 
                     <assignIfValid dst="genero" src="gener" offset="+1" overwrite="false"/>
@@ -64,6 +53,12 @@
                     <findLineMatch dst="doe"
                         regex="([0-3][0-9])(?: |[^A-Za-z0-9])*([0-1][0-9])(?: |[^A-Za-z0-9])*([1-2][0-9]{3})"
                         value="($1)/($2)/($3)"
+                        overwrite="false"
+                    />
+                    <matchIfValid dst="doe" src="permiso"
+                        regex="([0-3][0-9])(?: |[^A-Za-z0-9])*([0-1][0-9])(?: |[^A-Za-z0-9])*([1-2][0-9]{3})"
+                        value="($1)/($2)/($3)"
+                        overwrite="false"
                     />
                     <rejectIfNotValid src="doe"/>
                     <assignField src="doe" field="DateOfExpiry"/>
@@ -444,6 +439,138 @@
 
                     <field id="NfcKey"          line="1" starts="6" count="9"/>
                 </MRZ>
+            </Back>
+        </Version>
+
+        <Version id="FOC-2021-CUE" type="TD1" document_type="FOC" document_id="ESP-00-FOC-2021-CUE-01-01">
+            <Front>
+                <ML cols="1" c_separation="2" space_separation="0.05" split_by="elements">
+                    <!--Static mandatory field "[ESPAÑA]"-->
+                    <calculateOffset x="0.425" y="0.047" w="0.159" h="0.055" content="ESPAÑA" threshold="0.3"/>
+                    <findElementsIntersecting dst="ml0_var0" x="0.425" y="0.047" w="0.159" h="0.055"/>
+                    <assignIfContent overwrite="false" src="ml0_var0" dst="ml0_found0" value="Y" op="distance" param="ESPAÑA" param_2="0.3"/>
+                    <rejectIfNotValid reason="DocumentNotExpected" src="ml0_found0"/>
+                    <!--Static mandatory field "[CERTIFICADO DE REGISTRO DE CIUDADANO DE LA UNIÓN]"-->
+                    <calculateOffset x="0.193" y="0.127" w="0.623" h="0.044" content="CERTIFICADO DE REGISTRO DE CIUDADANO DE LA UNIÓN" threshold="0.3"/>
+                    <findElementsIntersecting dst="ml0_var1" x="0.193" y="0.127" w="0.623" h="0.044"/>
+                    <assignIfContent overwrite="false" src="ml0_var1" dst="ml0_found1" value="Y" op="distance" param="CERTIFICADO DE REGISTRO DE CIUDADANO DE LA UNIÓN" param_2="0.3"/>
+                    <rejectIfNotValid reason="DocumentNotExpected" src="ml0_found1"/>
+                    <!--Static mandatory field "[REGISTRATION CERTIFICATE OF UNION CITIZEN]"-->
+                    <calculateOffset x="0.252" y="0.194" w="0.506" h="0.034" content="REGISTRATION CERTIFICATE OF UNION CITIZEN" threshold="0.3"/>
+                    <findElementsIntersecting dst="ml0_var2" x="0.252" y="0.194" w="0.506" h="0.034"/>
+                    <assignIfContent overwrite="false" src="ml0_var2" dst="ml0_found2" value="Y" op="distance" param="REGISTRATION CERTIFICATE OF UNION CITIZEN" param_2="0.3"/>
+                    <rejectIfNotValid reason="DocumentNotExpected" src="ml0_found2"/>
+                    <!--Static mandatory field "[El encargado del Registro Central de Extranjeros certifica que]"-->
+                    <calculateOffset x="0.205" y="0.250" w="0.596" h="0.040" content="El encargado del Registro Central de Extranjeros certifica que" threshold="0.3"/>
+                    <findElementsIntersecting dst="ml0_var3" x="0.205" y="0.250" w="0.596" h="0.040"/>
+                    <assignIfContent overwrite="false" src="ml0_var3" dst="ml0_found3" value="Y" op="distance" param="El encargado del Registro Central de Extranjeros certifica que" param_2="0.3"/>
+                    <rejectIfNotValid reason="DocumentNotExpected" src="ml0_found3"/>
+                    <!--Static optional field "[D./Dᵃ.:]"-->
+                    <calculateOffset x="0.085" y="0.366" w="0.077" h="0.040" content="D./Dᵃ.#:" threshold="0.3"/>
+                    <!--Static optional field "[Nacido:]"-->
+                    <calculateOffset x="0.083" y="0.417" w="0.081" h="0.029" content="Nacido:#" threshold="0.3"/>
+                    <!--Static optional field "[NIE:]"-->
+                    <calculateOffset x="0.085" y="0.461" w="0.047" h="0.031" content="NIE:#" threshold="0.3"/>
+                    <!--Static optional field "[Nacionalidad:]"-->
+                    <calculateOffset x="0.311" y="0.464" w="0.162" h="0.040" content="Nacionalidad:#" threshold="0.3"/>
+                    <!--Static optional field "[Domicilio:]"-->
+                    <calculateOffset x="0.085" y="0.510" w="0.118" h="0.036" content="Domicilio:#" threshold="0.3"/>
+                    <!--Static optional field "[Residente comunitario en España desde]"-->
+                    <calculateOffset x="0.084" y="0.613" w="0.493" h="0.045" content="Residente comunitario en España desde#" threshold="0.3"/>
+                    <!--Dynamic mandatory field "DocumentNumber"-->
+                    <findElementsIntersecting dst="ml0_match_var16" x="0.146" y="0.483" w="0.159" h="0.001"/>
+                    <matchIfValid overwrite="false" src="ml0_match_var16" regex="([A-Z0-9oOilI])([0-9oOilI]{7}).?([A-Z0-9oOilI])" value="([U]$1)([N]$2)([U]$3)" dst="ml0_var16"/>
+                    <assignField src="ml0_var16" field="DocumentNumber"/>
+                </ML>
+            </Front>
+            <Back>
+                <ML cols="1" c_separation="2" space_separation="0.05" split_by="elements">
+                    <!--Static mandatory field "[prueba la inscripcion en el Registro Central de Extranjeros]"-->
+                    <calculateOffset x="0.053" y="0.320" w="0.899" h="0.040" content="prueba la inscripcion en el Registro Central de Extranjeros" threshold="0.3"/>
+                    <findElementsIntersecting dst="ml0_var0" x="0.053" y="0.320" w="0.899" h="0.040"/>
+                    <assignIfContent overwrite="false" src="ml0_var0" dst="ml0_found0" value="Y" op="distance" param="prueba la inscripcion en el Registro Central de Extranjeros" param_2="0.3"/>
+                    <rejectIfNotValid reason="DocumentNotExpected" src="ml0_found0"/>
+                    <!--Static mandatory field "[DOCUMENTO NO VÁLIDO PARA AREDITAR LA]"-->
+                    <calculateOffset x="0.053" y="0.646" w="0.760" h="0.045" content="DOCUMENTO NO VÁLIDO PARA AREDITAR LA" threshold="0.3"/>
+                    <findElementsIntersecting dst="ml0_var1" x="0.053" y="0.646" w="0.760" h="0.045"/>
+                    <assignIfContent overwrite="false" src="ml0_var1" dst="ml0_found1" value="Y" op="distance" param="DOCUMENTO NO VÁLIDO PARA AREDITAR LA" param_2="0.3"/>
+                    <rejectIfNotValid reason="DocumentNotExpected" src="ml0_found1"/>
+                    <!--Static mandatory field "[IDENTIDAD NI LA NACIONALIDAD DEL PORTADOR]"-->
+                    <calculateOffset x="0.056" y="0.702" w="0.769" h="0.040" content="IDENTIDAD NI LA NACIONALIDAD DEL PORTADOR" threshold="0.3"/>
+                    <findElementsIntersecting dst="ml0_var2" x="0.056" y="0.702" w="0.769" h="0.040"/>
+                    <assignIfContent overwrite="false" src="ml0_var2" dst="ml0_found2" value="Y" op="distance" param="IDENTIDAD NI LA NACIONALIDAD DEL PORTADOR" param_2="0.3"/>
+                    <rejectIfNotValid reason="DocumentNotExpected" src="ml0_found2"/>
+                    <!--Dynamic mandatory field "SupportNumber"-->
+                    <findElementsIntersecting dst="ml0_var3" x="0.734" y="0.915" w="0.220" h="0.001"/>
+                    <assignField src="ml0_var3" field="SupportNumber"/>
+                </ML>
+            </Back>
+        </Version>
+
+        <Version id="FOC-2007-CUE" type="TD1" document_type="FOC" document_id="ESP-00-FOC-2007-CUE-01-01">
+            <Front>
+                <ML cols="1" c_separation="2" space_separation="0.05" split_by="elements">
+                    <!--Static mandatory field "[ESPAÑA]"-->
+                    <calculateOffset x="0.496" y="0.066" w="0.158" h="0.052" content="ESPAÑA" threshold="0.3"/>
+                    <findElementsIntersecting dst="ml0_var0" x="0.496" y="0.066" w="0.158" h="0.052"/>
+                    <assignIfContent overwrite="false" src="ml0_var0" dst="ml0_found0" value="Y" op="distance" param="ESPAÑA" param_2="0.3"/>
+                    <rejectIfNotValid reason="DocumentNotExpected" src="ml0_found0"/>
+                    <!--Static mandatory field "[CERTIFICADO DE REGISTRO DE CIUDADANO DE LA UNIÓN]"-->
+                    <calculateOffset x="0.193" y="0.145" w="0.763" h="0.047" content="CERTIFICADO DE REGISTRO DE CIUDADANO DE LA UNIÓN" threshold="0.3"/>
+                    <findElementsIntersecting dst="ml0_var1" x="0.193" y="0.145" w="0.763" h="0.047"/>
+                    <assignIfContent overwrite="false" src="ml0_var1" dst="ml0_found1" value="Y" op="distance" param="CERTIFICADO DE REGISTRO DE CIUDADANO DE LA UNIÓN" param_2="0.3"/>
+                    <rejectIfNotValid reason="DocumentNotExpected" src="ml0_found1"/>
+                    <!--Static mandatory field "[El encargado del Registro Central de Extranjeros certifica que:]"-->
+                    <calculateOffset x="0.202" y="0.197" w="0.747" h="0.055" content="El encargado del Registro Central de Extranjeros certifica que:" threshold="0.3"/>
+                    <findElementsIntersecting dst="ml0_var2" x="0.202" y="0.197" w="0.747" h="0.055"/>
+                    <assignIfContent overwrite="false" src="ml0_var2" dst="ml0_found2" value="Y" op="distance" param="El encargado del Registro Central de Extranjeros certifica que:" param_2="0.3"/>
+                    <rejectIfNotValid reason="DocumentNotExpected" src="ml0_found2"/>
+                    <!--Static forbidden field "[REGISTRATION CERTIFICATE OF UNION CITIZEN]"-->
+                    <calculateOffset x="0.252" y="0.194" w="0.506" h="0.034" content="REGISTRATION CERTIFICATE OF UNION CITIZEN" threshold="0.3"/>
+                    <findElementsIntersecting dst="ml0_var20" x="0.252" y="0.194" w="0.506" h="0.034"/>
+                    <assignIfContent overwrite="false" src="ml0_var20" dst="ml0_found20" value="Y" op="distance" param="REGISTRATION CERTIFICATE OF UNION CITIZEN" param_2="0.3"/>
+                    <rejectIfValid reason="DocumentNotExpected" src="ml0_found20"/>
+                    <!--Static optional field "[D./Dᵃ.:]"-->
+                    <calculateOffset x="0.044" y="0.351" w="0.081" h="0.041" content="D./Dᵃ.:#" threshold="0.3"/>
+                    <!--Static optional field "[Fecha y lugar de nac.:]"-->
+                    <calculateOffset x="0.044" y="0.403" w="0.237" h="0.045" content="Fecha y lugar de nac.:#" threshold="0.3"/>
+                    <!--Static optional field "[Hijo/a de:]"-->
+                    <calculateOffset x="0.043" y="0.503" w="0.116" h="0.040" content="Hijo/a de:#" threshold="0.3"/>
+                    <!--Static optional field "[NIE:]"-->
+                    <calculateOffset x="0.042" y="0.552" w="0.055" h="0.036" content="NIE:#" threshold="0.3"/>
+                    <!--Static optional field "[Nacionalidad:]"-->
+                    <calculateOffset x="0.271" y="0.557" w="0.169" h="0.036" content="Nacionalidad:#" threshold="0.3"/>
+                    <!--Static optional field "[Domicilio:]"-->
+                    <calculateOffset x="0.044" y="0.597" w="0.119" h="0.040" content="Domicilio:#" threshold="0.3"/>
+                    <!--Static optional field "[Residente comunitario permanente en España desde]"-->
+                    <calculateOffset x="0.043" y="0.702" w="0.660" h="0.041" content="Residente comunitario permanente en España desde#" threshold="0.3"/>
+                    <!--Dynamic mandatory field "DocumentNumber"-->
+                    <findElementsIntersecting dst="ml0_match_var16" x="0.103" y="0.572" w="0.165" h="0.001"/>
+                    <matchIfValid overwrite="false" src="ml0_match_var16" regex="([A-Z0-9oOilI])([0-9oOilI]{7}).?([A-Z0-9oOilI])" value="([U]$1)([N]$2)([U]$3)" dst="ml0_var16"/>
+                    <assignField src="ml0_var16" field="DocumentNumber"/>
+                </ML>
+            </Front>
+            <Back>
+                <ML cols="1" c_separation="2" space_separation="0.05" split_by="elements">
+                    <!--Static mandatory field "[de Extrangeros de la Direccion General de la Policia y de la]"-->
+                    <calculateOffset x="0.037" y="0.343" w="0.921" h="0.046" content="de Extrangeros de la Direccion General de la Policia y de la" threshold="0.3"/>
+                    <findElementsIntersecting dst="ml0_var0" x="0.037" y="0.343" w="0.921" h="0.046"/>
+                    <assignIfContent overwrite="false" src="ml0_var0" dst="ml0_found0" value="Y" op="distance" param="de Extrangeros de la Direccion General de la Policia y de la" param_2="0.3"/>
+                    <rejectIfNotValid reason="DocumentNotExpected" src="ml0_found0"/>
+                    <!--Static mandatory field "[DOCUMENTO NO VÁLIDO PARA ACREDITAR LA]"-->
+                    <calculateOffset x="0.040" y="0.688" w="0.767" h="0.047" content="DOCUMENTO NO VÁLIDO PARA ACREDITAR LA" threshold="0.3"/>
+                    <findElementsIntersecting dst="ml0_var1" x="0.040" y="0.688" w="0.767" h="0.047"/>
+                    <assignIfContent overwrite="false" src="ml0_var1" dst="ml0_found1" value="Y" op="distance" param="DOCUMENTO NO VÁLIDO PARA ACREDITAR LA" param_2="0.3"/>
+                    <rejectIfNotValid reason="DocumentNotExpected" src="ml0_found1"/>
+                    <!--Static mandatory field "[IDENTIDAD NI LA NACIONALIDAD DEL PORTADOR]"-->
+                    <calculateOffset x="0.039" y="0.754" w="0.782" h="0.047" content="IDENTIDAD NI LA NACIONALIDAD DEL PORTADOR" threshold="0.3"/>
+                    <findElementsIntersecting dst="ml0_var2" x="0.039" y="0.754" w="0.782" h="0.047"/>
+                    <assignIfContent overwrite="false" src="ml0_var2" dst="ml0_found2" value="Y" op="distance" param="IDENTIDAD NI LA NACIONALIDAD DEL PORTADOR" param_2="0.3"/>
+                    <rejectIfNotValid reason="DocumentNotExpected" src="ml0_found2"/>
+                    <!--Dynamic mandatory field "SupportNumber"-->
+                    <findElementsIntersecting dst="ml0_var3" x="0.711" y="0.959" w="0.254" h="0.001"/>
+                    <assignField src="ml0_var3" field="SupportNumber"/>
+                </ML>
             </Back>
         </Version>
     </DocumentID>
@@ -2781,17 +2908,190 @@
         </Version>        
     </DocumentID>
 
-<!--
-    <DocumentID id="JP" iso="JPN">
-        <Version id="FC" type="TD1" document_type="FOC">
-            <Front>
-                <FACE/>
-                <ML-JP cols="5" split_by="elements" separation="0.05" space_separation="0.1">
-                </ML-JP>
-            </Front>
-        </Version>
-    </DocumentID>
--->        
+  <DocumentID id="CA" iso="CAN">
+    <Version id="CAN-00-FOC-2002-001-01-01" type="TD1" document_type="FOC" document_id="CAN-00-FOC-2002-001-01-01">
+      <Front>
+        <FACE/>
+        <ML cols="1" c_separation="2" split_by="elements">
+          <!--Static mandatory field "[PERMANENT]"-->
+          <calculateOffset x="0.675" y="0.023" w="0.147" h="0.027" content="PERMANENT" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var0" x="0.675" y="0.023" w="0.147" h="0.027"/>
+          <assignIfContent overwrite="false" src="ml1_var0" dst="ml1_found0" value="Y" op="distance" param="PERMANENT" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found0"/>
+          <!--Static mandatory field "[Goverment]"-->
+          <calculateOffset x="0.195" y="0.027" w="0.145" h="0.033" content="Goverment" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var1" x="0.195" y="0.027" w="0.145" h="0.033"/>
+          <assignIfContent overwrite="false" src="ml1_var1" dst="ml1_found1" value="Y" op="distance" param="Goverment" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found1"/>
+          <!--Static optional field "[Gouvernement]"-->
+          <calculateOffset x="0.361" y="0.027" w="0.178" h="0.029" content="Gouvernement" threshold="0.3"/>
+          <!--Static optional field "[CARTE DE]"-->
+          <calculateOffset x="0.836" y="0.027" w="0.118" h="0.029" content="CARTE DE" threshold="0.3"/>
+          <!--Static mandatory field "[of Canada]"-->
+          <calculateOffset x="0.196" y="0.064" w="0.121" h="0.033" content="of Canada" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var4" x="0.196" y="0.064" w="0.121" h="0.033"/>
+          <assignIfContent overwrite="false" src="ml1_var4" dst="ml1_found4" value="Y" op="distance" param="of Canada" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found4"/>
+          <!--Static optional field "[RÉSIDENT]"-->
+          <calculateOffset x="0.841" y="0.064" w="0.111" h="0.038" content="RÉSIDENT" threshold="0.3"/>
+          <!--Static optional field "[du Canada]"-->
+          <calculateOffset x="0.365" y="0.070" w="0.131" h="0.025" content="du Canada" threshold="0.3"/>
+          <!--Static mandatory field "[RESIDENT]"-->
+          <calculateOffset x="0.702" y="0.070" w="0.117" h="0.029" content="RESIDENT" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var7" x="0.702" y="0.070" w="0.117" h="0.029"/>
+          <assignIfContent overwrite="false" src="ml1_var7" dst="ml1_found7" value="Y" op="distance" param="RESIDENT" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found7"/>
+          <!--Static mandatory field "[CARD]"-->
+          <calculateOffset x="0.756" y="0.114" w="0.062" h="0.029" content="CARD" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var8" x="0.756" y="0.114" w="0.062" h="0.029"/>
+          <assignIfContent overwrite="false" src="ml1_var8" dst="ml1_found8" value="Y" op="distance" param="CARD" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found8"/>
+          <!--Static optional field "[PERMANENT]"-->
+          <calculateOffset x="0.838" y="0.114" w="0.146" h="0.031" content="PERMANENT" threshold="0.3"/>
+          <!--Static optional field "[Name/Nom]"-->
+          <calculateOffset x="0.378" y="0.190" w="0.103" h="0.027" content="Name/Nom" threshold="0.3"/>
+          <!--Static optional field "[Date of Birth/]"-->
+          <calculateOffset x="0.603" y="0.378" w="0.112" h="0.033" content="Date of Birth/" threshold="0.3"/>
+          <!--Dynamic mandatory field "LastName"-->
+          <findElementsIntersecting dst="ml1_var12" x="0.374" y="0.285" w="0.622" h="0.001"/>
+          <assignField src="ml1_var12" field="LastName"/>
+          <rejectIfNotValid src="ml1_var12"/>
+          <!--Dynamic mandatory field "GivenName"-->
+          <findElementsIntersecting dst="ml1_var13" x="0.378" y="0.344" w="0.622" h="0.001"/>
+          <assignField src="ml1_var13" field="GivenName"/>
+          <rejectIfNotValid src="ml1_var13"/>
+          <!--Static optional field "[Sex/S]"-->
+          <calculateOffset x="0.379" y="0.380" w="0.041" h="0.029" content="Sex/S" threshold="0.3"/>
+          <!--Static optional field "[Date de naissance]"-->
+          <calculateOffset x="0.604" y="0.417" w="0.157" h="0.033" content="Date de naissance" threshold="0.3"/>
+          <!--Static optional field "[Sexe]"-->
+          <calculateOffset x="0.379" y="0.422" w="0.043" h="0.023" content="Sexe" threshold="0.3"/>
+          <!--Static optional field "[ID Nº/NºID]"-->
+          <calculateOffset x="0.380" y="0.531" w="0.100" h="0.035" content="ID Nº/NºID" threshold="0.3"/>
+          <!--Dynamic optional field "Gender"-->
+          <findElementsIntersecting dst="ml1_var18" x="0.375" y="0.507" w="0.048" h="0.001"/>
+          <assignField src="ml1_var18" field="Gender"/>
+          <!--Dynamic mandatory field "DocumentNumber"-->
+          <findElementsIntersecting dst="ml1_match_var19" x="0.374" y="0.634" w="0.212" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var19" regex="" value="" dst="ml1_var19"/>
+          <assignField src="ml1_var19" field="DocumentNumber"/>
+          <rejectIfNotValid src="ml1_var19"/>
+          <!--Static optional field "[Expiry/Expiration]"-->
+          <calculateOffset x="0.681" y="0.533" w="0.151" h="0.036" content="Expiry/Expiration" threshold="0.3"/>
+          <!--Dynamic optional field "DateOfBirth"-->
+          <findElementsIntersecting dst="ml1_match_var21" x="0.599" y="0.511" w="0.400" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var21" regex="([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])(?: |[^A-Za-z0-9])*([A-Za-z0-9]{3})(?: |[^0-9])*((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})" value="([N]$1)/($2)/([N]$3)" dst="ml1_var21"/>
+          <assignField src="ml1_var21" field="DateOfBirth"/>
+          <!--Dynamic optional field "DateOfExpiry"-->
+          <findElementsIntersecting dst="ml1_match_var22" x="0.597" y="0.632" w="0.399" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var22" regex="([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])(?: |[^A-Za-z0-9])*([A-Za-z0-9]{3})(?: |[^0-9])*((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})" value="([N]$1)/($2)/([N]$3)" dst="ml1_var22"/>
+          <assignField src="ml1_var22" field="DateOfExpiry"/>
+        </ML>
+        <CROP>
+          <region id="Signature" x="0.018" y="0.817" w="0.351" h="0.164"/>
+        </CROP>
+      </Front>
+      <Back>
+        <MRZ optional="yes">
+          <field id="DocumentCode" line="1" starts="1" count="2" regex="[IAC]."/>
+          <field id="Issuer" line="1" starts="3" count="3" regex="CAN"/>
+          <field id="DocumentNumber" line="1" starts="6" count="9"/>
+          <field id="Opt1" line="1" starts="16" count="15"/>
+          <field id="DateOfBirth" line="2" starts="1" count="6"/>
+          <field id="Gender" line="2" starts="8" count="1"/>
+          <field id="DateOfExpiry" line="2" starts="9" count="6"/>
+          <field id="Nationality" line="2" starts="16" count="3"/>
+          <field id="Opt2" line="2" starts="19" count="11"/>
+          <field id="LastName+FirstName" line="3" starts="1" count="30"/>
+          <field id="NfcKey" line="1" starts="6" count="9"/>
+        </MRZ>
+      </Back>
+    </Version>
+    <Version id="CAN-00-FOC-2010-001-01-01" type="TD1" document_type="FOC" document_id="CAN-00-FOC-2010-001-01-01">
+      <Front>
+        <FACE/>
+        <ML cols="1" c_separation="2" split_by="elements">
+          <!--Static optional field "[CARTE DE RÉSIDENT]"-->
+          <calculateOffset x="0.716" y="0.040" w="0.228" h="0.036" content="CARTE DE RÉSIDENT" threshold="0.3"/>
+          <!--Static optional field "[Gouvernement]"-->
+          <calculateOffset x="0.287" y="0.049" w="0.151" h="0.029" content="Gouvernement" threshold="0.3"/>
+          <!--Static optional field "[Government]"-->
+          <calculateOffset x="0.142" y="0.051" w="0.122" h="0.029" content="Government" threshold="0.3"/>
+          <!--Static optional field "[PERMANENT]"-->
+          <calculateOffset x="0.506" y="0.051" w="0.143" h="0.029" content="PERMANENT" threshold="0.3"/>
+          <!--Static mandatory field "[RESIDENT CARD]"-->
+          <calculateOffset x="0.508" y="0.084" w="0.180" h="0.035" content="RESIDENT CARD" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var4" x="0.508" y="0.084" w="0.180" h="0.035"/>
+          <assignIfContent overwrite="false" src="ml1_var4" dst="ml1_found4" value="Y" op="distance" param="RESIDENT CARD" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found4"/>
+          <!--Dynamic mandatory field "LastName"-->
+          <findElementsIntersecting dst="ml1_var5" x="0.377" y="0.204" w="0.607" h="0.001"/>
+          <assignField src="ml1_var5" field="LastName"/>
+          <rejectIfNotValid src="ml1_var5"/>
+          <!--Dynamic mandatory field "GivenNames"-->
+          <findElementsIntersecting dst="ml1_var6" x="0.377" y="0.263" w="0.608" h="0.001"/>
+          <assignField src="ml1_var6" field="GivenNames"/>
+          <rejectIfNotValid src="ml1_var6"/>
+          <!--Static optional field "[du Canada]"-->
+          <calculateOffset x="0.289" y="0.086" w="0.110" h="0.027" content="du Canada" threshold="0.3"/>
+          <!--Static optional field "[PERMANENT]"-->
+          <calculateOffset x="0.715" y="0.086" w="0.140" h="0.033" content="PERMANENT" threshold="0.3"/>
+          <!--Static mandatory field "[of Canada]"-->
+          <calculateOffset x="0.144" y="0.086" w="0.103" h="0.027" content="of Canada" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var9" x="0.144" y="0.086" w="0.103" h="0.027"/>
+          <assignIfContent overwrite="false" src="ml1_var9" dst="ml1_found9" value="Y" op="distance" param="of Canada" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found9"/>
+          <!--Static optional field "[Name/Nom]"-->
+          <calculateOffset x="0.375" y="0.140" w="0.104" h="0.033" content="Name/Nom" threshold="0.3"/>
+          <!--Static optional field "[ID No/ No ID]"-->
+          <calculateOffset x="0.372" y="0.334" w="0.110" h="0.035" content="ID No/ No ID" threshold="0.3"/>
+          <!--Dynamic mandatory field "DocumentNumber"-->
+          <findElementsIntersecting dst="ml1_var12" x="0.374" y="0.394" w="0.360" h="0.001"/>
+          <assignField src="ml1_var12" field="DocumentNumber"/>
+          <rejectIfNotValid src="ml1_var12"/>
+          <!--Static optional field "[Sex/]"-->
+          <calculateOffset x="0.376" y="0.435" w="0.044" h="0.035" content="Sex/" threshold="0.3"/>
+          <!--Static optional field "[Sexe]"-->
+          <calculateOffset x="0.375" y="0.477" w="0.039" h="0.027" content="Sexe" threshold="0.3"/>
+          <!--Dynamic optional field "Gender"-->
+          <findElementsIntersecting dst="ml1_var15" x="0.375" y="0.530" w="0.051" h="0.001"/>
+          <assignField src="ml1_var15" field="Gender"/>
+          <!--Static optional field "[Date of Birth/]"-->
+          <calculateOffset x="0.372" y="0.699" w="0.132" h="0.036" content="Date of Birth/" threshold="0.3"/>
+          <!--Static optional field "[Date de naissance]"-->
+          <calculateOffset x="0.375" y="0.743" w="0.169" h="0.031" content="Date de naissance" threshold="0.3"/>
+          <!--Dynamic optional field "DateOfBirth"-->
+          <findElementsIntersecting dst="ml1_match_var18" x="0.378" y="0.803" w="0.306" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var18" regex="([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])(?: |[^A-Za-z0-9])*([A-Za-z0-9]{3})(?: |[^0-9])*([0-9oOlI]{2})" value="([N]$1)/($2)/([YP]$3)" dst="ml1_var18"/>
+          <assignField src="ml1_var18" field="DateOfBirth"/>
+          <!--Static optional field "[Expiry/Expiration]"-->
+          <calculateOffset x="0.374" y="0.839" w="0.167" h="0.036" content="Expiry/Expiration" threshold="0.3"/>
+          <!--Dynamic optional field "DateOfExpiry"-->
+          <findElementsIntersecting dst="ml1_match_var20" x="0.378" y="0.908" w="0.303" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var20" regex="([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])(?: |[^A-Za-z0-9])*([A-Za-z0-9]{3})(?: |[^0-9])*([0-9oOlI]{2})" value="([N]$1)/($2)/([YF]$3)" dst="ml1_var20"/>
+          <assignField src="ml1_var20" field="DateOfExpiry"/>
+        </ML>
+        <CROP>
+          <region id="Signature" x="0.012" y="0.814" w="0.353" h="0.162"/>
+        </CROP>
+      </Front>
+      <Back>
+        <MRZ optional="yes">
+          <field id="DocumentCode" line="1" starts="1" count="2" regex="[IAC]."/>
+          <field id="Issuer" line="1" starts="3" count="3" regex="CAN"/>
+          <field id="DocumentNumber" line="1" starts="6" count="9"/>
+          <field id="Opt1" line="1" starts="16" count="15"/>
+          <field id="DateOfBirth" line="2" starts="1" count="6"/>
+          <field id="Gender" line="2" starts="8" count="1"/>
+          <field id="DateOfExpiry" line="2" starts="9" count="6"/>
+          <field id="Nationality" line="2" starts="16" count="3"/>
+          <field id="Opt2" line="2" starts="19" count="11"/>
+          <field id="LastName+FirstName" line="3" starts="1" count="30"/>
+          <field id="NfcKey" line="1" starts="6" count="9"/>
+        </MRZ>
+      </Back>
+    </Version>
+  </DocumentID>
 
     <Supported
         Front="BE,HR,CY,CZ,DK,EE,FI,FR,DE,GR,HU,IT,LV,LU,MT,NL,NO,PL,PT,SK,SI,ES,SE,CH,GB,KW,OM,QA,SA,TR,AE,AR,CL,CO,MX,PA,BN,MY,SG,TW,CA,US,TH,UK"

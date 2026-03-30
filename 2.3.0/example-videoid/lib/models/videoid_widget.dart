@@ -32,11 +32,11 @@ class VideoIdWidget
   /// Sample of standard plugin configuration
   VideoIdConfiguration createStandardConfiguration()
   {
-    VideoIdConfiguration configurationWidget  = VideoIdConfiguration();
-    configurationWidget.mSectionTime          = 10000;
-    configurationWidget.mMode                 = VideoMode.DT_ONLY_FACE;
-    configurationWidget.mShowTutorial         = false;
-    return configurationWidget;
+    VideoIdConfiguration cfg  = VideoIdConfiguration();
+    cfg.mSectionTime          = 20000;
+    cfg.mMode                 = VideoMode.DT_FACE_DOCUMENT_FRONT_BACK;
+    //cfg.countryFilter       = ["AR"];
+    return cfg;
   }
 
   Future<Either<Exception, VideoIdResult>> setVideoIdFlow() async

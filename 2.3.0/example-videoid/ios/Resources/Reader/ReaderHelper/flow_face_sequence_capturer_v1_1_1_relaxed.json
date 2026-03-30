@@ -1,0 +1,3496 @@
+{
+    "flow": [
+        {
+            "id": 96,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 74,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 3,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 72,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 13,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 4,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 8,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 105,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json",
+                            "value": {
+                                "coefficient": 0.01,
+                                "ellipse_factor": 3,
+                                "input_size": {
+                                    "x": 128,
+                                    "y": 128
+                                },
+                                "pitch_offset": 0,
+                                "pitch_range": {
+                                    "x": 20,
+                                    "y": 40
+                                },
+                                "scale": {
+                                    "x": 0,
+                                    "y": 1
+                                },
+                                "yaw_discard": 25
+                            }
+                        }
+                    },
+                    {
+                        "id": 92,
+                        "parameter": {
+                            "name": "input_image",
+                            "type": "Image"
+                        }
+                    },
+                    {
+                        "id": 23,
+                        "parameter": {
+                            "name": "face_selected",
+                            "type": "LocationConfidence"
+                        }
+                    },
+                    {
+                        "id": 28,
+                        "parameter": {
+                            "name": "landmark_map",
+                            "type": "std::map<LandmarkKey, Point2f>"
+                        }
+                    },
+                    {
+                        "id": 61,
+                        "parameter": {
+                            "name": "inference_function",
+                            "type": "InferenceRequest"
+                        }
+                    },
+                    {
+                        "id": 49,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "FacePoseEstimator",
+                "outputs": [
+                    {
+                        "id": 5,
+                        "parameter": {
+                            "name": "yaw_pitch_roll",
+                            "type": "YawPitchRoll"
+                        }
+                    },
+                    {
+                        "id": 6,
+                        "parameter": {
+                            "name": "frontality",
+                            "type": "float"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 10,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 106,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json",
+                            "value": {
+                                "algorithm": 0,
+                                "area_coefficient": {
+                                    "x": 0.15,
+                                    "y": 0.1
+                                },
+                                "gamma_mid": 0.6,
+                                "gamma_range": {
+                                    "x": 1.2,
+                                    "y": 0.8
+                                },
+                                "resize_size": {
+                                    "x": 160,
+                                    "y": 112
+                                },
+                                "sharpness_norm_exponent": 0.4,
+                                "sharpness_norm_ratio": 20000
+                            }
+                        }
+                    },
+                    {
+                        "id": 92,
+                        "parameter": {
+                            "name": "input_image",
+                            "type": "Image"
+                        }
+                    },
+                    {
+                        "id": 23,
+                        "parameter": {
+                            "name": "input_location_confidence",
+                            "type": "LocationConfidence"
+                        }
+                    },
+                    {
+                        "id": 28,
+                        "parameter": {
+                            "name": "landmark_map",
+                            "type": "std::map<LandmarkKey, Point2f>"
+                        }
+                    },
+                    {
+                        "id": 49,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "FaceSharpnessEstimator",
+                "outputs": [
+                    {
+                        "id": 7,
+                        "parameter": {
+                            "name": "output_float",
+                            "type": "float"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 74,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 33,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 8,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 465,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 3,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 9,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 34,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 102,
+                        "parameter": {
+                            "name": "value",
+                            "type": "Bool"
+                        }
+                    },
+                    {
+                        "id": 66,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Stop",
+                "outputs": []
+            }
+        },
+        {
+            "id": 49,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 67,
+                        "parameter": {
+                            "name": "backend",
+                            "type": "TFLiteBackendPtr"
+                        }
+                    },
+                    {
+                        "id": 84,
+                        "parameter": {
+                            "name": "model_data",
+                            "type": "ByteBuffer"
+                        }
+                    },
+                    {
+                        "id": 68,
+                        "parameter": {
+                            "name": "pool_size",
+                            "type": "size_t"
+                        }
+                    },
+                    {
+                        "id": 19,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json"
+                        }
+                    },
+                    {
+                        "id": 108,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "TFLiteRegisterModel",
+                "outputs": [
+                    {
+                        "id": 10,
+                        "parameter": {
+                            "name": "inference_function",
+                            "type": "InferenceRequest"
+                        }
+                    },
+                    {
+                        "id": 11,
+                        "parameter": {
+                            "name": "error",
+                            "type": "Bool"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 113,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 65,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 12,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 73,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 109,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 13,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 9,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 110,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json",
+                            "value": {
+                                "bottom_coef": 0.1,
+                                "coef_over_decil": 0,
+                                "coef_over_quartil": 1,
+                                "coef_under_decil": 0.1,
+                                "coef_under_quartil": 0.9,
+                                "resize_dims": {
+                                    "x": 160,
+                                    "y": 112
+                                },
+                                "up_coef": 0.15
+                            }
+                        }
+                    },
+                    {
+                        "id": 92,
+                        "parameter": {
+                            "name": "input_image",
+                            "type": "Image"
+                        }
+                    },
+                    {
+                        "id": 23,
+                        "parameter": {
+                            "name": "input_location_confidence",
+                            "type": "LocationConfidence"
+                        }
+                    },
+                    {
+                        "id": 28,
+                        "parameter": {
+                            "name": "landmark_map",
+                            "type": "std::map<LandmarkKey, Point2f>"
+                        }
+                    },
+                    {
+                        "id": 49,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "FaceExposureEstimator",
+                "outputs": [
+                    {
+                        "id": 14,
+                        "parameter": {
+                            "name": "output_float",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 15,
+                        "parameter": {
+                            "name": "output_float_2",
+                            "type": "float"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 3,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 111,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json",
+                            "value": {
+                                "min_face_width": 80,
+                                "min_h_face_rel_area": -1,
+                                "min_h_face_rel_width": 0.1,
+                                "min_h_face_rel_width_v": -1,
+                                "min_v_face_rel_area": -1,
+                                "min_v_face_rel_width": 0.2,
+                                "min_v_face_rel_width_v": -1
+                            }
+                        }
+                    },
+                    {
+                        "id": 20,
+                        "parameter": {
+                            "name": "face_collection",
+                            "type": "std::vector<LocationConfidence>"
+                        }
+                    },
+                    {
+                        "id": 92,
+                        "parameter": {
+                            "name": "input_image",
+                            "type": "Image"
+                        }
+                    },
+                    {
+                        "id": 73,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "MultiFaceShapeFilter",
+                "outputs": [
+                    {
+                        "id": 16,
+                        "parameter": {
+                            "name": "face_collection",
+                            "type": "std::vector<LocationConfidence>"
+                        }
+                    },
+                    {
+                        "id": 17,
+                        "parameter": {
+                            "name": "output_diagnostic",
+                            "type": "int16_t"
+                        }
+                    },
+                    {
+                        "id": 18,
+                        "parameter": {
+                            "name": "request_stop",
+                            "type": "Bool"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 67,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 56,
+                        "parameter": {
+                            "name": "value",
+                            "type": "Bool"
+                        }
+                    },
+                    {
+                        "id": 112,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Stop",
+                "outputs": []
+            }
+        },
+        {
+            "id": 91,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 72,
+                        "parameter": {
+                            "name": "value",
+                            "type": "Bool"
+                        }
+                    },
+                    {
+                        "id": 113,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Stop",
+                "outputs": []
+            }
+        },
+        {
+            "id": 57,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 114,
+                        "parameter": {
+                            "name": "tag",
+                            "type": "String",
+                            "value": "inference_threads"
+                        }
+                    },
+                    {
+                        "id": 115,
+                        "parameter": {
+                            "name": "value",
+                            "type": "Json",
+                            "value": {
+                                "inference_threads": 1
+                            }
+                        }
+                    },
+                    {
+                        "id": 116,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "TaggedJson",
+                "outputs": [
+                    {
+                        "id": 19,
+                        "parameter": {
+                            "name": "value",
+                            "type": "Json"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 2,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 117,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json",
+                            "value": {
+                                "box_center_variance": 0.5,
+                                "center_variance": 0.1,
+                                "columns_inference": 6,
+                                "input_height": 160,
+                                "input_range_max": 1,
+                                "input_range_min": -1,
+                                "input_width": 160,
+                                "iou_threshold": 0.35,
+                                "min_boxes": [
+                                    [
+                                        10,
+                                        16,
+                                        24
+                                    ],
+                                    [
+                                        32,
+                                        48
+                                    ],
+                                    [
+                                        64,
+                                        96
+                                    ],
+                                    [
+                                        128,
+                                        192,
+                                        256
+                                    ]
+                                ],
+                                "score_threshold_min": 0.98,
+                                "strides": [
+                                    8,
+                                    16,
+                                    32,
+                                    64
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "id": 52,
+                        "parameter": {
+                            "name": "inference_function",
+                            "type": "InferenceRequest"
+                        }
+                    },
+                    {
+                        "id": 92,
+                        "parameter": {
+                            "name": "original_image",
+                            "type": "Image"
+                        }
+                    },
+                    {
+                        "id": 34,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "FaceDetector",
+                "outputs": [
+                    {
+                        "id": 20,
+                        "parameter": {
+                            "name": "face_collection",
+                            "type": "std::vector<LocationConfidence>"
+                        }
+                    },
+                    {
+                        "id": 21,
+                        "parameter": {
+                            "name": "output_diagnostic",
+                            "type": "int16_t"
+                        }
+                    },
+                    {
+                        "id": 22,
+                        "parameter": {
+                            "name": "request_stop",
+                            "type": "Bool"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 66,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 53,
+                        "parameter": {
+                            "name": "value",
+                            "type": "Bool"
+                        }
+                    },
+                    {
+                        "id": 118,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Stop",
+                "outputs": []
+            }
+        },
+        {
+            "id": 68,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 11,
+                        "parameter": {
+                            "name": "value",
+                            "type": "Bool"
+                        }
+                    },
+                    {
+                        "id": 119,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Stop",
+                "outputs": []
+            }
+        },
+        {
+            "id": 4,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 120,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json",
+                            "value": {
+                                "mode": "center"
+                            }
+                        }
+                    },
+                    {
+                        "id": 16,
+                        "parameter": {
+                            "name": "face_collection",
+                            "type": "std::vector<LocationConfidence>"
+                        }
+                    },
+                    {
+                        "id": 92,
+                        "parameter": {
+                            "name": "input_image",
+                            "type": "Image"
+                        }
+                    },
+                    {
+                        "id": 103,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "FaceSelector",
+                "outputs": [
+                    {
+                        "id": 23,
+                        "parameter": {
+                            "name": "face_selected",
+                            "type": "LocationConfidence"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 5,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 121,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json",
+                            "value": {
+                                "horizontal_max_face_rel_area": 0.4,
+                                "horizontal_max_face_rel_width": 0.5,
+                                "horizontal_max_face_rel_width_vertical": 0.8,
+                                "horizontal_min_face_rel_area": 0.04,
+                                "horizontal_min_face_rel_width": 0.15,
+                                "horizontal_min_face_rel_width_vertical": 0.15,
+                                "max_face_width": 100000,
+                                "min_border_distance": 0,
+                                "min_face_width": 120,
+                                "vertical_max_face_rel_area": 0.7,
+                                "vertical_max_face_rel_width": 0.95,
+                                "vertical_max_face_rel_width_vertical": 0.8,
+                                "vertical_min_face_rel_area": 0.04,
+                                "vertical_min_face_rel_width": 0.15,
+                                "vertical_min_face_rel_width_vertical": 0.15
+                            }
+                        }
+                    },
+                    {
+                        "id": 23,
+                        "parameter": {
+                            "name": "face_selected",
+                            "type": "LocationConfidence"
+                        }
+                    },
+                    {
+                        "id": 92,
+                        "parameter": {
+                            "name": "original_image",
+                            "type": "Image"
+                        }
+                    },
+                    {
+                        "id": 99,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "FaceShapeEvaluator",
+                "outputs": [
+                    {
+                        "id": 24,
+                        "parameter": {
+                            "name": "face_shape_diagnostic",
+                            "type": "int16_t"
+                        }
+                    },
+                    {
+                        "id": 25,
+                        "parameter": {
+                            "name": "output_float",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 26,
+                        "parameter": {
+                            "name": "output_float_2",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 27,
+                        "parameter": {
+                            "name": "request_stop",
+                            "type": "Bool"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 69,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 62,
+                        "parameter": {
+                            "name": "value",
+                            "type": "Bool"
+                        }
+                    },
+                    {
+                        "id": 122,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Stop",
+                "outputs": []
+            }
+        },
+        {
+            "id": 6,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 123,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json",
+                            "value": {
+                                "extension_coef": 0.1,
+                                "input_range_max": 1,
+                                "input_range_min": 0,
+                                "input_size": {
+                                    "x": 112,
+                                    "y": 112
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "id": 10,
+                        "parameter": {
+                            "name": "inference_function",
+                            "type": "InferenceRequest"
+                        }
+                    },
+                    {
+                        "id": 23,
+                        "parameter": {
+                            "name": "face_selected",
+                            "type": "LocationConfidence"
+                        }
+                    },
+                    {
+                        "id": 92,
+                        "parameter": {
+                            "name": "original_image",
+                            "type": "Image"
+                        }
+                    },
+                    {
+                        "id": 75,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "FaceLandmarkDetector",
+                "outputs": [
+                    {
+                        "id": 28,
+                        "parameter": {
+                            "name": "landmark_map",
+                            "type": "std::map<LandmarkKey, Point2f>"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 70,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 59,
+                        "parameter": {
+                            "name": "value",
+                            "type": "Bool"
+                        }
+                    },
+                    {
+                        "id": 124,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Stop",
+                "outputs": []
+            }
+        },
+        {
+            "id": 7,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 125,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json",
+                            "value": {
+                                "phi_yaw": 0
+                            }
+                        }
+                    },
+                    {
+                        "id": 28,
+                        "parameter": {
+                            "name": "landmark_map",
+                            "type": "std::map<LandmarkKey, Point2f>"
+                        }
+                    },
+                    {
+                        "id": 48,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "FaceIEDExtractor",
+                "outputs": [
+                    {
+                        "id": 29,
+                        "parameter": {
+                            "name": "inter_eye_distance",
+                            "type": "float"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 11,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 126,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json",
+                            "value": {
+                                "input_range_max": 1,
+                                "input_range_min": 0,
+                                "input_size": {
+                                    "x": 128,
+                                    "y": 128
+                                },
+                                "roi_coefficient": 0.5,
+                                "threshold": 0.8
+                            }
+                        }
+                    },
+                    {
+                        "id": 58,
+                        "parameter": {
+                            "name": "inference_function",
+                            "type": "InferenceRequest"
+                        }
+                    },
+                    {
+                        "id": 92,
+                        "parameter": {
+                            "name": "input_image",
+                            "type": "Image"
+                        }
+                    },
+                    {
+                        "id": 28,
+                        "parameter": {
+                            "name": "landmark_map",
+                            "type": "std::map<LandmarkKey, Point2f>"
+                        }
+                    },
+                    {
+                        "id": 60,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "FaceMouthOcclusionDetectorMobile",
+                "outputs": [
+                    {
+                        "id": 30,
+                        "parameter": {
+                            "name": "score",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 31,
+                        "parameter": {
+                            "name": "diagnostic",
+                            "type": "int16_t"
+                        }
+                    },
+                    {
+                        "id": 32,
+                        "parameter": {
+                            "name": "request_stop",
+                            "type": "Bool"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 75,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 4,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 33,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 76,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 94,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 34,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 13,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 127,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json",
+                            "value": {
+                                "input_height": 72,
+                                "input_range_max": 1,
+                                "input_range_min": 0,
+                                "input_width": 96,
+                                "score_threshold_min": 0.18
+                            }
+                        }
+                    },
+                    {
+                        "id": 71,
+                        "parameter": {
+                            "name": "inference_function",
+                            "type": "InferenceRequest"
+                        }
+                    },
+                    {
+                        "id": 23,
+                        "parameter": {
+                            "name": "face_selected",
+                            "type": "LocationConfidence"
+                        }
+                    },
+                    {
+                        "id": 28,
+                        "parameter": {
+                            "name": "landmark_map",
+                            "type": "std::map<LandmarkKey, Point2f>"
+                        }
+                    },
+                    {
+                        "id": 92,
+                        "parameter": {
+                            "name": "original_image",
+                            "type": "Image"
+                        }
+                    },
+                    {
+                        "id": 69,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "FaceEyesOpenDetector",
+                "outputs": [
+                    {
+                        "id": 35,
+                        "parameter": {
+                            "name": "output_float",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 36,
+                        "parameter": {
+                            "name": "output_diagnostic",
+                            "type": "int16_t"
+                        }
+                    },
+                    {
+                        "id": 37,
+                        "parameter": {
+                            "name": "request_stop",
+                            "type": "Bool"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 14,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 92,
+                        "parameter": {
+                            "name": "image",
+                            "type": "Image"
+                        }
+                    },
+                    {
+                        "id": 23,
+                        "parameter": {
+                            "name": "face_location_confidence",
+                            "type": "LocationConfidence"
+                        }
+                    },
+                    {
+                        "id": 28,
+                        "parameter": {
+                            "name": "landmark_map",
+                            "type": "std::map<LandmarkKey, Point2f>"
+                        }
+                    },
+                    {
+                        "id": 29,
+                        "parameter": {
+                            "name": "inter_eye_distance",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 49,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "FaceUniformityEstimator",
+                "outputs": [
+                    {
+                        "id": 38,
+                        "parameter": {
+                            "name": "score",
+                            "type": "float"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 16,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 128,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json",
+                            "value": {
+                                "exposure_weight": 0.1,
+                                "eyes_occlusion_weight": 0.2,
+                                "eyes_open_weight": 0.2,
+                                "frontality_weight": 0.15,
+                                "mouth_occlusion_weight": 0.2,
+                                "sharpness_weight": 0.1,
+                                "uniformity_weight": 0.05
+                            }
+                        }
+                    },
+                    {
+                        "id": 6,
+                        "parameter": {
+                            "name": "frontality",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 14,
+                        "parameter": {
+                            "name": "under_exposure",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 15,
+                        "parameter": {
+                            "name": "over_exposure",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 38,
+                        "parameter": {
+                            "name": "uniformity",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 7,
+                        "parameter": {
+                            "name": "sharpness",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 30,
+                        "parameter": {
+                            "name": "mouth_occlusion",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 100,
+                        "parameter": {
+                            "name": "mean_eyes_occlusion",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 35,
+                        "parameter": {
+                            "name": "open_eyes_confidence",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 78,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "FaceQualityScoreExtractor",
+                "outputs": [
+                    {
+                        "id": 39,
+                        "parameter": {
+                            "name": "image_score",
+                            "type": "float"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 18,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 129,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json",
+                            "value": {
+                                "max_delay_seconds": 1,
+                                "min_frames": 2,
+                                "min_time_seconds": 1.25
+                            }
+                        }
+                    },
+                    {
+                        "id": 1,
+                        "parameter": {
+                            "name": "context",
+                            "type": "FaceBestFrameSelector::Context"
+                        }
+                    },
+                    {
+                        "id": 92,
+                        "parameter": {
+                            "name": "image",
+                            "type": "Image"
+                        }
+                    },
+                    {
+                        "id": 39,
+                        "parameter": {
+                            "name": "image_score",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 23,
+                        "parameter": {
+                            "name": "face_location_confidence",
+                            "type": "LocationConfidence"
+                        }
+                    },
+                    {
+                        "id": 28,
+                        "parameter": {
+                            "name": "landmark_map",
+                            "type": "std::map<LandmarkKey, Point2f>"
+                        }
+                    },
+                    {
+                        "id": 5,
+                        "parameter": {
+                            "name": "yaw_pitch_roll",
+                            "type": "YawPitchRoll"
+                        }
+                    },
+                    {
+                        "id": 70,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "FaceBestFrameSelector",
+                "outputs": [
+                    {
+                        "id": 40,
+                        "parameter": {
+                            "name": "context",
+                            "type": "FaceBestFrameSelector::Context"
+                        }
+                    },
+                    {
+                        "id": 41,
+                        "parameter": {
+                            "name": "diagnostic",
+                            "type": "int16_t"
+                        }
+                    },
+                    {
+                        "id": 42,
+                        "parameter": {
+                            "name": "image",
+                            "type": "Image"
+                        }
+                    },
+                    {
+                        "id": 43,
+                        "parameter": {
+                            "name": "image_score",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 44,
+                        "parameter": {
+                            "name": "face",
+                            "type": "LocationConfidence"
+                        }
+                    },
+                    {
+                        "id": 45,
+                        "parameter": {
+                            "name": "landmark_map",
+                            "type": "std::map<LandmarkKey, Point2f>"
+                        }
+                    },
+                    {
+                        "id": 46,
+                        "parameter": {
+                            "name": "yaw_pitch_roll",
+                            "type": "YawPitchRoll"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 20,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 18,
+                        "parameter": {
+                            "name": "value",
+                            "type": "Bool"
+                        }
+                    },
+                    {
+                        "id": 74,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Stop",
+                "outputs": []
+            }
+        },
+        {
+            "id": 33,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 37,
+                        "parameter": {
+                            "name": "value",
+                            "type": "Bool"
+                        }
+                    },
+                    {
+                        "id": 77,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Stop",
+                "outputs": []
+            }
+        },
+        {
+            "id": 35,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 32,
+                        "parameter": {
+                            "name": "value",
+                            "type": "Bool"
+                        }
+                    },
+                    {
+                        "id": 65,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Stop",
+                "outputs": []
+            }
+        },
+        {
+            "id": 99,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 99,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 47,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 38,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 80,
+                        "parameter": {
+                            "name": "value",
+                            "type": "Bool"
+                        }
+                    },
+                    {
+                        "id": 57,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Stop",
+                "outputs": []
+            }
+        },
+        {
+            "id": 102,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 75,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 48,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 40,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 82,
+                        "parameter": {
+                            "name": "value",
+                            "type": "Bool"
+                        }
+                    },
+                    {
+                        "id": 51,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Stop",
+                "outputs": []
+            }
+        },
+        {
+            "id": 104,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 47,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 49,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 105,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 49,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 50,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 44,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 27,
+                        "parameter": {
+                            "name": "value",
+                            "type": "Bool"
+                        }
+                    },
+                    {
+                        "id": 47,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Stop",
+                "outputs": []
+            }
+        },
+        {
+            "id": 108,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 76,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 51,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 45,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 67,
+                        "parameter": {
+                            "name": "backend",
+                            "type": "TFLiteBackendPtr"
+                        }
+                    },
+                    {
+                        "id": 86,
+                        "parameter": {
+                            "name": "model_data",
+                            "type": "ByteBuffer"
+                        }
+                    },
+                    {
+                        "id": 68,
+                        "parameter": {
+                            "name": "pool_size",
+                            "type": "size_t"
+                        }
+                    },
+                    {
+                        "id": 19,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json"
+                        }
+                    },
+                    {
+                        "id": 131,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "TFLiteRegisterModel",
+                "outputs": [
+                    {
+                        "id": 52,
+                        "parameter": {
+                            "name": "inference_function",
+                            "type": "InferenceRequest"
+                        }
+                    },
+                    {
+                        "id": 53,
+                        "parameter": {
+                            "name": "error",
+                            "type": "Bool"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 109,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 51,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 54,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 46,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 67,
+                        "parameter": {
+                            "name": "backend",
+                            "type": "TFLiteBackendPtr"
+                        }
+                    },
+                    {
+                        "id": 88,
+                        "parameter": {
+                            "name": "model_data",
+                            "type": "ByteBuffer"
+                        }
+                    },
+                    {
+                        "id": 68,
+                        "parameter": {
+                            "name": "pool_size",
+                            "type": "size_t"
+                        }
+                    },
+                    {
+                        "id": 19,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json"
+                        }
+                    },
+                    {
+                        "id": 133,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "TFLiteRegisterModel",
+                "outputs": [
+                    {
+                        "id": 55,
+                        "parameter": {
+                            "name": "inference_function",
+                            "type": "InferenceRequest"
+                        }
+                    },
+                    {
+                        "id": 56,
+                        "parameter": {
+                            "name": "error",
+                            "type": "Bool"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 110,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 54,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 57,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 47,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 67,
+                        "parameter": {
+                            "name": "backend",
+                            "type": "TFLiteBackendPtr"
+                        }
+                    },
+                    {
+                        "id": 87,
+                        "parameter": {
+                            "name": "model_data",
+                            "type": "ByteBuffer"
+                        }
+                    },
+                    {
+                        "id": 68,
+                        "parameter": {
+                            "name": "pool_size",
+                            "type": "size_t"
+                        }
+                    },
+                    {
+                        "id": 19,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json"
+                        }
+                    },
+                    {
+                        "id": 135,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "TFLiteRegisterModel",
+                "outputs": [
+                    {
+                        "id": 58,
+                        "parameter": {
+                            "name": "inference_function",
+                            "type": "InferenceRequest"
+                        }
+                    },
+                    {
+                        "id": 59,
+                        "parameter": {
+                            "name": "error",
+                            "type": "Bool"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 111,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 57,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 60,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 48,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 67,
+                        "parameter": {
+                            "name": "backend",
+                            "type": "TFLiteBackendPtr"
+                        }
+                    },
+                    {
+                        "id": 85,
+                        "parameter": {
+                            "name": "model_data",
+                            "type": "ByteBuffer"
+                        }
+                    },
+                    {
+                        "id": 68,
+                        "parameter": {
+                            "name": "pool_size",
+                            "type": "size_t"
+                        }
+                    },
+                    {
+                        "id": 19,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json"
+                        }
+                    },
+                    {
+                        "id": 137,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "TFLiteRegisterModel",
+                "outputs": [
+                    {
+                        "id": 61,
+                        "parameter": {
+                            "name": "inference_function",
+                            "type": "InferenceRequest"
+                        }
+                    },
+                    {
+                        "id": 62,
+                        "parameter": {
+                            "name": "error",
+                            "type": "Bool"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 511,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 138,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json",
+                            "value": {
+                                "face_margin": 0.1,
+                                "height_width_ratio": 1.4
+                            }
+                        }
+                    },
+                    {
+                        "id": 44,
+                        "parameter": {
+                            "name": "input_location_confidence",
+                            "type": "LocationConfidence"
+                        }
+                    },
+                    {
+                        "id": 42,
+                        "parameter": {
+                            "name": "input_image",
+                            "type": "Image"
+                        }
+                    },
+                    {
+                        "id": 139,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "RawFacePatternExtractor",
+                "outputs": [
+                    {
+                        "id": 63,
+                        "parameter": {
+                            "name": "output_byte_buffer",
+                            "type": "ByteBuffer"
+                        }
+                    },
+                    {
+                        "id": 64,
+                        "parameter": {
+                            "name": "output_location",
+                            "type": "OBBox2f"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 112,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 60,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 65,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 114,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 12,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 66,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 50,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 140,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "TFLiteBackendProvider",
+                "outputs": [
+                    {
+                        "id": 67,
+                        "parameter": {
+                            "name": "backend",
+                            "type": "TFLiteBackendPtr"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 51,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 141,
+                        "parameter": {
+                            "name": "tag",
+                            "type": "String",
+                            "value": "global_pool_size"
+                        }
+                    },
+                    {
+                        "id": 142,
+                        "parameter": {
+                            "name": "value",
+                            "type": "size_t",
+                            "value": 1
+                        }
+                    },
+                    {
+                        "id": 143,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "TaggedUnsigned",
+                "outputs": [
+                    {
+                        "id": 68,
+                        "parameter": {
+                            "name": "value",
+                            "type": "size_t"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 115,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 66,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 69,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 218,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 78,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 70,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 90,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 67,
+                        "parameter": {
+                            "name": "backend",
+                            "type": "TFLiteBackendPtr"
+                        }
+                    },
+                    {
+                        "id": 83,
+                        "parameter": {
+                            "name": "model_data",
+                            "type": "ByteBuffer"
+                        }
+                    },
+                    {
+                        "id": 68,
+                        "parameter": {
+                            "name": "pool_size",
+                            "type": "size_t"
+                        }
+                    },
+                    {
+                        "id": 19,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json"
+                        }
+                    },
+                    {
+                        "id": 145,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "TFLiteRegisterModel",
+                "outputs": [
+                    {
+                        "id": 71,
+                        "parameter": {
+                            "name": "inference_function",
+                            "type": "InferenceRequest"
+                        }
+                    },
+                    {
+                        "id": 72,
+                        "parameter": {
+                            "name": "error",
+                            "type": "Bool"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 94,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 34,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 73,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 95,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 73,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 74,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 100,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 103,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 75,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 107,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 50,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 76,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 117,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 69,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 77,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 118,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 77,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 78,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 37,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 95,
+                        "parameter": {
+                            "name": "rejections",
+                            "type": "std::vector<String>"
+                        }
+                    },
+                    {
+                        "id": 96,
+                        "parameter": {
+                            "name": "warnings",
+                            "type": "std::vector<String>"
+                        }
+                    },
+                    {
+                        "id": 54,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "FIQADiagnostic",
+                "outputs": [
+                    {
+                        "id": 79,
+                        "parameter": {
+                            "name": "diagnostic",
+                            "type": "int16_t"
+                        }
+                    },
+                    {
+                        "id": 80,
+                        "parameter": {
+                            "name": "request_stop",
+                            "type": "Bool"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 39,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 95,
+                        "parameter": {
+                            "name": "rejections",
+                            "type": "std::vector<String>"
+                        }
+                    },
+                    {
+                        "id": 96,
+                        "parameter": {
+                            "name": "warnings",
+                            "type": "std::vector<String>"
+                        }
+                    },
+                    {
+                        "id": 76,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "FaceLandmarkDiagnostic",
+                "outputs": [
+                    {
+                        "id": 81,
+                        "parameter": {
+                            "name": "diagnostic",
+                            "type": "int16_t"
+                        }
+                    },
+                    {
+                        "id": 82,
+                        "parameter": {
+                            "name": "request_stop",
+                            "type": "Bool"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 297,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 146,
+                        "parameter": {
+                            "name": "tag",
+                            "type": "String",
+                            "value": "facephi_eyes_open_detector_2_0_0_model.dat"
+                        }
+                    },
+                    {
+                        "id": 147,
+                        "parameter": {
+                            "name": "value",
+                            "type": "ByteBuffer",
+                            "value": []
+                        }
+                    },
+                    {
+                        "id": 148,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "TaggedByteBuffer",
+                "outputs": [
+                    {
+                        "id": 83,
+                        "parameter": {
+                            "name": "value",
+                            "type": "ByteBuffer"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 298,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 149,
+                        "parameter": {
+                            "name": "tag",
+                            "type": "String",
+                            "value": "facephi_landmark_detector_3_0_0_model_tflite16.dat"
+                        }
+                    },
+                    {
+                        "id": 150,
+                        "parameter": {
+                            "name": "value",
+                            "type": "ByteBuffer",
+                            "value": []
+                        }
+                    },
+                    {
+                        "id": 151,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "TaggedByteBuffer",
+                "outputs": [
+                    {
+                        "id": 84,
+                        "parameter": {
+                            "name": "value",
+                            "type": "ByteBuffer"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 299,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 152,
+                        "parameter": {
+                            "name": "tag",
+                            "type": "String",
+                            "value": "facephi_pose_estimator_1_0_0_model.dat"
+                        }
+                    },
+                    {
+                        "id": 153,
+                        "parameter": {
+                            "name": "value",
+                            "type": "ByteBuffer",
+                            "value": []
+                        }
+                    },
+                    {
+                        "id": 154,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "TaggedByteBuffer",
+                "outputs": [
+                    {
+                        "id": 85,
+                        "parameter": {
+                            "name": "value",
+                            "type": "ByteBuffer"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 300,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 155,
+                        "parameter": {
+                            "name": "tag",
+                            "type": "String",
+                            "value": "facephi_face_detector_1_1_0_model_tflite16.dat"
+                        }
+                    },
+                    {
+                        "id": 156,
+                        "parameter": {
+                            "name": "value",
+                            "type": "ByteBuffer",
+                            "value": []
+                        }
+                    },
+                    {
+                        "id": 157,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "TaggedByteBuffer",
+                "outputs": [
+                    {
+                        "id": 86,
+                        "parameter": {
+                            "name": "value",
+                            "type": "ByteBuffer"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 301,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 158,
+                        "parameter": {
+                            "name": "tag",
+                            "type": "String",
+                            "value": "facephi_mouth_occlusion_detector_mobile_1_0_0_model_tflite16.dat"
+                        }
+                    },
+                    {
+                        "id": 159,
+                        "parameter": {
+                            "name": "value",
+                            "type": "ByteBuffer",
+                            "value": []
+                        }
+                    },
+                    {
+                        "id": 160,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "TaggedByteBuffer",
+                "outputs": [
+                    {
+                        "id": 87,
+                        "parameter": {
+                            "name": "value",
+                            "type": "ByteBuffer"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 302,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 161,
+                        "parameter": {
+                            "name": "tag",
+                            "type": "String",
+                            "value": "facephi_eyes_occlusion_detector_mobile_1_0_0_model_tflite16.dat"
+                        }
+                    },
+                    {
+                        "id": 162,
+                        "parameter": {
+                            "name": "value",
+                            "type": "ByteBuffer",
+                            "value": []
+                        }
+                    },
+                    {
+                        "id": 163,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "TaggedByteBuffer",
+                "outputs": [
+                    {
+                        "id": 88,
+                        "parameter": {
+                            "name": "value",
+                            "type": "ByteBuffer"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 341,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 0,
+                        "parameter": {
+                            "name": "original_image",
+                            "type": "Image"
+                        }
+                    },
+                    {
+                        "id": 93,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "ExtractTransforms",
+                "outputs": [
+                    {
+                        "id": 89,
+                        "parameter": {
+                            "name": "up_to_original",
+                            "type": "Orientation"
+                        }
+                    },
+                    {
+                        "id": 90,
+                        "parameter": {
+                            "name": "original_to_up",
+                            "type": "Orientation"
+                        }
+                    },
+                    {
+                        "id": 91,
+                        "parameter": {
+                            "name": "size",
+                            "type": "Size2f"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 342,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 0,
+                        "parameter": {
+                            "name": "image",
+                            "type": "Image"
+                        }
+                    },
+                    {
+                        "id": 90,
+                        "parameter": {
+                            "name": "orientation",
+                            "type": "Orientation"
+                        }
+                    },
+                    {
+                        "id": 94,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "TransformImage",
+                "outputs": [
+                    {
+                        "id": 92,
+                        "parameter": {
+                            "name": "image",
+                            "type": "Image"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 383,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 8,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 93,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 384,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 93,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 94,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 424,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 164,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json",
+                            "value": {
+                                "filter_reject": [
+                                    {
+                                        "diagnostic": "UNDEREXPOSED",
+                                        "op": ">=",
+                                        "threshold": 0.75,
+                                        "variable": "under_exposure"
+                                    },
+                                    {
+                                        "diagnostic": "OVEREXPOSED",
+                                        "op": ">=",
+                                        "threshold": 0.75,
+                                        "variable": "over_exposure"
+                                    },
+                                    {
+                                        "diagnostic": "FACE_SIDELIGHT",
+                                        "op": "<",
+                                        "threshold": 0.35,
+                                        "variable": "uniformity"
+                                    },
+                                    {
+                                        "diagnostic": "BLURRED",
+                                        "op": "<",
+                                        "threshold": 0.38,
+                                        "variable": "sharpness"
+                                    },
+                                    {
+                                        "diagnostic": "FACE_TOO_SMALL",
+                                        "op": "<",
+                                        "threshold": 20,
+                                        "variable": "iod"
+                                    },
+                                    {
+                                        "diagnostic": "FACE_POSE_ROLLED_LEFT",
+                                        "op": ">=",
+                                        "threshold": 30,
+                                        "variable": "roll"
+                                    },
+                                    {
+                                        "diagnostic": "FACE_POSE_ROLLED_RIGHT",
+                                        "op": "<",
+                                        "threshold": -30,
+                                        "variable": "roll"
+                                    },
+                                    {
+                                        "diagnostic": "FACE_POSE_TOO_DOWN",
+                                        "op": ">=",
+                                        "threshold": 30,
+                                        "variable": "pitch"
+                                    },
+                                    {
+                                        "diagnostic": "FACE_POSE_TOO_UP",
+                                        "op": "<",
+                                        "threshold": -20,
+                                        "variable": "pitch"
+                                    },
+                                    {
+                                        "diagnostic": "FACE_POSE_TOO_LEFT",
+                                        "op": ">=",
+                                        "threshold": 30,
+                                        "variable": "yaw"
+                                    },
+                                    {
+                                        "diagnostic": "FACE_POSE_TOO_RIGHT",
+                                        "op": "<",
+                                        "threshold": -30,
+                                        "variable": "yaw"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "id": 14,
+                        "parameter": {
+                            "name": "under_exposure",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 15,
+                        "parameter": {
+                            "name": "over_exposure",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 38,
+                        "parameter": {
+                            "name": "uniformity",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 7,
+                        "parameter": {
+                            "name": "sharpness",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 29,
+                        "parameter": {
+                            "name": "iod",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 5,
+                        "parameter": {
+                            "name": "yaw_pitch_roll",
+                            "type": "YawPitchRoll"
+                        }
+                    },
+                    {
+                        "id": 50,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "FlowFilterer",
+                "outputs": [
+                    {
+                        "id": 95,
+                        "parameter": {
+                            "name": "rejections",
+                            "type": "std::vector<String>"
+                        }
+                    },
+                    {
+                        "id": 96,
+                        "parameter": {
+                            "name": "warnings",
+                            "type": "std::vector<String>"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 464,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 16,
+                        "parameter": {
+                            "name": "face_collection",
+                            "type": "std::vector<LocationConfidence>"
+                        }
+                    },
+                    {
+                        "id": 165,
+                        "parameter": {
+                            "name": "max_faces_num",
+                            "type": "size_t",
+                            "value": 1
+                        }
+                    },
+                    {
+                        "id": 3,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "FaceNumberLimitEvaluator",
+                "outputs": [
+                    {
+                        "id": 97,
+                        "parameter": {
+                            "name": "output_diagnostic",
+                            "type": "int16_t"
+                        }
+                    },
+                    {
+                        "id": 98,
+                        "parameter": {
+                            "name": "request_stop",
+                            "type": "Bool"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 466,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 98,
+                        "parameter": {
+                            "name": "value",
+                            "type": "Bool"
+                        }
+                    },
+                    {
+                        "id": 9,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Stop",
+                "outputs": []
+            }
+        },
+        {
+            "id": 468,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 48,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 99,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 469,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 166,
+                        "parameter": {
+                            "name": "config",
+                            "type": "Json",
+                            "value": {
+                                "coefficients": {
+                                    "x": 0.4,
+                                    "y": 0.35
+                                },
+                                "input_range_max": 1,
+                                "input_range_min": 0,
+                                "input_size": {
+                                    "x": 160,
+                                    "y": 64
+                                },
+                                "threshold": 0.77
+                            }
+                        }
+                    },
+                    {
+                        "id": 55,
+                        "parameter": {
+                            "name": "inference_function",
+                            "type": "InferenceRequest"
+                        }
+                    },
+                    {
+                        "id": 92,
+                        "parameter": {
+                            "name": "original_image",
+                            "type": "Image"
+                        }
+                    },
+                    {
+                        "id": 28,
+                        "parameter": {
+                            "name": "landmark_map",
+                            "type": "std::map<LandmarkKey, Point2f>"
+                        }
+                    },
+                    {
+                        "id": 12,
+                        "parameter": {
+                            "name": "#order",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "FaceEyesOcclusionDetectorMobile",
+                "outputs": [
+                    {
+                        "id": 100,
+                        "parameter": {
+                            "name": "score",
+                            "type": "float"
+                        }
+                    },
+                    {
+                        "id": 101,
+                        "parameter": {
+                            "name": "diagnostic",
+                            "type": "int16_t"
+                        }
+                    },
+                    {
+                        "id": 102,
+                        "parameter": {
+                            "name": "request_stop",
+                            "type": "Bool"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 552,
+            "task": {
+                "inputs": [
+                    {
+                        "id": 9,
+                        "parameter": {
+                            "name": "in",
+                            "type": "TaskId"
+                        }
+                    }
+                ],
+                "name": "Generation",
+                "outputs": [
+                    {
+                        "id": 103,
+                        "parameter": {
+                            "name": "out",
+                            "type": "TaskId"
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "information": {
+        "description": "Captures the best image when a user attempts to authenticate or enroll",
+        "name": "FaceSequenceCapturer",
+        "url": "https://redesigned-adventure-egvvn4y.pages.github.io/pipelines/FaceSequenceCapturer/v1.1.1/",
+        "version": "1.1.1"
+    },
+    "inputs": [
+        {
+            "id": 0,
+            "parameter": {
+                "name": "original_image",
+                "type": "Image"
+            }
+        },
+        {
+            "id": 1,
+            "parameter": {
+                "name": "context",
+                "type": "FaceBestFrameSelector::Context"
+            }
+        }
+    ],
+    "outputs": [
+        {
+            "id": 40,
+            "parameter": {
+                "name": "context",
+                "type": "FaceBestFrameSelector::Context"
+            }
+        },
+        {
+            "id": 17,
+            "parameter": {
+                "name": "multi_face_diagnostic",
+                "type": "int16_t"
+            }
+        },
+        {
+            "id": 97,
+            "parameter": {
+                "name": "face_number_limit_diagnostic",
+                "type": "int16_t"
+            }
+        },
+        {
+            "id": 24,
+            "parameter": {
+                "name": "face_shape_diagnostic",
+                "type": "int16_t"
+            }
+        },
+        {
+            "id": 81,
+            "parameter": {
+                "name": "landmark_diagnostic",
+                "type": "int16_t"
+            }
+        },
+        {
+            "id": 79,
+            "parameter": {
+                "name": "fiqa_diagnostic",
+                "type": "int16_t"
+            }
+        },
+        {
+            "id": 31,
+            "parameter": {
+                "name": "mouth_occlusion_diagnostic",
+                "type": "int16_t"
+            }
+        },
+        {
+            "id": 101,
+            "parameter": {
+                "name": "eyes_occlusion_diagnostic",
+                "type": "int16_t"
+            }
+        },
+        {
+            "id": 36,
+            "parameter": {
+                "name": "eyes_open_diagnostic",
+                "type": "int16_t"
+            }
+        },
+        {
+            "id": 41,
+            "parameter": {
+                "name": "image_diagnostic",
+                "type": "int16_t"
+            }
+        },
+        {
+            "id": 39,
+            "parameter": {
+                "name": "image_score",
+                "type": "float"
+            }
+        },
+        {
+            "id": 16,
+            "parameter": {
+                "name": "face_collection",
+                "type": "std::vector<LocationConfidence>"
+            }
+        },
+        {
+            "id": 23,
+            "parameter": {
+                "name": "face",
+                "type": "LocationConfidence"
+            }
+        },
+        {
+            "id": 28,
+            "parameter": {
+                "name": "landmarks",
+                "type": "std::map<LandmarkKey, Point2f>"
+            }
+        },
+        {
+            "id": 29,
+            "parameter": {
+                "name": "inter_eye_distance",
+                "type": "float"
+            }
+        },
+        {
+            "id": 5,
+            "parameter": {
+                "name": "pose",
+                "type": "YawPitchRoll"
+            }
+        },
+        {
+            "id": 30,
+            "parameter": {
+                "name": "mouth_occlusion_score",
+                "type": "float"
+            }
+        },
+        {
+            "id": 35,
+            "parameter": {
+                "name": "eyes_open_score",
+                "type": "float"
+            }
+        },
+        {
+            "id": 100,
+            "parameter": {
+                "name": "eyes_occlusion_score",
+                "type": "float"
+            }
+        },
+        {
+            "id": 42,
+            "parameter": {
+                "name": "best_image",
+                "type": "Image"
+            }
+        },
+        {
+            "id": 43,
+            "parameter": {
+                "name": "best_image_score",
+                "type": "float"
+            }
+        },
+        {
+            "id": 44,
+            "parameter": {
+                "name": "best_image_face",
+                "type": "LocationConfidence"
+            }
+        },
+        {
+            "id": 45,
+            "parameter": {
+                "name": "best_image_landmarks",
+                "type": "std::map<LandmarkKey, Point2f>"
+            }
+        },
+        {
+            "id": 46,
+            "parameter": {
+                "name": "best_image_pose",
+                "type": "YawPitchRoll"
+            }
+        },
+        {
+            "id": 63,
+            "parameter": {
+                "name": "best_image_raw_face_pattern",
+                "type": "ByteBuffer"
+            }
+        }
+    ],
+    "version": "3.0.0"
+}

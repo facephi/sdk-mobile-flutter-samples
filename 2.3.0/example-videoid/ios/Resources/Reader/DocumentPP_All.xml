@@ -9,10 +9,10 @@
           <field id="Issuer" line="1" starts="3" count="3" regex="IRQ"/>
           <field id="LastName+FirstName" line="1" starts="6" count="39"/>
           <field id="DocumentNumber" line="2" starts="1" count="9"/>
-          <field id="Nationality" line="2" starts="11" count="3"/>
-          <field id="DateOfBirth" line="2" starts="14" count="6"/>
+          <field id="Nationality" line="2" starts="11" count="3" regex="[A-Z&lt;]{3}"/>
+          <field id="DateOfBirth" line="2" starts="14" count="6" regex="[0-9]{6}"/>
           <field id="Gender" line="2" starts="21" count="1"/>
-          <field id="DateOfExpiry" line="2" starts="22" count="6"/>
+          <field id="DateOfExpiry" line="2" starts="22" count="6" regex="(?:[0-9]{6})|(?:&lt;&lt;&lt;&lt;&lt;&lt;)"/>
           <field id="Opt1" line="2" starts="29" count="14"/>
           <field id="NfcKey" line="2" starts="1" count="9"/>
         </MRZ>
@@ -45,10 +45,10 @@
           <field id="Issuer" line="1" starts="3" count="3" regex="^(?!IRQ).*$"/>
           <field id="LastName+FirstName" line="1" starts="6" count="39"/>
           <field id="DocumentNumber" line="2" starts="1" count="9"/>
-          <field id="Nationality" line="2" starts="11" count="3"/>
-          <field id="DateOfBirth" line="2" starts="14" count="6"/>
+          <field id="Nationality" line="2" starts="11" count="3" regex="[A-Z&lt;]{3}"/>
+          <field id="DateOfBirth" line="2" starts="14" count="6" regex="[0-9]{6}"/>
           <field id="Gender" line="2" starts="21" count="1"/>
-          <field id="DateOfExpiry" line="2" starts="22" count="6"/>
+          <field id="DateOfExpiry" line="2" starts="22" count="6" regex="(?:[0-9]{6})|(?:&lt;&lt;&lt;&lt;&lt;&lt;)"/>
           <field id="Opt1" line="2" starts="29" count="14"/>
           <field id="NfcKey" line="2" starts="1" count="9"/>
         </MRZ>

@@ -238,7 +238,7 @@
                 <BLINKID>
                     <ML>
                         <field id="IDCardNumber" move="DocumentNumber"/>
-                        <field id="DocumentNumber" move="PersonalIdNumber"/>
+                        <field id="DocumentNumber" copy="PersonalNumber"/>
                     </ML>
                 </BLINKID>
             </Front>
@@ -461,8 +461,7 @@
                     <assignField src="docNumber" field="DocumentNumber"/>
                 </ML-90>
 
-            </Back>    
-            
+            </Back>  
         </Version>
 
         <Version id="2023" type="TD1" document_type="IDC">
@@ -661,9 +660,7 @@
                     <!-- <field id="DateOfExpiry_"             data="9" regex="([0-9]{4})([0-9]{2})([0-9]{2})" value="($3)/($2)/($1)"/> -->
                     <field id="DocumentAdditionalNumber"  data="10"/>
                 </BARCODE>
-
             </Back>
-
         </Version>
 
         <Version id="Juvenil" type="TD1">
@@ -1280,7 +1277,6 @@
                 </ML>
             </Back>
         </Version>
-
         <Version id="2020" type="TD1" document_type="IDC">
             <Front>
                 <FACE>
@@ -1304,16 +1300,25 @@
                         value2="([N]$1)"
                     />
                     <rejectIfNotValid src="cui" reason="DocumentNotExpected"/>
+                    <assignField src="cui" field="CUI"/>
+                    <assignField src="cui" field="DocumentNumber"/>
+                    <assignField src="cuiNumber" field="DocumentAdditionalNumber"/>
 
                     <findLineContent dst="ln11" content="Primer@Apellido" threshold="0.3"/>
                     <assignIfValid dst="ln1" src="ln11" offset="+1" overwrite="false"/>
                     <findLineContent dst="ln22" content="Segundo@Apellido" threshold="0.3"/>
                     <assignIfValid dst="ln2" src="ln22" offset="+1" overwrite="false"/>
-
                     <assignIfValid dst="ln" src="ln1"/>
                     <concatenateIfValid dst="ln" src="ln2" prefix=" " suffix=""/>
+                    <rejectIfNotValid src="ln"/>
+                    <assignField src="ln1" field="LastName1"/>
+                    <assignField src="ln2" field="LastName2"/>
+                    <assignField src="ln" field="LastName"/>
+
                     <findLineContent dst="fn1" content="Prenombres" threshold="0.3"/>
                     <assignIfValid dst="fn" src="fn1" offset="+1" overwrite="false"/>
+                    <rejectIfNotValid src="fn"/>
+                    <assignField src="fn" field="FirstName"/>
 
                     <findLineMatch dst="gen"
                         regex="^(M|F)$"
@@ -1330,6 +1335,8 @@
                         value="($1)"
                         overwrite="false"
                     />
+                    <assignField src="gen" field="Gender"/>
+
                     <findLineMatch dst="nat"
                         regex="^([A-Za-z]{3})$"
                         value="([U]$1)"
@@ -1340,8 +1347,12 @@
                         value="([U]$1)"
                         overwrite="false"
                     />
+                    <assignField src="nat" field="Nationality"/>
+
                     <findLineContent dst="ecc" content="Estado@Civil" threshold="0.3"/>
                     <assignIfValid dst="ec" src="ecc" offset="+1" overwrite="false"/>
+                    <assignField src="ec" field="CivilStatus"/>
+
                     <findLineContent dst="cardStr" content="N@@de@Tarjeta" threshold="0.3"/>
                     <findLineMatch dst="cardNum"
                         regex="^([0-9]{9,})$"
@@ -1349,6 +1360,7 @@
                         overwrite="false"
                     />
                     <assignIfValid dst="cardNum" src="card" offset="+1" overwrite="false"/>
+                    <assignField src="cardNum" field="IDCardNumber"/>
 
                     <!-- Find NO CADUCA string -->
                     <findLineContent dst="doe2" content="NO@CADUCA" threshold="0.3" overwrite="false"/>
@@ -1360,29 +1372,19 @@
                         regex="([0-3][0-9])(?: |[^A-Za-z0-9])*([0-1][0-9])(?: |[^A-Za-z0-9])*([1-2][0-9]{3})"
                         value="($1)/($2)/($3)"
                     />
+                    <assignField src="doe" field="DateOfExpiry"/>
+
                     <findLineMatch dst="doi" overwrite="false" mode="reverse"
                         regex="([0-3][0-9])(?: |[^A-Za-z0-9])*([0-1][0-9])(?: |[^A-Za-z0-9])*([1-2][0-9]{3})"
                         value="($1)/($2)/($3)"
                     />
+                    <assignField src="doi" field="DateOfIssue"/>
+
                     <findLineMatch dst="dob" overwrite="false" mode="reverse"
                         regex="([0-3][0-9])(?: |[^A-Za-z0-9])*([0-1][0-9])(?: |[^A-Za-z0-9])*([1-2][0-9]{3})"
                         value="($1)/($2)/($3)"
                     />
-
-                    <assignField src="cui" field="CUI"/>
-                    <assignField src="cui" field="DocumentNumber"/>
-                    <assignField src="cuiNumber" field="DocumentAdditionalNumber"/>
-                    <assignField src="ln1" field="LastName1"/>
-                    <assignField src="ln2" field="LastName2"/>
-                    <assignField src="ln" field="LastName"/>
-                    <assignField src="fn" field="FirstName"/>
-                    <assignField src="gen" field="Gender"/>
-                    <assignField src="nat" field="Nationality"/>
                     <assignField src="dob" field="DateOfBirth"/>
-                    <assignField src="ec" field="CivilStatus"/>
-                    <assignField src="cardNum" field="IDCardNumber"/>
-                    <assignField src="doe" field="DateOfExpiry"/>
-                    <assignField src="doi" field="DateOfIssue"/>
 
                     <assignResult src="$_PER/IDCard/2020" field="DocumentModel"/>
 
@@ -1502,9 +1504,184 @@
                 
             </Back>
         </Version>
+        <Version id="2025" type="TD1" document_type="IDC">
+            <Front>
+                <FACE>
+                    <region id="Signature" x="0.040" y="0.800" w="0.310" h="0.170"/>
+                </FACE>
+                <ML cols="4" split_by="elements" separation="0.04" space_separation="0.04">
+                    
+                    <findLineMatch src="mrzStr" dst="mrzMark" regex="(.*[&lt;«]\s?[&lt;«].*)" value="($1)"/>
+                    <matchIfValid src="mrzStr" dst="mrzPresent" regex="(.{15,})" value="($1)"/>
+                    <rejectIfValid src="mrzPresent" reason="DocumentNotExpected"/>
+
+                    <findLineContent dst="res1" content="REPÚBLICA@DEL@PERÚ" threshold="0.3"/>
+                    <findLineContent dst="res2" content="DOCUMENTO@NACIONAL@DE@IDENTIDAD" threshold="0.3"/>
+                    <rejectIfNotValid2 src="res1" src2="res2" reason="DocumentNotExpected"/>
+
+                    <findLineMatchMultiple src="cuiStr" regex="([0-9oOl]{8})(?: *)-(?: *)([0-9oOl])"
+                        overwrite="false"
+                        dst1="cui"
+                        value1="([N]$1)-([N]$2)"
+                        dst2="cuiNumber"
+                        value2="([N]$1)"
+                    />
+                    <rejectIfNotValid src="cui" reason="DocumentNotExpected"/>
+                    <assignField src="cui" field="DocumentNumber"/>
+                    <assignField src="cui" field="CUI"/>
+                    <assignField src="cuiNumber" field="DocumentAdditionalNumber"/>
+
+                    <findLineContent dst="lnStr" content="Apellidos" threshold="0.3"/>
+                    <findLineContent dst="fnStr" content="Prenombres" threshold="0.3"/>
+                    <assignIfValid dst="ln" src="lnStr" offset="+1" overwrite="false"/>
+                    <assignIfValid dst="fn" src="fnStr" offset="+1" overwrite="false"/>
+                    <assignIfValid dst="ln" src="lnStr" offset="+1" overwrite="false"/>
+                    <assignIfValid dst="fn" src="lnStr" offset="+3" overwrite="false"/>
+                    <assignIfValid dst="ln" src="fnStr" offset="-1" overwrite="false"/>
+                    <assignIfValid dst="fn" src="fnStr" offset="+1" overwrite="false"/>
+                    <rejectIfNotValid src="ln" reason="DocumentNotExpected"/>
+                    <rejectIfNotValid src="fn" reason="DocumentNotExpected"/>
+                    <assignField src="ln" field="LastName"/>
+                    <assignField src="fn" field="FirstName"/>
+
+                    <findLineMatch dst="gen"
+                        regex="^(M|F)$"
+                        value="($1)"
+                        overwrite="false"
+                    />
+                    <findLineMatch src="genStr" dst="gen"
+                        regex="(M|F) [A-Za-z]{3}$"
+                        value="($1)"
+                        overwrite="false"
+                    />
+                    <findLineMatch src="genStr" dst="gen"
+                        regex="[0-9]{6} (M|F)$"
+                        value="($1)"
+                        overwrite="false"
+                    />
+                    <assignField src="gen" field="Gender"/>
+
+                    <findLineMatch dst="nat"
+                        regex="^([A-Za-z]{3})$"
+                        value="([U]$1)"
+                        overwrite="false"
+                    />
+                    <matchIfValid src="genStr" dst="nat"
+                        regex="([A-Za-z]{3})"
+                        value="([U]$1)"
+                        overwrite="false"
+                    />
+                    <assignField src="nat" field="Nationality"/>
+
+
+                    <findLineContent dst="ecc" content="Estado@Civil" threshold="0.3"/>
+                    <assignIfValid dst="ec" src="ecc" offset="+1" overwrite="false"/>
+                    <assignField src="ec" field="CivilStatus"/>
+
+                    <findLineContent dst="cardStr" content="N@@de@Tarjeta" threshold="0.3"/>
+                    <findLineMatch dst="cardNum"
+                        regex="^([0-9]{9,})$"
+                        value="($1)"
+                        overwrite="false"
+                    />
+                    <assignIfValid dst="cardNum" src="card" offset="+1" overwrite="false"/>
+                    <assignField src="cardNum" field="IDCardNumber"/>
+
+                    <!-- Find NO CADUCA string -->
+                    <findLineContent dst="doe2" content="NO@CADUCA" threshold="0.3" overwrite="false"/>
+                    <assignIfContent src="doe2" dst="doe" value="31/12/9999"
+                        op="distance" param="NO@CADUCA" param_2="0.3"
+                        overwrite="false"
+                    />
+                    <findLineMatch dst="doe" overwrite="false"
+                        regex="([0-3][0-9])(?: |[^A-Za-z0-9])*([0-1][0-9])(?: |[^A-Za-z0-9])*([1-2][0-9]{3})"
+                        value="($1)/($2)/($3)"
+                    />
+                    <assignField src="doe" field="DateOfExpiry"/>
+                    
+                    <findLineMatch dst="doi" overwrite="false"
+                        regex="([0-3][0-9])(?: |[^A-Za-z0-9])*([0-1][0-9])(?: |[^A-Za-z0-9])*([1-2][0-9]{3})"
+                        value="($1)/($2)/($3)"
+                    />
+                    <assignField src="doi" field="DateOfIssue"/>
+
+                    <findLineMatch dst="dob" overwrite="false"
+                        regex="([0-3][0-9])(?: |[^A-Za-z0-9])*([0-1][0-9])(?: |[^A-Za-z0-9])*([1-2][0-9]{3})"
+                        value="($1)/($2)/($3)"
+                    />
+                    <assignField src="dob" field="DateOfBirth"/>
+
+                    <assignResult src="$_PER/IDCard/2025" field="DocumentModel"/>
+                </ML>
+            </Front>
+
+            <Back>
+                <ML cols="5" split_by="lines" separation="0.04" space_separation="0.001">
+                    <findLineContent dst="addressStr" content="Direccion" threshold="0.3"/>
+                    <findLineContent dst="depProDisStr" content="Departamento@Provincia@Distrito" threshold="0.3"/>
+                    <findLineContent dst="cuartoNivStr" content="Cuarto@nivel#" threshold="0.3"/>
+                    <findLineContent dst="ubigeoNacStr" content="Ubigeo@de@nacimiento#" threshold="0.3"/>
+                    <findLineContent dst="grupoVotStr" content="Grupo@de@votacion#" threshold="0.3"/>
+                    <findLineContent dst="grupoSangStr" content="Grupo@y@factor@sanguineo#" threshold="0.3"/>
+
+                    <assignIfValid dst="depProDis" src="depProDisStr" offset="+1"/>
+                    <assignIfValid dst="depProDis2" src="depProDisStr" offset="+2"/>
+                    <concatenateIfValid dst="depProDis" src="depProDis2" prefix=" " suffix=""/>
+
+                    <assignIfValid dst="address" src="addressStr" offset="+1"/>
+                    <assignIfValid dst="address2" src="addressStr" offset="+2"/>
+                    <assignIfValid dst="address3" src="addressStr" offset="+3"/>
+                    <concatenateIfValid dst="address" src="address2" prefix=" " suffix=""/>
+                    <concatenateIfValid dst="address" src="address3" prefix=" " suffix=""/>
+
+                    <splitIfValid3 src="depProDis" by="/"
+                        dst1="addrDepartment"
+                        dst2="addrProvince"
+                        dst3="addrDisctict"
+                        overwrite="false"
+                    />
+
+                    <assignField src="address" field="Address"/>
+                    <assignField src="addrDepartment" field="Department"/>
+                    <assignField src="addrProvince" field="Province"/>
+                    <assignField src="addrDisctict" field="District"/>
+
+                    <matchIfValid src="cuartoNivStr" dst="cuartoNiv" regex="([0-9]+)$" value="($1)"/>
+                    <matchIfValid src="ubigeoNacStr" dst="ubigeoNac" regex="([0-9]+)$" value="($1)"/>
+                    <matchIfValid src="grupoVotStr" dst="grupoVot" regex="([0-9]+)$" value="($1)"/>
+                    <matchIfValid src="grupoSangStr" dst="grupoSang" regex="(A|B|8|0|O|o|AB|A8) ?(\+|\-)$" value="([U]$1)($2)"/>
+
+                    <assignField src="cuartoNiv" field="UbigeoFourthLevel"/>
+                    <assignField src="ubigeoNac" field="UbigeoOfBirth"/>
+                    <assignField src="grupoVot" field="VoteGroup"/>
+                    <assignField src="grupoSang" field="BloodType"/>
+                </ML>
+                <MRZ>
+                    <field id="DocumentCode"              line="1" starts="1" count="2"/>
+                    <field id="Issuer"                    line="1" starts="3" count="3" regex="PER"/>
+                    <field id="DocumentAdditionalNumber"  line="1" starts="6" count="9"/>
+                    <field id="Opt1"                      line="1" starts="16" count="15"/>
+                    <field id="DateOfBirth"               line="2" starts="1" count="6"/>
+                    <field id="Gender"                    line="2" starts="8" count="1"/>
+                    <field id="DateOfExpiry"              line="2" starts="9" count="6"/>
+                    <field id="Nationality"               line="2" starts="16" count="3"/>
+                    <field id="Opt2"                      line="2" starts="19" count="11"/>
+                    <field id="LastName"                  line="3" starts="1" count="??"/>
+                    <field id="FirstName"                 line="3" starts="??" count="30"/>
+
+                    <field id="NfcKey"                    line="1" starts="6" count="9"/>
+                </MRZ>
+                <BARCODE types="QRCODE" decode="splitBy: " charset="UTF-8" optional="yes">
+                    <field id="DocumentAdditionalNumber"  data="0"/>
+                    <!-- <field id="FirstName1"                data="1"/> -->
+                    <!-- <field id="LastName1"                 data="2"/> -->
+                </BARCODE>
+            </Back>
+        </Version>
     </DocumentID>
     
     <DocumentID id="AR" iso="ARG">
+    
         <Version id="v1" type="TD1" document_type="IDC">
             <Front>
                 <FACE>
@@ -1569,19 +1746,18 @@
                     <region id="Fingerprint" x="0.644" y="0.020" w="0.276" h="0.571"/>
                 </OCR>
                 <PDF417 decode="splitBy:@" charset="UTF-8">
-                    <!-- Data0 is always empty in this case -->
-                    <field id="DocumentNumber"       data="1"/>
+                    <field id="DocumentNumber"       data="1" regex="^[0-9]+$"/>
                     <field id="Example"              data="2"/>
                     <field id="Data3"                data="3"/>
-                    <field id="LastName"             data="4"/>
-                    <field id="FirstName"            data="5"/>
+                    <field id="LastName"             data="4" regex="^[A-ZÑ ÁÉÍÓÚ]+$"/>
+                    <field id="FirstName"            data="5" regex="^[A-ZÑ ÁÉÍÓÚ]+$"/>
                     <field id="NationalityCountry"   data="6"/>
-                    <field id="DateOfBirth"          data="7"/>
+                    <field id="DateOfBirth"          data="7" regex="^[0-9]{2}/[0-9]{2}/[0-9]{4}$"/>
                     <field id="Gender"               data="8"/>
-                    <field id="DateOfIssue"          data="9"/>
-                    <field id="NroTramite"           data="10"/>
-                    <field id="OfIdent"              data="11"/>
-                    <field id="DateOfExpiry"         data="12"/>
+                    <field id="DateOfIssue"          data="9" regex="^[0-9]{2}/[0-9]{2}/[0-9]{4}$"/>
+                    <field id="NroTramite"           data="10" regex="^[0-9]+$"/>
+                    <field id="OfIdent"              data="11" regex="^[0-9]+$"/>
+                    <field id="DateOfExpiry"         data="12" regex="^[0-9]{2}/[0-9]{2}/[0-9]{4}$"/>
                     <field id="Data13"               data="13"/>
                     <field id="Data14"               data="14"/>
                 </PDF417>
@@ -1617,14 +1793,14 @@
                     <region id="Signature" x="0.657" y="0.500" w="0.335" h="0.179"/>
                 </FACE>
                 <PDF417 decode="splitBy:@" charset="UTF-8">
-                    <field id="NroTramite"        data="0"/>
-                    <field id="LastName"          data="1"/>
-                    <field id="FirstName"         data="2"/>
+                    <field id="NroTramite"        data="0" regex="^[0-9]+$"/>
+                    <field id="LastName"          data="1" regex="^[A-ZÑ ÁÉÍÓÚ]+$"/>
+                    <field id="FirstName"         data="2" regex="^[A-ZÑ ÁÉÍÓÚ]+$"/>
                     <field id="Gender"            data="3"/>
-                    <field id="DocumentNumber"    data="4"/>
+                    <field id="DocumentNumber"    data="4" regex="^[0-9]+$"/>
                     <field id="Example"           data="5"/>
-                    <field id="DateOfBirth"       data="6"/>
-                    <field id="DateOfIssue"       data="7"/>
+                    <field id="DateOfBirth"       data="6" regex="^[0-9]{2}/[0-9]{2}/[0-9]{4}$"/>
+                    <field id="DateOfIssue"       data="7" regex="^[0-9]{2}/[0-9]{2}/[0-9]{4}$"/>
                     <field id="CuilCode"          data="8" optional="yes"/>
                 </PDF417>
                 <ML cols="4" split_by="elements" separation="0.04" space_separation="0.10">
@@ -1724,6 +1900,43 @@
                 </ML>
             </Back>
         </Version>
+    
+    
+        <Version id="PresetId" type="TD1" document_type="IDC">
+            <Front>
+                <BLINKID>
+                    <ML>
+                        <field id="NroTramite" move="DocumentAdditionalNumber"/>
+                        <field id="OfIdent" move="DocumentOptionalAdditionalNumber"/>
+                    </ML>
+                    <MRZ>
+                        <field id="NroTramite" move="DocumentAdditionalNumber"/>
+                        <field id="OfIdent" move="DocumentOptionalAdditionalNumber"/>
+                    </MRZ>
+                    <PDF417>
+                        <field id="NroTramite" move="DocumentAdditionalNumber"/>
+                        <field id="OfIdent" move="DocumentOptionalAdditionalNumber"/>
+                    </PDF417>
+                </BLINKID>
+            </Front>
+            <Back>
+                <BLINKID>
+                    <ML>
+                        <field id="NroTramite" move="DocumentAdditionalNumber"/>
+                        <field id="OfIdent" move="DocumentOptionalAdditionalNumber"/>
+                    </ML>
+                    <MRZ>
+                        <field id="NroTramite" move="DocumentAdditionalNumber"/>
+                        <field id="OfIdent" move="DocumentOptionalAdditionalNumber"/>
+                    </MRZ>
+                    <PDF417>
+                        <field id="NroTramite" move="DocumentAdditionalNumber"/>
+                        <field id="OfIdent" move="DocumentOptionalAdditionalNumber"/>
+                    </PDF417>
+                </BLINKID>
+            </Back>
+        </Version>
+
     </DocumentID>
         
     <DocumentID id="SV" iso="SLV">
@@ -1891,14 +2104,21 @@
                 <OCR>
                     <region id="FullDocument" x="0.000" y="0.000" w="1.000" h="1.000"/>
                 </OCR>
-                <ML cols="3" split_by="lines" separation="0.04" space_separation="0.10">
-                    <findLineContent dst="res" content="Residencia@@@Address" threshold="0.3"/>
-                    <findLineContent dst="municipio" content="Municipio@@@City" threshold="0.3"/>
-                    <findLineContent dst="departamento" content="Departamento@@@State" threshold="0.3"/>
-                    <findLineContent dst="tram" content="Trámite@@@Procedure@Type" threshold="0.3"/>
-                    <findLineContent dst="zona" content="Código@de@Zona@@@Zip@Code" threshold="0.3"/>
-                    <findLineContent dst="ef" content="Estado@Familiar@@@Marital@Status" threshold="0.3"/>
-                    
+                <ML cols="3" split_by="elements" separation="0.04" space_separation="0.10">
+                    <findLineContent dst="res" content="Residencia@@@Address" threshold="0.3" overwrite="false"/>
+                    <findLineContent dst="municipio" content="Distrito@@Municipio@@@City" threshold="0.3" overwrite="false"/>
+                    <findLineContent dst="municipio" content="Municipio@@@City" threshold="0.3" overwrite="false"/>
+                    <findLineContent dst="departamento" content="Departamento@@@State" threshold="0.3" overwrite="false"/>
+                    <findLineContent dst="tram" content="Trámite@@@Procedure@Type" threshold="0.3" overwrite="false"/>
+                    <findLineContent dst="zona" content="Código@de@Zona@@@Zip@Code" threshold="0.3" overwrite="false"/>
+                    <findLineContent dst="ef" content="Estado@Familiar@@@Marital@Status" threshold="0.3" overwrite="false"/>
+                    <findLineContent dst="ndlm" content="Nombre@de@la@Madre@@@Mother@s@Name" threshold="0.3"/>
+                    <findLineContent dst="ndp" content="Nombre@del@Padre@@@Father@s@Name" threshold="0.3"/>
+                    <findLineContent dst="tsbt" content="Tipo@Sangre@@@Blood@Type" threshold="0.3" overwrite="false"/>
+                    <findLineContent dst="csn" content="Cónyuge@@@Spouse@s@Name" threshold="0.3"/>
+                    <findLineContent dst="prof" content="Profesion@Oficio@@@Profession@Trade" threshold="0.3" overwrite="false"/>
+                    <findLineContent dst="prof" content="Profesion@@@Profession" threshold="0.3" overwrite="false"/>                    
+
                     <assignIfValid dst="address" src="res" offset="+1" overwrite="false"/>
                     <assignIfValid dst="address" src="res" offset="+2" overwrite="false"/>
                     <assignField src="address" field="Address"/>
@@ -1923,11 +2143,9 @@
                     <assignIfValid dst="ms" src="ef" offset="+1"/>
                     <assignField src="ms" field="MaritalStatus"/>
 
-                    <findLineContent dst="ndlm" content="Nombre@de@la@Madre@@@Mother@s@Name" threshold="0.3"/>
                     <assignIfValid dst="mother" src="ndlm" offset="+1"/>
                     <assignField src="mother" field="MotherName"/>
 
-                    <findLineContent dst="ndp" content="Nombre@del@Padre@@@Father@s@Name" threshold="0.3"/>
                     <assignIfValid dst="father" src="ndp" offset="+1"/>
                     <assignField src="father" field="FatherName"/>
 
@@ -2002,17 +2220,13 @@
                     <assignField src="doe" field="DateOfExpiry"/>
                     <assignField src="nat" field="Nationality"/>                    
 
-                    <findLineContent dst="csn" content="Cónyuge@@@Spouse@s@Name" threshold="0.3"/>
                     <assignIfValid dst="spouse" src="csn" offset="+1"/>
                     <assignField src="spouse" field="SpouseName"/>
 
-                    <findLineContent dst="prof" content="Profesion@Oficio@@@Profession@Trade" threshold="0.3"/>
                     <assignIfValid dst="profofi" src="prof" offset="+1"/>
                     <assignField src="profofi" field="Profession"/>
-
                 </ML>
             </Back>
-
         </Version>
     </DocumentID>
 
@@ -2315,7 +2529,7 @@
             <Front>
                 <FACE/>
                 <BARCODE optional="yes"/>
-                <ML cols="3" split_by="elements" separation="0.10" space_separation="0.02">
+                <ML cols="3" split_by="elements" c_separation="2" space_separation="0.02">
 
                     <postProcessImage dst=""
                         rMin="0.000" rMax="1.000"
@@ -2463,7 +2677,7 @@
         <Version id="v2" type="TD1" document_type="IDC">
             <Front>
                 <FACE/>
-                <ML cols="2" split_by="elements" separation="0.10" space_separation="0.02">
+                <ML cols="2" split_by="elements" c_separation="2" space_separation="0.02">
 
                     <findLineMatch src="mrzStr" dst="mrzMark" regex="(.*[&lt;«]\s?[&lt;«].*)" value="($1)"/>
                     <matchIfValid src="mrzStr" dst="mrzPresent" regex="(.{15,})" value="($1)"/>
@@ -2475,7 +2689,14 @@
                     <rejectIfValid src="dndt"/>
                     <rejectIfValid src="ldc"/>
 
-                    <findLineMatch dst="docNumber"
+                    <findLineMatchMultiple
+                        regex="([0-3][0-9])(?: |[^A-Za-z0-9])*([0-1][0-9])(?: |[^A-Za-z0-9])*([1-2][0-9]{3}) ?([a-zA-Z0-9]{4}) ([a-zA-Z0-9]{4}) ([a-zA-Z0-9]{5})"
+                        dst1="DoB"
+                        value1="($1)/($2)/($3)"
+                        dst2="docNumber"
+                        value2="([N]$4) ([N]$5) ([N]$6)"
+                    />
+                    <findLineMatch dst="docNumber" overwrite="false"
                         regex="([a-zA-Z0-9]{4}) ([a-zA-Z0-9]{4}) ([a-zA-Z0-9]{5})"
                         value="([N]$1) ([N]$2) ([N]$3)"
                     />
@@ -2488,7 +2709,7 @@
                     <rejectIfNotValid2 src="rdh" src2="rndlp" reason="DocumentNotExpected"/>
                     <rejectIfNotValid src="dni" reason="DocumentNotExpected"/>
 
-                    <findLineMatch dst="DoB"
+                    <findLineMatch dst="DoB" overwrite="false"
                         regex="([0-3][0-9])(?: |[^A-Za-z0-9])*([0-1][0-9])(?: |[^A-Za-z0-9])*([1-2][0-9]{3})"
                         value="($1)/($2)/($3)"
                     />
@@ -2564,7 +2785,7 @@
         <Version id="v1" type="TD1" document_type="IDC" priority="PDF417,BARCODE,MRZ,ML,OCR,INPUT">
             <Front>
                 <FACE/>
-                <ML cols="1" split_by="lines" separation="0.08" space_separation="0.10">
+                <ML cols="1" split_by="elements" c_separation="2" space_separation="0.10">
 
                     <findLineContent dst="rdc" content="REPUBLICA@DE@COLOMBIA" threshold="0.3"/>
                     <findLineContent dst="ip" content="IDENTIFICACION@PERSONAL" threshold="0.3"/>
@@ -2613,11 +2834,11 @@
                 <OCR>
                     <region id="FullDocument" x="0.000" y="0.000" w="1.000" h="1.000"/>
                 </OCR>
-                <ML cols="1" split_by="lines" separation="0.01" space_separation="0.10">
+                <ML cols="1" split_by="elements" c_separation="2" space_separation="0.10">
 
                     <findLineMatchMultiple src="mark" overwrite="false"
-                        regex="([A-Z])[- \.]?([0-9OIlSBA]{7})[- \.]?([0-9OIlSBA]{8})[- \.]?([FMX])[- \.]?00([0-9OIlSBA]{8})[- \.]?([1-2][0-9]{3})([0-1][0-9])([0-3][0-9])"
-                        dst1="letter" value1="($1)"
+                        regex="([A-Za-z0-9])[- \.]?((?:[0-9OIlSBA] ?){7})[- \.]?((?:[0-9OIlSBA] ?){8})[- \.]?([FMX])[- \.]?[0Oo][0Oo]((?:[0-9OIlSBA] ?){8})[- \.]?([1-2][0-9]{3})([0-1][0-9])([0-3][0-9])"
+                        dst1="letter" value1="([U]$1)"
                         dst2="number1" value2="($2)"
                         dst3="number2" value3="($3)"
                         dst4="sex" value4="($4)"
@@ -2625,8 +2846,8 @@
                         dst6="date" value6="($8)/($7)/($6)"
                     />
                     <findLineMatchMultiple src="mark" overwrite="false"
-                        regex="([A-Z])[- \.]?([0-9OIlSBA]{7})[- \.]?([0-9OIlSBA]{8})[- \.]?([FMX])[- \.]?0([0-9OIlSBA]{9})[- \.]?([1-2][0-9]{3})([0-1][0-9])([0-3][0-9])"
-                        dst1="letter" value1="($1)"
+                        regex="([A-Za-z0-9])[- \.]?((?:[0-9OIlSBA] ?){7})[- \.]?((?:[0-9OIlSBA] ?){8})[- \.]?([FMX])[- \.]?[0Oo]((?:[0-9OIlSBA] ?){9})[- \.]?([1-2][0-9]{3})([0-1][0-9])([0-3][0-9])"
+                        dst1="letter" value1="([U]$1)"
                         dst2="number1" value2="($2)"
                         dst3="number2" value3="($3)"
                         dst4="sex" value4="($4)"
@@ -2634,25 +2855,26 @@
                         dst6="date" value6="($8)/($7)/($6)"
                     />
                     <findLineMatchMultiple src="mark" overwrite="false"
-                        regex="([A-Z])[- \.]?([0-9OIlSBA]{7})[- \.]?([0-9OIlSBA]{8})[- \.]?([FMX])[- \.]?([0-9OIlSBA]{10})[- \.]?([1-2][0-9]{3})([0-1][0-9])([0-3][0-9])"
-                        dst1="letter" value1="($1)"
+                        regex="([A-Za-z0-9])[- \.]?((?:[0-9OIlSBA] ?){7})[- \.]?((?:[0-9OIlSBA] ?){8})[- \.]?([FMX])[- \.]?((?:[0-9OIlSBA] ?){10})[- \.]?([1-2][0-9]{3})([0-1][0-9])([0-3][0-9])"
+                        dst1="letter" value1="([U]$1)"
                         dst2="number1" value2="($2)"
                         dst3="number2" value3="($3)"
                         dst4="sex" value4="($4)"
                         dst5="docNumber" value5="($5)"
                         dst6="date" value6="($8)/($7)/($6)"
                     />
+                    <replaceIfValid dst="docNumber" content=" " replace=""/>
                     <assignField src="docNumber" field="DocumentNumber"/>
 
                     <findLineMatch dst="mark" overwrite="false"
-                        regex="([A-Z][- \.]?[0-9OIlSBA]{7,}[- \.]?[0-9OIlSBA]{8,}[- \.]?[A-Z][- \.]?[0-9OIlSBA]{10,}[- \.]?[0-9OIlSBA]{8,})"
+                        regex="([A-Za-z0-9][- \.]?(?:[0-9OIlSBA] ?){7,}[- \.]?(?:[0-9OIlSBA] ?){8,}[- \.]?[A-Z][- \.]?(?:[0-9OIlSBA] ?){10,}[- \.]?(?:[0-9OIlSBA] ?){8,})"
                         value="($1)"
                     />
                     <rejectIfNotValid src="mark" reason="DocumentNotExpected"/>
 
                     <findLineMatch dst="DoB"
-                        regex="(0[1-9]|[1-2][0-9]|3[0-1])(?: |[^A-Za-z0-9])*([a-zA-Z0-9]{3})[A-Z]?(?: |[^A-Za-z0-9])*((?:1[8-9]|2[0-2])[0-9]{2})"
-                        value="($1)/([M]$2)/($3)"
+                        regex="([0Oo][1-9Il]|[1-2Il][0-9OoIl]|3[0-1OoIl])(?: |[^A-Za-z0-9])*([a-zA-Z0-9]{3})[A-Z]?(?: |[^A-Za-z0-9])*((?:[1Il][8-9]|2[0-2OoIl])[0-9OoIl]{2})"
+                        value="([N]$1)/([M]$2)/([N]$3)"
                     />
                     <rejectIfNotValid src="DoB"/>
                     <assignField src="DoB" field="DateOfBirth"/>
@@ -2693,13 +2915,13 @@
                     <findLineContent dst="fle" content="FECHA@Y@LUGAR@DE@EXPEDICION"/>
                     <assignIfValid dst="doiStr" src="fle" offset="-1"/>
                     <matchIfValid dst="DoI" src="doiStr"
-                        regex="(0[1-9]|[1-2][0-9]|3[0-1])(?: |[^A-Za-z0-9])*([a-zA-Z0-9]{3})[A-Z]?(?: |[^A-Za-z0-9])*((?:1[8-9]|2[0-2])[0-9]{2})"
-                        value="($1)/([M]$2)/($3)"
+                        regex="([0Oo][1-9Il]|[1-2Il][0-9OoIl]|3[0-1OoIl])(?: |[^A-Za-z0-9])*([a-zA-Z0-9]{3})[A-Z]?(?: |[^A-Za-z0-9])*((?:[1Il][8-9]|2[0-2OoIl])[0-9OoIl]{2})"
+                        value="([N]$1)/([M]$2)/([N]$3)"
                         overwrite="false"
                     />
                     <findLineMatch dst="DoI"
-                        regex="(0[1-9]|[1-2][0-9]|3[0-1])(?: |[^A-Za-z0-9])*([a-zA-Z0-9]{3})[A-Z]?(?: |[^A-Za-z0-9])*((?:1[8-9]|2[0-2])[0-9]{2})"
-                        value="($1)/([M]$2)/($3)"
+                        regex="([0Oo][1-9Il]|[1-2Il][0-9OoIl]|3[0-1OoIl])(?: |[^A-Za-z0-9])*([a-zA-Z0-9]{3})[A-Z]?(?: |[^A-Za-z0-9])*((?:[1Il][8-9]|2[0-2OoIl])[0-9OoIl]{2})"
+                        value="([N]$1)/([M]$2)/([N]$3)"
                         overwrite="false"
                     />
                     <rejectIfNotValid src="DoI"/>
@@ -2714,7 +2936,6 @@
 
                 </ML>
             </Back>
-
         </Version>
 
         <Version id="v2" type="TD1" document_type="IDC" priority="PDF417,BARCODE,MRZ,ML,OCR,INPUT">
@@ -2862,9 +3083,7 @@
                     <field id="NfcKey"          line="1" starts="6" count="9"/>
                 </MRZ> 
             </Back>
-
         </Version>
-
     </DocumentID>
 
     <DocumentID id="BR" iso="BRA">
@@ -3546,6 +3765,13 @@
                     <findLineContent dst="nat" content="Nacionalidade@@@Nationality" threshold="0.3" overwrite="false"/>
                     <findLineContent dst="does" content="Data@de@Validade@@@Date@of@Expiry" threshold="0.3" overwrite="false"/>
 
+                    <rejectIfNotValid src="nom"  reason="DocumentNotExpected"/>
+
+                    <!-- Try to find "CARTEIRA DE IDENTIDADE" above "Nome / Name" -->
+                    <findLineFrom dst="tryMrk5" src="nom" direction="TOP" overwrite="false"/>
+                    <assignIfContent dst="mrk5" value="Y" src="tryMrk5" op="distance" param="CARTEIRA@DE@IDENTIDADE" param_2="0.2"/>
+                    <rejectIfValid src="mrk5" reason="DocumentNotExpected"/>
+
                     <findLineMatch src="cpfLine" dst="cpf" overwrite="false"
                         regex="([0-9oOl]{3})[\.,:]?([0-9oOl]{3})[\.,:]?([0-9oOl]{3})-([0-9oOl]{2})"
                         value="([N]$1).([N]$2).([N]$3)-([N]$4)"
@@ -3624,6 +3850,136 @@
                 </ML>
             </Back>
         </Version>
+
+        <Version id="ID-NEW-2022" type="TD1" document_type="IDC">
+            <Front>
+                <FACE/>
+                <ML cols="2" split_by="elements" c_separation="3" space_separation="0.05">
+                    
+                    <findLineMatch src="mrzStr" dst="mrzMark" regex="(.*[&lt;«]\s?[&lt;«].*)" value="($1)"/>
+                    <matchIfValid src="mrzStr" dst="mrzPresent" regex="(.{15,})" value="($1)"/>
+                    <rejectIfValid src="mrzPresent" reason="DocumentNotExpected"/>
+                    
+                    <findLineContent dst="mrk1" content="REPÚBLICA@FEDERATIVA@DO@BRASIL" threshold="0.2" overwrite="false"/>
+
+                    <findLineContent dst="mrk2" content="GOVERNO@FEDERAL" threshold="0.2" overwrite="false"/>
+
+                    <findLineContent dst="mrk3" content="Estado@d@@@#" threshold="0.2" overwrite="false"/>
+                    <findLineContent dst="mrk3" content="DISTRITO@FEDERAL" threshold="0.2" overwrite="false"/>
+                    <findLineContent dst="mrk3" content="Distrito@Federal" threshold="0.2" overwrite="false"/>
+                    <assignField src="mrk3" field="State"/>
+
+                    <findLineContent dst="mrk4" content="SECRETARIA@DE@SEGURANÇA@PUBLICA" threshold="0.2" overwrite="false"/>
+                    <findLineContent dst="mrk4" content="Secretaria@de@Segurança@Publica" threshold="0.2" overwrite="false"/>
+
+                    <rejectIfNotValid2 src="mrk1" src2="mrk2" reason="DocumentNotExpected"/>
+
+                    <label src="HEADER_FOUND"/>
+
+                    <findLineContent dst="nom" content="Nome@@@Name" threshold="0.3" overwrite="false"/>
+                    <findLineContent dst="nom_soc" content="Nome@Social@@@Social@Name" threshold="0.3" overwrite="false"/>
+                    <findLineContent dst="reg" content="Registro@Geral@@@CPF#" threshold="0.3" overwrite="false"/>
+                    <findLineContent dst="nac" content="Data@de@Nascimiento#" threshold="0.3" overwrite="false"/>
+                    <findLineContent dst="pob" content="Naturalide@@@Place@of@Birth" threshold="0.3" overwrite="false"/>
+                    <findLineContent dst="sexStr" content="Sexo@@@Sex" threshold="0.3" overwrite="false"/>
+                    <findLineContent dst="nat" content="Nacionalidade@@@Nationality" threshold="0.3" overwrite="false"/>
+                    <findLineContent dst="does" content="Validade@@@Expiry" threshold="0.3" overwrite="false"/>
+
+                    <rejectIfNotValid src="nom"  reason="DocumentNotExpected"/>
+
+                    <!-- Try to find "CARTEIRA DE IDENTIDADE" above "Nome / Name" -->
+                    <findLineFrom dst="tryMrk5" src="nom" direction="TOP" overwrite="false"/>
+                    <assignIfContent dst="mrk5" value="Y" src="tryMrk5" op="distance" param="CARTEIRA@DE@IDENTIDADE" param_2="0.2"/>
+                    <rejectIfNotValid src="mrk5" reason="DocumentNotExpected"/>
+
+                    <findLineMatch src="cpfLine" dst="cpf" overwrite="false"
+                        regex="([0-9oOl]{3})[\.,:]?([0-9oOl]{3})[\.,:]?([0-9oOl]{3})-([0-9oOl]{2})"
+                        value="([N]$1).([N]$2).([N]$3)-([N]$4)"
+                    />
+                    <rejectIfNotValid src="cpf"  reason="DocumentNotExpected"/>
+                    <assignField src="cpf" field="CPF"/>
+                    <assignField src="cpf" field="DocumentNumber"/>
+
+                    <assignIfValid dst="fullN" src="nom" offset="+1" overwrite="false"/>
+                    <rejectIfNotValid src="fullN"/>
+                    <assignField src="fullN" field="FullName"/>
+
+                    <findLineMatch src="dobStr" dst="dob"
+                        regex="(0[1-9]|[1-2][0-9]|3[0-1])(?: |[^A-Za-z0-9])*(0[1-9]|1[0-2])(?: |[^A-Za-z0-9])*((?:[1lIií][8-9]|2[0-2])[0-9]{2})"
+                        value="([N]$1)/([N]$2)/([N]$3)"
+                    />
+                    <rejectIfNotValid src="dob"/>
+                    <assignField src="dob" field="DateOfBirth"/>
+
+                    <findLineMatch src="doeStr" dst="doe"
+                        regex="(0[1-9]|[1-2][0-9]|3[0-1])(?: |[^A-Za-z0-9])*(0[1-9]|1[0-2])(?: |[^A-Za-z0-9])*((?:[1lIií][8-9]|2[0-2])[0-9]{2})"
+                        value="([N]$1)/([N]$2)/([N]$3)"
+                    />
+                    <rejectIfNotValid src="doe"/>
+                    <assignField src="doe" field="DateOfExpiry"/>
+
+                    <assignIfValid dst="PoB" src="pob" offset="+1"/>
+                    <assignField src="PoB" field="PlaceOfBirth"/>
+
+                    <assignIfValid dst="sexVal" src="sexStr" offset="+1"/>
+                    <assignIfContent dst="sex" value="M" src="sexVal" op="starts_with" param="M"/>
+                    <assignIfContent dst="sex" value="F" src="sexVal" op="starts_with" param="F"/>
+                    <assignField src="sex" field="Gender"/>
+
+                    <assignIfValid dst="nati" src="nat" offset="+1"/>
+                    <assignField src="nati" field="Nationality"/>
+
+                </ML>
+            </Front>
+
+            <Back>
+                <MRZ>
+                    <field id="DocumentCode"    line="1" starts="1" count="2"/>
+                    <field id="Issuer"          line="1" starts="3" count="3" regex="BRA"/>
+                    <field id="DocNumber"       line="1" starts="6" count="9"/>
+                    <field id="DocumentNumber"  line="1" starts="16" count="14"/>
+                    <field id="CheckDigit"      line="1" starts="30" count="1"/>
+                    <field id="DateOfBirth"     line="2" starts="1" count="6"/>
+                    <field id="Gender"          line="2" starts="8" count="1"/>
+                    <field id="DateOfExpiry"    line="2" starts="9" count="6"/>
+                    <field id="Nationality"     line="2" starts="16" count="3"/>
+                    <field id="Opt2"            line="2" starts="19" count="11"/>
+                    <field id="LastName"        line="3" starts="1" count="??"/>
+                    <field id="FirstName"       line="3" starts="??" count="30"/>
+
+                    <field id="NfcKey"          line="1" starts="6" count="9"/>
+                </MRZ>                
+                <BARCODE types="QRCODE" decode="custom:BRA-IDC-2020-CIN" optional="yes"/>
+                <ML cols="5" split_by="elements" c_separation="3" space_separation="0.05">
+
+                    <findLineContent dst="fil" content="Filiação@@@Filiation" threshold="0.3" overwrite="false"/>
+                    <findLineContent dst="iss" content="Orgao@Expeditor@@@Card@Issuer" threshold="0.3" overwrite="false"/>
+                    <findLineContent dst="poi" content="Local@@@Place@of@Issue" threshold="0.3" overwrite="false"/>
+                    <findLineContent dst="dois" content="Emissão@@@Issue" threshold="0.3" overwrite="false"/>
+                    <rejectIfNotValid4 src="fil" src2="iss" src3="poi" src4="dois" reason="DocumentNotExpected"/>
+
+                    <findLineMatch src="doi" dst="DoI" overwrite="false"
+                        regex="(0[1-9]|[1-2][0-9]|3[0-1])(?: |[^A-Za-z0-9])*(0[1-9]|1[0-2])(?: |[^A-Za-z0-9])*((?:[1lIií][8-9]|2[0-2])[0-9]{2})"
+                        value="([N]$1)/([N]$2)/([N]$3)"
+                    />
+                    <rejectIfNotValid src="DoI"/>
+                    <assignField src="DoI" field="DateOfIssue"/>
+
+                    <assignIfValid dst="par1" src="fil" offset="+1"/>
+                    <assignIfValid dst="par2" src="fil" offset="+2"/>
+                    <assignField src="par1" field="Parent1Name"/>
+                    <assignField src="par2" field="Parent2Name"/>
+
+                    <assignIfValid dst="issuer" src="iss" offset="+1"/>
+                    <assignField src="issuer" field="IssuingAuthority"/>
+
+                    <assignIfValid dst="PoI" src="poi" offset="+1"/>
+                    <assignField src="PoI" field="PlaceOfIssue"/>
+
+                </ML>
+            </Back>
+        </Version>
+
     </DocumentID>
 
     <DocumentID id="PY" iso="PRY">
@@ -4750,6 +5106,7 @@
                     <replaceIfValid dst="ln2" content="2P" replace=""/>
                     <replaceIfValid dst="ln2" content="2" replace=""/>
                     <replaceIfValid dst="ln2" content="°" replace=""/>
+                    <replaceIfValid dst="ln2" content="º" replace=""/>
                     <replaceIfValid dst="ln2" content=":" replace=""/>
                     <replaceIfValid dst="ln2" content="&quot;" replace=""/>
                     <modifyIfValid dst="ln2" op="T,U"/>
@@ -4759,6 +5116,7 @@
                     <replaceIfValid dst="ln1" content="1P" replace=""/>
                     <replaceIfValid dst="ln1" content="1" replace=""/>
                     <replaceIfValid dst="ln1" content="°" replace=""/>
+                    <replaceIfValid dst="ln1" content="º" replace=""/>
                     <replaceIfValid dst="ln1" content=":" replace=""/>
                     <replaceIfValid dst="ln1" content="&quot;" replace=""/>
                     <modifyIfValid dst="ln1" op="T,U"/>
@@ -5009,7 +5367,7 @@
         <Version id="All" type="TD1" document_type="IDC" priority="PDF417,BARCODE,ML,MRZ,OCR,INPUT">
             <Front>
                 <FACE/>
-                <ML cols="4" split_by="elements" separation="0.035" space_separation="0.10">
+                <ML cols="4" split_by="elements" c_separation="1" space_separation="0.10">
 
                     <findLineMatch src="mrzStr" dst="mrzMark" regex="(.*[&lt;«]\s?[&lt;«].*)" value="($1)"/>
                     <matchIfValid src="mrzStr" dst="mrzPresent" regex="(.{15,})" value="($1)"/>
@@ -5047,22 +5405,28 @@
 
                     <rejectIfNotValid3 src="rnp_dpi_dpi" src2="rnp_dpi" src3="dpi" reason="DocumentNotExpected"/>
 
-                    <findLineContent dst="nom" content="NOMBRE" threshold="0.33"/>
-                    <findLineContent dst="ape" content="APELLIDO" threshold="0.33"/>
+                    <findLineContent dst="nom" content="NOMBRE" threshold="0.33" overwrite="false"/>
+                    <findLineContent dst="nom" content="NOMBRE@@@GIVEN@NAMES" threshold="0.33" overwrite="false"/>
+                    <findLineContent dst="ape" content="APELLIDO" threshold="0.33" overwrite="false"/>
+                    <findLineContent dst="ape" content="APELLDO" threshold="0.33" overwrite="false"/>
+                    <findLineContent dst="ape" content="APELLIDO@@@SURNAME" threshold="0.33" overwrite="false"/>
+                    <findLineContent dst="ape" content="APELLDO@@@SURNAME" threshold="0.33" overwrite="false"/>
 
                     <rejectIfNotValid src="nom"/>
                     <rejectIfNotValid src="ape"/>
 
                     <!-- We block the line "SEXO" early to prevent reading "SEXO" as the second last name -->
-                    <findLineContent dst="sexo" content="SEXO" threshold="1"/>
-                    <findLineContent dst="sexMstr" content="MASCULINO" threshold="0.33"/>
-                    <findLineContent dst="sexFstr" content="FEMENINO" threshold="0.33"/>
+                    <findLineContent dst="sexo" content="SEXO" threshold="1" overwrite="false"/>
+                    <findLineContent dst="sexo" content="SEXO@@@GENDER" threshold="0.33" overwrite="false"/>
+                    <findLineContent dst="sexMstr" content="MASCULINO" threshold="0.33" overwrite="false"/>
+                    <findLineContent dst="sexFstr" content="FEMENINO" threshold="0.33" overwrite="false"/>
 
-                    <!-- We block the line "NACIONALIDAD" to prevent reading it as second last name -->
-                    <findLineContent dst="nacionalidad" content="NACIONALIDAD" threshold="4"/>
+                    <findLineContent dst="nacionalidad" content="NACIONALIDAD@" threshold="0.33" overwrite="false"/>
                     <rejectIfNotValid src="nacionalidad"/> <!-- We reject to prevent capturing the LastName wrong -->
+                    <findLineContent dst="nacionalidad" content="NATIONALITY" threshold="0.33" overwrite="true"/>
                     <assignIfValid dst="nat" src="nacionalidad" offset="+1" overwrite="false"/>
                     <assignField src="nat" field="Nationality" block="true"/>
+                    <!-- We block the line "NACIONALIDAD" to prevent reading it as second last name -->
 
                     <assignIfValid dst="fn1" src="nom" offset="+1" overwrite="false"/>
                     <assignIfValid dst="fn2" src="nom" offset="+2" overwrite="false"/>
@@ -5111,7 +5475,11 @@
                     />
                     <assignField src="doi" field="DateOfIssue"/>
 
-                    <findLineContent dst="no_sign" content="NO@FIRMA" threshold="2"/>
+                    <!-- Try to find 'NO FIRMA' mark -->
+                    <findLineContent dst="no_sign" content="NO FIRMA" threshold="1" overwrite="false"/>
+                    <findLineContent dst="no_sign" content="NO FRMA" threshold="1" overwrite="false"/>
+                    <findLineContent dst="no_sign" content="NOFIRMA" threshold="1" overwrite="false"/>
+                    <findLineContent dst="no_sign" content="NOFRMA" threshold="1" overwrite="false"/>
                     <assignIfContent src="no_sign" dst="signed" value="NO"
                         op="exists"
                         overwrite="false"
@@ -5155,10 +5523,16 @@
                     <replaceIfValid dst="mrzLine3" content=" " replace=""/>
 
                     <findLineContent dst="ldn" content="LUGAR@DE@NACIMIENTO" threshold="0.33" overwrite="false"/>
+                    <findLineContent dst="ldn" content="LUGAR@DE@NACIMIENTO@@@PLACE@OF@BIRTH" threshold="0.33" overwrite="false"/>
+                    <rejectIfNotValid2 src="ldn" src2="vec" reason="DocumentNotExpected"/>
+
                     <findLineContent dst="vec" content="VECINDAD" threshold="0.33" overwrite="false"/>
                     <findLineContent dst="vec" content="@@VECINDAD" threshold="0.33" overwrite="false"/>
+                    <findLineContent dst="vec" content="VECINDAD@@@NEIGHBORHOOD" threshold="0.33" overwrite="false"/>
+                    <findLineContent dst="vec" content="@@VECINDAD@@@NEIGHBORHOOD" threshold="0.33" overwrite="false"/>
                     <findLineContent dst="pub" content="PUEBLO" threshold="0.33" overwrite="false"/>
-                    <rejectIfNotValid2 src="ldn" src2="vec" reason="DocumentNotExpected"/>
+                    <findLineContent dst="pub" content="PUEBLO@@@ETHNIC@GROUPS" threshold="0.33" overwrite="false"/>
+                    <findLineContent dst="com" content="COMUNIDAD@LINGÜISTICA@@@LIGUISTIC@COMMUNITY" threshold="0.33" overwrite="false"/>
 
                     <findLineMatch dst="pobCode"
                         regex="L ?[:\-\.]? ?([0-9A-Z\-\/\| ]+) ?F ?[:\-\.]? ?([0-9]+) ?P ?[:\-\.]? ?([0-9]+)"
@@ -5168,8 +5542,8 @@
                     <assignField src="pobCode" field="PlaceOfBirthCode"/>
 
                     <!-- We read Pueblo field -->
-                    <assignIfValid dst="vil" src="pub" offset="1" overwrite="false"/>
-                    <assignField src="vil" field="Village" block="true"/>
+                    <assignIfValid dst="eth" src="pub" offset="1" overwrite="false"/>
+                    <assignField src="eth" field="Ethnic" block="true"/>
 
                     <!-- We read Vecindad field -->
                     <assignIfValid dst="nei1" src="vec" offset="1" overwrite="false"/>
@@ -5211,7 +5585,8 @@
                         value="([N]$1)/([M]$2)/([N]$3)"
                     />
 
-                    <findLineContent dst="ec" content="ESTADO@CIVIL" threshold="0.33"/>
+                    <findLineContent dst="ec" content="ESTADO@CIVIL" threshold="0.33" overwrite="false"/>
+                    <findLineContent dst="ec" content="ESTADO@CIVIL@@@MARITAL@STATUS" threshold="0.33" overwrite="false"/>
                     <assignIfValid dst="maritalStatusStr" src="ec" offset="1" overwrite="false"/>
                     <modifyIfValid dst="maritalStatusStr" op="U"/>
 
@@ -5221,8 +5596,11 @@
                      />
                     <assignField src="maritalStatus" field="MaritalStatus"/>
 
+                    <assignIfValid dst="lin_com" src="com" offset="1" overwrite="false"/>
+                    <assignField src="lin_com" field="LinguisticCommunity"/>
+
                     <findLineMatch dst="serial"
-                        regex="^([0-9oOlBASsG]{13})$"
+                        regex="^([0-9oODlBASsG]{13})$"
                         value="([N]$1)"
                         overwrite="false"
                     />
@@ -5251,7 +5629,7 @@
 
                     <!-- We test again for Serial number -->
                     <findLineMatch dst="serial"
-                        regex="^([0-9oOlBASsG]{13})"
+                        regex="^([0-9oODlBASsG]{13})"
                         value="([N]$1)"
                         overwrite="false"
                     />
@@ -5273,7 +5651,7 @@
                     <rejectIfValid src="mrzPresent" reason="DocumentNotExpected"/>
 
                     <findLineMatch src="docNumberStr" dst="docNumber"
-                        regex="[R8] ?[uU] ?[nN] ?([0-9]+)[ \-\.]?([0-9]{3})[ \-\.]?([0-9]{3})[-\.]([0-9A-Z])"
+                        regex="([0-9]+)[ \-\.]?([0-9]{3})[ \-\.]?([0-9]{3})[-\.]([0-9A-Z])"
                         value="([N]$1).([N]$2).([N]$3)-($4)"
                     />
                     <rejectIfNotValid src="docNumber" reason="DocumentNotExpected"/>
@@ -5313,22 +5691,32 @@
                         value="([N]$1).([N]$2).([N]$3)"
                         overwrite="false"
                     />
+                    <findLineMatch dst="idcard"
+                        regex="([0-9A-Z]{3})[ \-\.]([0-9]{3})[ \-\.]([0-9]{3})$"
+                        value="($1).([N]$2).([N]$3)"
+                        overwrite="false"
+                    />
+                    <matchIfValid dst="idcard" src="dobStr"
+                        regex="([0-9A-Z]{3})[ \-\.]([0-9]{3})[ \-\.]([0-9]{3})$"
+                        value="($1).([N]$2).([N]$3)"
+                        overwrite="false"
+                    />
                     <assignField src="idcard" field="IDCardNumber"/>
 
                     <findLineMatch2 src="doiStr" dst="doi" dst2="doe"
-                        regex="([0-9oOl]{2})[ \-\.]?([A-Z]{2,})[ \-\.]?([1-2][0-9oOl]{3})"
+                        regex="([0-9oOl]{2})[ \-\.]?([A-Z]{2,3})[A-Z]*[ \-\.]?([1-2][0-9oOl]{3})"
                         value="([N]$1)/([M]$2)/([N]$3)"
                         overwrite="false"
                     />
                     <assignField src="doi" field="DateOfIssue"/>
 
                     <findLineMatch dst="doe"
-                        regex="([0-9oOl]{2})[ \-\.]?([A-Z]{2,})[ \-\.]?([1-2][0-9oOl]{3})"
+                        regex="([0-9oOl]{2})[ \-\.]?([A-Z]{2,3})[A-Z]*[ \-\.]?([1-2][0-9oOl]{3})"
                         value="([N]$1)/([M]$2)/([N]$3)"
                         overwrite="false"
                     />
                     <matchIfValid dst="doe" src="docNumberStr"
-                        regex="([0-9oOl]{2})[ \-\.]?([A-Z]{2,})[ \-\.]?([1-2][0-9oOl]{3})"
+                        regex="([0-9oOl]{2})[ \-\.]?([A-Z]{2,3})[A-Z]*[ \-\.]?([1-2][0-9oOl]{3})"
                         value="([N]$1)/([M]$2)/([N]$3)"
                         overwrite="false"
                     />
@@ -5338,15 +5726,12 @@
                     <assignIfValid dst="ln2" src="ape" offset="+2" overwrite="false"/>
                     <assignIfValid dst="ln1" src="nom" offset="-2" overwrite="false"/>
                     <assignIfValid dst="ln2" src="nom" offset="-1" overwrite="false"/>
-                    <modifyIfValid dst="ln1" op="U"/>
-                    <modifyIfValid dst="ln2" op="U"/>
 
                     <assignIfValid dst="ln" src="ln1"/>
                     <concatenateIfValid dst="ln" src="ln2" prefix=" " suffix=""/>
 
                     <assignIfValid dst="fn" src="nom" offset="+1" overwrite="false"/>
                     <assignIfValid dst="fn" src="ape" offset="+4" overwrite="false"/>
-                    <modifyIfValid dst="fn" op="U"/>
 
                     <rejectIfNotValid src="ln"/>
                     <rejectIfNotValid src="fn"/>
@@ -5630,31 +6015,23 @@
         <Version id="All" type="TD1" document_type="IDC">
             <Front>
                 <FACE/>
-                <BARCODE types="CODE39" decode="splitBy: " charset="UTF-8" optional="yes">
-                    <field id="DocumentNumber"       data="0"/>
-                </BARCODE>
-
                 <ML cols="3" split_by="lines" separation="0.10" space_separation="0.15">
-                    <!--
-                    <postProcessImage dst=""
-                        rMin="0.200" rMax="0.250"
-                        gMin="0.200" gMax="0.900"
-                        bMin="0.200" bMax="0.250"
-                        rWeight="0.500"
-                        gWeight="1.000"
-                        bWeight="0.500"
-                    />
-                    -->
+
                     <findLineMatch src="mrzStr" dst="mrzMark" regex="(.*[&lt;«]\s?[&lt;«].*)" value="($1)"/>
                     <matchIfValid src="mrzStr" dst="mrzPresent" regex="(.{15,})" value="($1)"/>
                     <rejectIfValid src="mrzPresent" reason="DocumentNotExpected"/>
 
                     <findLineContent dst="epb" content="ESTADO@PLURINACIONAL@DE@BOLIVIA" threshold="0.3"/>
                     <findLineContent dst="cdi" content="CÉDULA@DE@IDENTIDAD" threshold="0.3"/>
+                    <rejectIfNotValid src="epb" reason="DocumentNotExpected"/>
+                    <rejectIfNotValid src="cdi" reason="DocumentNotExpected"/>
                     <findLineContent dst="ser" content="serie" threshold="0.3"/>
                     <findLineContent dst="sec" content="sección" threshold="0.3"/>
-                    <rejectIfNotValid2 src="epb" src2="cdi" reason="DocumentNotExpected"/>
 
+                    <findLineContent dst="nom" content="NOMBRE" threshold="0.3"/>
+                    <rejectIfValid src="nom" reason="DocumentNotExpected"/>
+                    <findLineContent dst="ape" content="APELLIDOS" threshold="0.3"/>
+                    <rejectIfValid src="ape" reason="DocumentNotExpected"/>
                     <findLineContent dst="fdn" content="FECHA@@DE@@NACIMIENTO" threshold="0.3"/>
                     <rejectIfValid src="fdn" reason="DocumentNotExpected"/>
 
@@ -5836,7 +6213,8 @@
 
                     <findLineContent dst="epdb" content="ESTADO@PLURINACIONAL@DE@BOLIVIA" threshold="0.3"/>
                     <findLineContent dst="sgdip" content="SERVICIO@GENERAL@DE@IDENTIFICACION@PERSONAL" threshold="0.5"/>
-                    <rejectIfNotValid2 src="epdb" src2="sgdip" reason="DocumentNotExpected"/>
+                    <rejectIfNotValid src="epdb" reason="DocumentNotExpected"/>
+                    <rejectIfNotValid src="sgdip" reason="DocumentNotExpected"/>
 
                     <findLineContent dst="ser" content="SERIE" threshold="0.3"/>
                     <findLineContent dst="sec" content="SECCION" threshold="0.3"/>
@@ -5918,23 +6296,16 @@
 
                     <assignField src="data2" field="Data2"/>
 
-
-
-
                 </ML>
 
             </Front>
 
             <Back>
-                <!-- types: QRCODE,EAN8,EAN13,CODE39,CODE128 -->
-                <!--<BARCODE types="QRCODE" decode="splitBy: " charset="UTF-8" optional="yes">
-                    <field id="DocumentData"       data="0"/>
-                </BARCODE>>-->
                 <MRZ optional="yes">
                     <field id="DocumentCode"    line="1" starts="1" count="2"/>
                     <field id="Issuer"          line="1" starts="3" count="3"/>
-                    <field id="DocumentNumber"    line="1" starts="6" count="7"/>
-                    <field id="DocumentData"  line="1" starts="15" count="1"/>
+                    <field id="DocumentNumber"  line="1" starts="6" count="7"/>
+                    <field id="DocumentData"    line="1" starts="15" count="1"/>
                     <field id="DateOfBirth"     line="2" starts="1" count="6"/>
                     <field id="Gender"          line="2" starts="8" count="1"/>
                     <field id="DateOfExpiry"    line="2" starts="9" count="6"/>
@@ -6248,7 +6619,7 @@
         <Version id="v1" type="TD1" document_type="IDC">
             <Front>
                 <FACE/>
-                <ML cols="1" split_by="elements" separation="0.15" space_separation="0.10">
+                <ML cols="1" split_by="lines" separation="0.15" space_separation="0.10">
                     
                     <findLineMatch src="mrzStr" dst="mrzMark" regex="(.*[&lt;«]\s?[&lt;«].*)" value="($1)"/>
                     <matchIfValid src="mrzStr" dst="mrzPresent" regex="(.{15,})" value="($1)"/>
@@ -6327,13 +6698,16 @@
                 <OCR>
                     <region id="FullDocument" x="0.000" y="0.000" w="1.000" h="1.000"/>
                 </OCR>
-
-                <PDF417 optional="yes">
+                <PDF417 optional="yes" decode="splitBy:\n">
+                    <field id="FullName"     data="0"/>
+                    <field id="DateOfBirth"  data="1"/>
+                    <field id="Gender"       data="2"/>
+                    <field id="Data3"        data="3"/>
+                    <field id="Address"      data="4"/>
                 </PDF417>
-
-                <BARCODE optional="yes">
+                <BARCODE optional="yes" types="CODE128" decode="splitBy: " charset="UTF-8">
+                    <field id="DocumentNumber" data="0"/>
                 </BARCODE>
-
                 <ML cols="5" split_by="lines" separation="0.04" space_separation="0.10">
 
                     <findLineMatch src="mrzStr" dst="mrzMark" regex="(.*[&lt;«]\s?[&lt;«].*)" value="($1)"/>
@@ -6346,7 +6720,7 @@
                         value="($1)($2)($3)($4)($5)"
                         overwrite="false"
                     />
-                    <rejectIfNotValid src="vin" reason="DocumentNotExpected"/>
+                    <!-- <rejectIfNotValid src="vin" reason="DocumentNotExpected"/> -->
                     <assignField src="vin" field="VIN"/>
                     <assignField src="vin" field="DocumentNumber"/>
 
@@ -7364,19 +7738,19 @@
     </DocumentID>
 
     <DocumentID id="ZA" iso="ZAF">
-
-        <Version id="IDBook_v1" type="TD2" document_type="IDC" document_id="ZAF-00-IDC-1986-IBk-01-00">
+        <Version id="IDBook" type="TD2" document_type="IDC" document_id="ZAF-00-IDC-1986-IBk-01-00" dimensions="159x110r10">
             <Front>
               <ML cols="6" split_by="elements" c_separation="2" space_separation="0.15">
                 <calculateOffset x="0.619" y="0.218" w="0.222" h="0.015" content="S@A@BURGER@S@A@CITIZEN" threshold="0.3"/>
                 <findElementsIntersecting dst="var0" x="0.619" y="0.218" w="0.222" h="0.015"/>
                 <assignIfContent overwrite="false" src="var0" dst="found0" value="Y" op="distance" param="S@A@BURGER@S@A@CITIZEN" param_2="0.3"/>
-                <rejectIfNotValid reason="DocumentNotExpected" src="found0"/>
+                <rejectIfNotValid reason="DocumentNotExpected" src="found0" label="NEXT_DOCUMENT"/>
                 
                 <findElementsIntersecting dst="match_var1" x="0.578" y="0.127" w="0.358" h="0.006"/>
                 <matchIfValid overwrite="false" src="match_var1" regex="([0-9oOIlhBASsG]{6}) ?([0-9oOIlhBASsG]{4}) ?([0-9oOIlhBASsG]{2}) ?([0-9oOIlhBASsG])" value="([N]$1)([N]$2)([N]$3)([N]$4)" dst="var1"/>
-                <rejectIfNotValid src="var1"/>
+                <rejectIfNotValid src="var1" label="NEXT_DOCUMENT"/>
                 <assignField src="var1" field="DocumentNumber"/>
+                <assignField src="var1" field="PersonalNumber"/>
 
                 <findElementsIntersecting dst="match_var1_1" x="0.578" y="0.127" w="0.358" h="0.006"/>
                 <matchIfValid overwrite="false" src="match_var1_1" regex="[0-9oOIlhBASsG]{6} ?([0-4oOIlA])[0-9oOIlhBASsG]{3} ?[0-9oOIlhBASsG]{2} ?[0-9oOIlhBASsG]" value="F" dst="var1_1"/>
@@ -7388,48 +7762,44 @@
 
                 <calculateOffset x="0.542" y="0.259" w="0.097" h="0.017" content="VAN@SURNAME" threshold="0.3"/>
                 <findElementsIntersecting dst="var3" x="0.544" y="0.297" w="0.375" h="0.007"/>
-                <rejectIfNotValid src="var3"/>
+                <rejectIfNotValid src="var3" label="NEXT_DOCUMENT"/>
                 <assignField src="var3" field="LastName"/>
                 
                 <calculateOffset x="0.541" y="0.375" w="0.168" h="0.015" content="VOORNAME@FORENAMES" threshold="0.3"/>
                 <findElementsIntersecting dst="var5" x="0.545" y="0.414" w="0.379" h="0.006"/>
-                <rejectIfNotValid src="var5"/>
+                <rejectIfNotValid src="var5" label="NEXT_DOCUMENT"/>
                 <assignField src="var5" field="FirstName"/>
                 
                 <calculateOffset x="0.542" y="0.500" w="0.196" h="0.015" content="GEBOORTEDISTRIK@OF@LAND@" threshold="0.3"/>
                 <findElementsIntersecting dst="var7" x="0.545" y="0.560" w="0.385" h="0.003"/>
                 <assignField src="var7" field="Nationality"/>
+                
                 <calculateOffset x="0.735" y="0.654" w="0.122" h="0.016" content="DATUM@UITGEREIK" threshold="0.3"/>
                 
                 <findElementsIntersecting dst="match_var8" x="0.749" y="0.594" w="0.143" h="0.032"/>
                 <matchIfValid overwrite="false" src="match_var8" regex="([0-9]{4})[^0-9]*([0-9]{2})[^0-9]*([0-9]{2})" value="($3)/($2)/($1)" dst="var8"/>
-                <rejectIfNotValid src="var8"/>
+                <rejectIfNotValid src="var8" label="NEXT_DOCUMENT"/>
                 <assignField src="var8" field="DateOfBirth"/>
                 
                 <findElementsIntersecting dst="match_var10" x="0.749" y="0.705" w="0.150" h="0.034"/>
                 <matchIfValid overwrite="false" src="match_var10" regex="([0-9]{4})[^0-9]*([0-9]{2})[^0-9]*([0-9]{2})" value="($3)/($2)/($1)" dst="var10"/>
-                <rejectIfNotValid src="var10"/>
+                <rejectIfNotValid src="var10" label="NEXT_DOCUMENT"/>
                 <assignField src="var10" field="DateOfIssue"/>
-              </ML>
-              <FACE/>
-              <BARCODE types="Code39" decode="splitBy:|" charset="UTF-8" optional="yes">
-                <field id="DocumentNumber"            data="0"/>
-            </BARCODE>
-            </Front>
-          </Version>
 
-          <Version id="IDBook_v2" type="TD2" document_type="IDC" document_id="ZAF-00-IDC-1986-IBk-02-00">
-            <Front>
-              <ML cols="6" split_by="elements" c_separation="2" space_separation="0.15">
+                <assignResult src="$_ZAF-00-IDC-1986-IBk-01-00" field="DocumentModel"/>
+                <jump dst="END_CAPTURE"/>
+                <label src="NEXT_DOCUMENT"/>
+
                 <calculateOffset x="0.731" y="0.206" w="0.085" h="0.017" content="S@A@CITIZEN" threshold="0.3"/>
                 <findElementsIntersecting dst="var0" x="0.731" y="0.206" w="0.085" h="0.017"/>
                 <assignIfContent overwrite="false" src="var0" dst="found0" value="Y" op="distance" param="S@A@CITIZEN" param_2="0.3"/>
-                <rejectIfNotValid reason="DocumentNotExpected" src="found0"/>
+                <rejectIfNotValid reason="DocumentNotExpected" src="found0" label="NEXT_DOCUMENT"/>
                 
                 <findElementsIntersecting dst="match_var1" x="0.618" y="0.112" w="0.358" h="0.006"/>
                 <matchIfValid overwrite="false" src="match_var1" regex="([0-9oOIlhBASsG]{6}) ?([0-9oOIlhBASsG]{4}) ?([0-9oOIlhBASsG]{3})" value="([N]$1)([N]$2)([N]$3)" dst="var1"/>
-                <rejectIfNotValid src="var1"/>
+                <rejectIfNotValid src="var1" label="NEXT_DOCUMENT"/>
                 <assignField src="var1" field="DocumentNumber"/>
+                <assignField src="var1" field="PersonalNumber"/>
 
                 <findElementsIntersecting dst="match_var1_1" x="0.618" y="0.112" w="0.358" h="0.006"/>
                 <matchIfValid overwrite="false" src="match_var1_1" regex="[0-9oOIlhBASsG]{6} ?([0-4oOIlA])[0-9oOIlhBASsG]{3} ?[0-9oOIlhBASsG]{2} ?[0-9oOIlhBASsG]" value="F" dst="var1_1"/>
@@ -7441,30 +7811,37 @@
 
                 <calculateOffset x="0.569" y="0.263" w="0.072" h="0.015" content="SURNAME" threshold="0.3"/>
                 <findElementsIntersecting dst="var3" x="0.555" y="0.300" w="0.375" h="0.007"/>
-                <rejectIfNotValid src="var3"/>
+                <rejectIfNotValid src="var3" label="NEXT_DOCUMENT"/>
                 <assignField src="var3" field="LastName"/>
                 
                 <calculateOffset x="0.568" y="0.381" w="0.094" h="0.017" content="FORENAMES" threshold="0.3"/>
                 <findElementsIntersecting dst="var5" x="0.555" y="0.426" w="0.379" h="0.006"/>
-                <rejectIfNotValid src="var5"/>
+                <rejectIfNotValid src="var5" label="NEXT_DOCUMENT"/>
                 <assignField src="var5" field="FirstName"/>
                 
                 <calculateOffset x="0.568" y="0.499" w="0.148" h="0.017" content="COUNTRY@OF@BIRTH" threshold="0.3"/>
                 <findElementsIntersecting dst="var7" x="0.554" y="0.537" w="0.385" h="0.003"/>
-                <rejectIfNotValid src="var7"/>
+                <rejectIfNotValid src="var7" label="NEXT_DOCUMENT"/>
                 <assignField src="var7" field="Nationality"/>
                 
                 <calculateOffset x="0.568" y="0.572" w="0.112" h="0.017" content="DATE@OF@BIRTH" threshold="0.3"/>
                 <findElementsIntersecting dst="match_var9" x="0.558" y="0.611" w="0.190" h="0.006"/>
                 <matchIfValid overwrite="false" src="match_var9" regex="([0-9]{4})[^0-9]*([0-9]{2})[^0-9]*([0-9]{2})" value="($3)/($2)/($1)" dst="var9"/>
-                <rejectIfNotValid src="var9"/>
+                <rejectIfNotValid src="var9" label="NEXT_DOCUMENT"/>
                 <assignField src="var9" field="DateOfBirth"/>
                 
                 <calculateOffset x="0.813" y="0.676" w="0.099" h="0.018" content="DATE@ISSUED" threshold="0.3"/>
                 <findElementsIntersecting dst="match_var11" x="0.764" y="0.714" w="0.188" h="0.008"/>
                 <matchIfValid overwrite="false" src="match_var11" regex="([0-9]{4})[^0-9]*([0-9]{2})[^0-9]*([0-9]{2})" value="($3)/($2)/($1)" dst="var11"/>
-                <rejectIfNotValid src="var11"/>
+                <rejectIfNotValid src="var11" label="NEXT_DOCUMENT"/>
                 <assignField src="var11" field="DateOfIssue"/>
+
+                <assignResult src="$_ZAF-00-IDC-1986-IBk-02-00" field="DocumentModel"/>
+                <jump dst="END_CAPTURE"/>
+                <label src="NEXT_DOCUMENT"/>
+
+                <rejectIfNotValid src="dummy"/>
+                <label src="END_CAPTURE"/>
               </ML>
               <FACE/>
               <BARCODE types="Code39" decode="splitBy:|" charset="UTF-8" optional="yes">
@@ -7473,7 +7850,7 @@
             </Front>
           </Version>
 
-        <Version id="IDCard_v1" type="TD1" document_type="IDC" document_id="ZAF-00-IDC-1997-000-01-00">
+        <Version id="IDCard_v1" type="TD1" document_type="IDC" document_id="ZAF-00-IDC-1997-000-01-00" dimensions="">
             <Front>
                 <FACE/>
                 <ML>
@@ -7512,6 +7889,7 @@
                     <findElementsIntersecting dst="var11" x="0.268" y="0.637" w="0.217" h="0.005"/>
                     <rejectIfNotValid src="var11"/>
                     <assignField src="var11" field="DocumentNumber"/>
+                    <assignField src="var11" field="PersonalNumber"/>
 
                     <calculateOffset x="0.276" y="0.674" w="0.140" h="0.028" content="Date of Birth" threshold="0.3"/>
                     <findElementsIntersecting dst="match_var13" x="0.267" y="0.726" w="0.199" h="0.007"/>
@@ -7714,6 +8092,756 @@
         </Version>
     </DocumentID>
 
+  <DocumentID id="CA" iso="CAN">
+    <Version id="IDC" type="TD1" document_type="IDC" document_id="IDC">
+      <Front>
+        <FACE/>
+        <ML cols="1" c_separation="2" split_by="elements">
+          <!--Static optional field "[IDENTITY CARD]"-->
+          <calculateOffset x="0.209" y="0.023" w="0.612" h="0.068" content="IDENTITY CARD" threshold="0.3"/>
+          <!--Static optional field "[CAN]"-->
+          <calculateOffset x="0.849" y="0.053" w="0.098" h="0.059" content="CAN" threshold="0.3"/>
+          <!--Dynamic mandatory field "DocumentNumber"-->
+          <findElementsIntersecting dst="ml0_var2" x="0.725" y="0.190" w="0.273" h="0.001"/>
+          <assignField src="ml0_var2" field="DocumentNumber"/>
+          <rejectIfNotValid src="ml0_var2" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[BRITISH COLUMBIA, CANADA]"-->
+          <calculateOffset x="0.201" y="0.099" w="0.637" h="0.049" content="BRITISH COLUMBIA, CANADA" threshold="0.3"/>
+          <!--Static optional field "[BCID:]"-->
+          <calculateOffset x="0.589" y="0.156" w="0.136" h="0.068" content="BCID:" threshold="0.3"/>
+          <!--Dynamic mandatory field "LastName"-->
+          <findElementsIntersecting dst="ml0_var5" x="0.259" y="0.270" w="0.728" h="0.001"/>
+          <assignField src="ml0_var5" field="LastName"/>
+          <rejectIfNotValid src="ml0_var5" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "GivenName"-->
+          <findElementsIntersecting dst="ml0_var6" x="0.260" y="0.332" w="0.728" h="0.001"/>
+          <assignField src="ml0_var6" field="GivenName"/>
+          <rejectIfNotValid src="ml0_var6" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "DateOfBirth"-->
+          <findElementsIntersecting dst="ml0_match_var7" x="0.767" y="0.405" w="0.228" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml0_match_var7" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([A-Za-z0-9]{3})(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/($2)/([N]$1)" dst="ml0_var7"/>
+          <assignField src="ml0_var7" field="DateOfBirth"/>
+          <rejectIfNotValid src="ml0_var7" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[BRITISH]"-->
+          <calculateOffset x="0.055" y="0.178" w="0.119" h="0.040" content="BRITISH" threshold="0.3"/>
+          <!--Static optional field "[COLUMBIA]"-->
+          <calculateOffset x="0.034" y="0.219" w="0.159" h="0.042" content="COLUMBIA" threshold="0.3"/>
+          <!--Static optional field "[The Best Place on Earth]"-->
+          <calculateOffset x="0.017" y="0.282" w="0.198" h="0.035" content="The Best Place on Earth" threshold="0.3"/>
+          <!--Static optional field "[Issued:]"-->
+          <calculateOffset x="0.336" y="0.394" w="0.082" h="0.038" content="Issued:" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfIssue"-->
+          <findElementsIntersecting dst="ml0_match_var12" x="0.431" y="0.407" w="0.320" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml0_match_var12" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([A-Za-z0-9]{3})(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/($2)/([N]$1)" dst="ml0_var12"/>
+          <assignField src="ml0_var12" field="DateOfIssue"/>
+          <rejectIfNotValid src="ml0_var12" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Expires:]"-->
+          <calculateOffset x="0.330" y="0.466" w="0.097" h="0.038" content="Expires:" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfExpiry"-->
+          <findElementsIntersecting dst="ml0_match_var14" x="0.436" y="0.476" w="0.317" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml0_match_var14" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([A-Za-z0-9]{3})(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/($2)/([N]$1)" dst="ml0_var14"/>
+          <assignField src="ml0_var14" field="DateOfExpiry"/>
+          <rejectIfNotValid src="ml0_var14" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Sex:]"-->
+          <calculateOffset x="0.332" y="0.531" w="0.051" h="0.036" content="Sex:" threshold="0.3"/>
+          <!--Dynamic optional field "Gender"-->
+          <findElementsIntersecting dst="ml0_var16" x="0.386" y="0.546" w="0.067" h="0.001"/>
+          <assignField src="ml0_var16" field="Gender"/>
+          <!--Dynamic mandatory field "Address1"-->
+          <findElementsIntersecting dst="ml0_var17" x="0.330" y="0.752" w="0.638" h="0.001"/>
+          <assignField src="ml0_var17" field="Address1"/>
+          <rejectIfNotValid src="ml0_var17" label="NEXT_DOCUMENT"/>
+          <!--Dynamic optional field "Address2"-->
+          <findElementsIntersecting dst="ml0_var18" x="0.330" y="0.799" w="0.638" h="0.001"/>
+          <assignField src="ml0_var18" field="Address2"/>
+          <assignResult field="DocumentModel" src="$_CAN-BC-IDC-2009-001-01-01"/>
+          <jump dst="END_CAPTURE"/>
+          <label src="NEXT_DOCUMENT"/>
+
+          <!--Static optional field "[MB]"-->
+          <calculateOffset x="0.757" y="0.062" w="0.051" h="0.044" content="MB" threshold="0.3"/>
+          <!--Static optional field "[IDENTIFICATION CARD]"-->
+          <calculateOffset x="0.364" y="0.073" w="0.292" h="0.036" content="IDENTIFICATION CARD" threshold="0.3"/>
+          <!--Static optional field "[Manitoba]"-->
+          <calculateOffset x="0.026" y="0.081" w="0.216" h="0.075" content="Manitoba" threshold="0.3"/>
+          <!--Static mandatory field "[CAN]"-->
+          <calculateOffset x="0.744" y="0.114" w="0.072" h="0.046" content="CAN" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var3" x="0.744" y="0.114" w="0.072" h="0.046"/>
+          <assignIfContent overwrite="false" src="ml1_var3" dst="ml1_found3" value="Y" op="distance" param="CAN" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found3" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "LastName"-->
+          <findElementsIntersecting dst="ml1_var4" x="0.378" y="0.233" w="0.608" h="0.001"/>
+          <assignField src="ml1_var4" field="LastName"/>
+          <rejectIfNotValid src="ml1_var4" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "GivenName"-->
+          <findElementsIntersecting dst="ml1_match_var5" x="0.378" y="0.281" w="0.614" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var5" regex="" value="" dst="ml1_var5"/>
+          <assignField src="ml1_var5" field="GivenName"/>
+          <rejectIfNotValid src="ml1_var5" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[CARTE D'IDENTITÉ]"-->
+          <calculateOffset x="0.366" y="0.116" w="0.235" h="0.042" content="CARTE D'IDENTITÉ" threshold="0.3"/>
+          <!--Static optional field "[NAME/NOM]"-->
+          <calculateOffset x="0.389" y="0.186" w="0.105" h="0.023" content="NAME/NOM" threshold="0.3"/>
+          <!--Static optional field "[NUMBER/NUMERO]"-->
+          <calculateOffset x="0.386" y="0.391" w="0.167" h="0.023" content="NUMBER/NUMERO" threshold="0.3"/>
+          <!--Static optional field "[EXP/EXP]"-->
+          <calculateOffset x="0.653" y="0.577" w="0.093" h="0.029" content="EXP/EXP" threshold="0.3"/>
+          <!--Dynamic mandatory field "DocumentNumber"-->
+          <findElementsIntersecting dst="ml1_var10" x="0.595" y="0.402" w="0.394" h="0.001"/>
+          <assignField src="ml1_var10" field="DocumentNumber"/>
+          <rejectIfNotValid src="ml1_var10" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "DateOfExpiry"-->
+          <findElementsIntersecting dst="ml1_match_var11" x="0.789" y="0.595" w="0.200" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var11" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml1_var11"/>
+          <assignField src="ml1_var11" field="DateOfExpiry"/>
+          <rejectIfNotValid src="ml1_var11" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "Address1"-->
+          <findElementsIntersecting dst="ml1_var12" x="0.381" y="0.475" w="0.580" h="0.001"/>
+          <assignField src="ml1_var12" field="Address1"/>
+          <rejectIfNotValid src="ml1_var12" label="NEXT_DOCUMENT"/>
+          <!--Dynamic optional field "Address2"-->
+          <findElementsIntersecting dst="ml1_var13" x="0.381" y="0.518" w="0.585" h="0.001"/>
+          <assignField src="ml1_var13" field="Address2"/>
+          <!--Static optional field "[ISS/DEL]"-->
+          <calculateOffset x="0.380" y="0.579" w="0.076" h="0.027" content="ISS/DEL" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfIssue"-->
+          <findElementsIntersecting dst="ml1_match_var15" x="0.462" y="0.589" w="0.158" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var15" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml1_var15"/>
+          <assignField src="ml1_var15" field="DateOfIssue"/>
+          <rejectIfNotValid src="ml1_var15" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[GENDER/]"-->
+          <calculateOffset x="0.656" y="0.640" w="0.090" h="0.031" content="GENDER/" threshold="0.3"/>
+          <!--Dynamic optional field "Gender"-->
+          <findElementsIntersecting dst="ml1_var17" x="0.791" y="0.668" w="0.151" h="0.001"/>
+          <assignField src="ml1_var17" field="Gender"/>
+          <!--Static optional field "[SEXE]"-->
+          <calculateOffset x="0.656" y="0.675" w="0.055" h="0.025" content="SEXE" threshold="0.3"/>
+          <!--Static optional field "[DOB/DDN]"-->
+          <calculateOffset x="0.060" y="0.915" w="0.089" h="0.023" content="DOB/DDN" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfBirth"-->
+          <findElementsIntersecting dst="ml1_match_var20" x="0.163" y="0.919" w="0.325" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var20" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml1_var20"/>
+          <assignField src="ml1_var20" field="DateOfBirth"/>
+          <rejectIfNotValid src="ml1_var20" label="NEXT_DOCUMENT"/>
+          <assignResult field="DocumentModel" src="$_CAN-MB-IDC-2009-001-01-01"/>
+          <jump dst="END_CAPTURE"/>
+          <label src="NEXT_DOCUMENT"/>
+
+          <!--Static optional field "[CAN]"-->
+          <calculateOffset x="0.900" y="0.047" w="0.064" h="0.038" content="CAN" threshold="0.3"/>
+          <!--Static optional field "[Identification Card / Carte d'identité]"-->
+          <calculateOffset x="0.496" y="0.090" w="0.408" h="0.031" content="Identification Card / Carte d'identité" threshold="0.3"/>
+          <!--Static optional field "[NS]"-->
+          <calculateOffset x="0.919" y="0.094" w="0.026" h="0.027" content="NS" threshold="0.3"/>
+          <!--Static optional field "[No/Nº]"-->
+          <calculateOffset x="0.066" y="0.217" w="0.055" h="0.029" content="No/Nº" threshold="0.3"/>
+          <!--Static optional field "[Iss/Dél]"-->
+          <calculateOffset x="0.063" y="0.263" w="0.068" h="0.029" content="Iss/Dél" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfIssue"-->
+          <findElementsIntersecting dst="ml1_match_var5" x="0.145" y="0.274" w="0.172" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var5" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml1_var5"/>
+          <assignField src="ml1_var5" field="DateOfIssue"/>
+          <rejectIfNotValid src="ml1_var5" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "DateOfExpiry"-->
+          <findElementsIntersecting dst="ml1_match_var6" x="0.146" y="0.322" w="0.172" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var6" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml1_var6"/>
+          <assignField src="ml1_var6" field="DateOfExpiry"/>
+          <rejectIfNotValid src="ml1_var6" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[DOB/DDN]"-->
+          <calculateOffset x="0.355" y="0.263" w="0.097" h="0.029" content="DOB/DDN" threshold="0.3"/>
+          <!--Dynamic mandatory field "DocumentNumber"-->
+          <findElementsIntersecting dst="ml1_var8" x="0.147" y="0.222" w="0.535" h="0.001"/>
+          <assignField src="ml1_var8" field="DocumentNumber"/>
+          <rejectIfNotValid src="ml1_var8" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "DateOfBirth"-->
+          <findElementsIntersecting dst="ml1_match_var9" x="0.461" y="0.277" w="0.228" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var9" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml1_var9"/>
+          <assignField src="ml1_var9" field="DateOfBirth"/>
+          <rejectIfNotValid src="ml1_var9" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "LastName"-->
+          <findElementsIntersecting dst="ml1_var10" x="0.063" y="0.369" w="0.612" h="0.001"/>
+          <assignField src="ml1_var10" field="LastName"/>
+          <rejectIfNotValid src="ml1_var10" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "GivenName"-->
+          <findElementsIntersecting dst="ml1_var11" x="0.062" y="0.427" w="0.613" h="0.001"/>
+          <assignField src="ml1_var11" field="GivenName"/>
+          <rejectIfNotValid src="ml1_var11" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Exp]"-->
+          <calculateOffset x="0.065" y="0.308" w="0.040" h="0.035" content="Exp" threshold="0.3"/>
+          <!--Static optional field "[Sex/Sexe]"-->
+          <calculateOffset x="0.222" y="0.695" w="0.088" h="0.031" content="Sex/Sexe" threshold="0.3"/>
+          <!--Dynamic optional field "Gender"-->
+          <findElementsIntersecting dst="ml1_var14" x="0.344" y="0.708" w="0.075" h="0.001"/>
+          <assignField src="ml1_var14" field="Gender"/>
+          <!--Dynamic mandatory field "Address1"-->
+          <findElementsIntersecting dst="ml1_var15" x="0.067" y="0.536" w="0.615" h="0.001"/>
+          <assignField src="ml1_var15" field="Address1"/>
+          <rejectIfNotValid src="ml1_var15" label="NEXT_DOCUMENT"/>
+          <!--Dynamic optional field "Address2"-->
+          <findElementsIntersecting dst="ml1_var16" x="0.067" y="0.591" w="0.616" h="0.001"/>
+          <assignField src="ml1_var16" field="Address2"/>
+          <assignResult field="DocumentModel" src="$_CAN-NB-IDC-2017-001-01-01"/>
+          <jump dst="END_CAPTURE"/>
+          <label src="NEXT_DOCUMENT"/>
+
+          <!--Static optional field "[Défense]"-->
+          <calculateOffset x="0.361" y="0.047" w="0.132" h="0.042" content="Défense" threshold="0.3"/>
+          <!--Static mandatory field "[Canada]"-->
+          <calculateOffset x="0.708" y="0.055" w="0.243" h="0.090" content="Canada" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var1" x="0.708" y="0.055" w="0.243" h="0.090"/>
+          <assignIfContent overwrite="false" src="ml1_var1" dst="ml1_found1" value="Y" op="distance" param="Canada" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found1" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[National]"-->
+          <calculateOffset x="0.205" y="0.055" w="0.129" h="0.036" content="National" threshold="0.3"/>
+          <!--Static optional field "[Defence]"-->
+          <calculateOffset x="0.206" y="0.097" w="0.129" h="0.035" content="Defence" threshold="0.3"/>
+          <!--Static optional field "[nationale]"-->
+          <calculateOffset x="0.361" y="0.099" w="0.145" h="0.038" content="nationale" threshold="0.3"/>
+          <!--Static mandatory field "[Canadian Forces]"-->
+          <calculateOffset x="0.380" y="0.186" w="0.226" h="0.036" content="Canadian Forces" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var5" x="0.380" y="0.186" w="0.226" h="0.036"/>
+          <assignIfContent overwrite="false" src="ml1_var5" dst="ml1_found5" value="Y" op="distance" param="Canadian Forces" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found5" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Carte d'identité des]"-->
+          <calculateOffset x="0.674" y="0.188" w="0.266" h="0.036" content="Carte d'identité des" threshold="0.3"/>
+          <!--Static mandatory field "[Identification Card]"-->
+          <calculateOffset x="0.379" y="0.232" w="0.251" h="0.044" content="Identification Card" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var7" x="0.379" y="0.232" w="0.251" h="0.044"/>
+          <assignIfContent overwrite="false" src="ml1_var7" dst="ml1_found7" value="Y" op="distance" param="Identification Card" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found7" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Forces canadiennes]"-->
+          <calculateOffset x="0.679" y="0.239" w="0.269" h="0.033" content="Forces canadiennes" threshold="0.3"/>
+          <!--Static optional field "[Nom]"-->
+          <calculateOffset x="0.546" y="0.409" w="0.054" h="0.033" content="Nom" threshold="0.3"/>
+          <!--Dynamic mandatory field "LastName"-->
+          <findElementsIntersecting dst="ml1_var10" x="0.393" y="0.360" w="0.554" h="0.001"/>
+          <assignField src="ml1_var10" field="LastName"/>
+          <rejectIfNotValid src="ml1_var10" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Surname]"-->
+          <calculateOffset x="0.395" y="0.413" w="0.101" h="0.025" content="Surname" threshold="0.3"/>
+          <!--Static optional field "[Prénoms]"-->
+          <calculateOffset x="0.595" y="0.544" w="0.104" h="0.035" content="Prénoms" threshold="0.3"/>
+          <!--Dynamic mandatory field "GivenNames"-->
+          <findElementsIntersecting dst="ml1_var13" x="0.387" y="0.501" w="0.558" h="0.001"/>
+          <assignField src="ml1_var13" field="GivenNames"/>
+          <rejectIfNotValid src="ml1_var13" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "MilitaryStatus"-->
+          <findElementsIntersecting dst="ml1_var14" x="0.392" y="0.649" w="0.554" h="0.001"/>
+          <assignField src="ml1_var14" field="MilitaryStatus"/>
+          <rejectIfNotValid src="ml1_var14" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Given names]"-->
+          <calculateOffset x="0.393" y="0.548" w="0.157" h="0.035" content="Given names" threshold="0.3"/>
+          <!--Static optional field "[Statut]"-->
+          <calculateOffset x="0.517" y="0.680" w="0.070" h="0.038" content="Statut" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfExpiry"-->
+          <findElementsIntersecting dst="ml1_match_var17" x="0.394" y="0.781" w="0.549" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var17" regex="([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])(?: |[^A-Za-z0-9])*([A-Za-z0-9]{3})(?: |[^A-Za-z0-9])*((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})" value="([N]$1)/($2)/([N]$3)" dst="ml1_var17"/>
+          <assignField src="ml1_var17" field="DateOfExpiry"/>
+          <rejectIfNotValid src="ml1_var17" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Status]"-->
+          <calculateOffset x="0.397" y="0.686" w="0.076" h="0.027" content="Status" threshold="0.3"/>
+          <!--Static optional field "[Expiration]"-->
+          <calculateOffset x="0.395" y="0.813" w="0.121" h="0.042" content="Expiration" threshold="0.3"/>
+          <assignResult field="DocumentModel" src="$_CAN-00-IDC-0000-CFI-01-01"/>
+          <jump dst="END_CAPTURE"/>
+          <label src="NEXT_DOCUMENT"/>
+
+          <!--Static mandatory field "[CERTIFICATE OF INDIAN STATUS]"-->
+          <calculateOffset x="0.603" y="0.038" w="0.367" h="0.036" content="CERTIFICATE OF INDIAN STATUS" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var0" x="0.603" y="0.038" w="0.367" h="0.036"/>
+          <assignIfContent overwrite="false" src="ml1_var0" dst="ml1_found0" value="Y" op="distance" param="CERTIFICATE OF INDIAN STATUS" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found0" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Affaires indiennes]"-->
+          <calculateOffset x="0.348" y="0.044" w="0.174" h="0.035" content="Affaires indiennes" threshold="0.3"/>
+          <!--Static mandatory field "[Indian and Northern]"-->
+          <calculateOffset x="0.134" y="0.049" w="0.192" h="0.029" content="Indian and Northern" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var2" x="0.134" y="0.049" w="0.192" h="0.029"/>
+          <assignIfContent overwrite="false" src="ml1_var2" dst="ml1_found2" value="Y" op="distance" param="Indian and Northern" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found2" label="NEXT_DOCUMENT"/>
+          <!--Static mandatory field "[Affairs Canada]"-->
+          <calculateOffset x="0.135" y="0.081" w="0.145" h="0.035" content="Affairs Canada" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var3" x="0.135" y="0.081" w="0.145" h="0.035"/>
+          <assignIfContent overwrite="false" src="ml1_var3" dst="ml1_found3" value="Y" op="distance" param="Affairs Canada" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found3" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[et d Nord Canada]"-->
+          <calculateOffset x="0.351" y="0.081" w="0.187" h="0.031" content="et d Nord Canada" threshold="0.3"/>
+          <!--Static mandatory field "[CERTIFICAT DE STATUT INDIEN]"-->
+          <calculateOffset x="0.602" y="0.086" w="0.370" h="0.036" content="CERTIFICAT DE STATUT INDIEN" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var5" x="0.602" y="0.086" w="0.370" h="0.036"/>
+          <assignIfContent overwrite="false" src="ml1_var5" dst="ml1_found5" value="Y" op="distance" param="CERTIFICAT DE STATUT INDIEN" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found5" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Registrtion no./Numeró d'inscription]"-->
+          <calculateOffset x="0.334" y="0.171" w="0.258" h="0.031" content="Registrtion no./Numeró d'inscription" threshold="0.3"/>
+          <!--Dynamic mandatory field "DocumentNumber"-->
+          <findElementsIntersecting dst="ml1_var7" x="0.325" y="0.229" w="0.243" h="0.001"/>
+          <assignField src="ml1_var7" field="DocumentNumber"/>
+          <rejectIfNotValid src="ml1_var7" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Family Name/Nom de familie]"-->
+          <calculateOffset x="0.462" y="0.265" w="0.204" h="0.025" content="Family Name/Nom de familie" threshold="0.3"/>
+          <!--Dynamic mandatory field "LastName"-->
+          <findElementsIntersecting dst="ml1_var9" x="0.452" y="0.317" w="0.529" h="0.001"/>
+          <assignField src="ml1_var9" field="LastName"/>
+          <rejectIfNotValid src="ml1_var9" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Given Names/Prénoms]"-->
+          <calculateOffset x="0.461" y="0.343" w="0.160" h="0.031" content="Given Names/Prénoms" threshold="0.3"/>
+          <!--Dynamic mandatory field "GivenName"-->
+          <findElementsIntersecting dst="ml1_var11" x="0.455" y="0.399" w="0.521" h="0.001"/>
+          <assignField src="ml1_var11" field="GivenName"/>
+          <rejectIfNotValid src="ml1_var11" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Date of Birth/Date de naissance]"-->
+          <calculateOffset x="0.336" y="0.570" w="0.222" h="0.027" content="Date of Birth/Date de naissance" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfBirth"-->
+          <findElementsIntersecting dst="ml1_match_var13" x="0.330" y="0.627" w="0.204" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var13" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml1_var13"/>
+          <assignField src="ml1_var13" field="DateOfBirth"/>
+          <rejectIfNotValid src="ml1_var13" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Sex/Sexe]"-->
+          <calculateOffset x="0.579" y="0.572" w="0.069" h="0.027" content="Sex/Sexe" threshold="0.3"/>
+          <!--Dynamic mandatory field "Gender"-->
+          <findElementsIntersecting dst="ml1_var15" x="0.577" y="0.622" w="0.046" h="0.001"/>
+          <assignField src="ml1_var15" field="Gender"/>
+          <rejectIfNotValid src="ml1_var15" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Date of Issue/Date de délivrance]"-->
+          <calculateOffset x="0.333" y="0.664" w="0.230" h="0.023" content="Date of Issue/Date de délivrance" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfIssue"-->
+          <findElementsIntersecting dst="ml1_match_var17" x="0.331" y="0.723" w="0.210" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var17" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml1_var17"/>
+          <assignField src="ml1_var17" field="DateOfIssue"/>
+          <rejectIfNotValid src="ml1_var17" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Renew Before/Renouvelier avant]"-->
+          <calculateOffset x="0.334" y="0.754" w="0.226" h="0.033" content="Renew Before/Renouvelier avant" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfExpiry"-->
+          <findElementsIntersecting dst="ml1_match_var19" x="0.331" y="0.816" w="0.210" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var19" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml1_var19"/>
+          <assignField src="ml1_var19" field="DateOfExpiry"/>
+          <rejectIfNotValid src="ml1_var19" label="NEXT_DOCUMENT"/>
+          <assignResult field="DocumentModel" src="$_CAN-00-IDC-2009-IND-01-01"/>
+          <jump dst="END_CAPTURE"/>
+          <label src="NEXT_DOCUMENT"/>
+
+          <!--Static mandatory field "[Canadian Armed Forces]"-->
+          <calculateOffset x="0.199" y="0.040" w="0.384" h="0.051" content="Canadian Armed Forces" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var0" x="0.199" y="0.040" w="0.384" h="0.051"/>
+          <assignIfContent overwrite="false" src="ml1_var0" dst="ml1_found0" value="Y" op="distance" param="Canadian Armed Forces" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found0" label="NEXT_DOCUMENT"/>
+          <!--Static mandatory field "[Canada]"-->
+          <calculateOffset x="0.705" y="0.047" w="0.249" h="0.105" content="Canada" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var1" x="0.705" y="0.047" w="0.249" h="0.105"/>
+          <assignIfContent overwrite="false" src="ml1_var1" dst="ml1_found1" value="Y" op="distance" param="Canada" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found1" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Forces armées canadiennes]"-->
+          <calculateOffset x="0.203" y="0.097" w="0.444" h="0.053" content="Forces armées canadiennes" threshold="0.3"/>
+          <!--Static optional field "[Service Number / Numéro de matricule]"-->
+          <calculateOffset x="0.325" y="0.212" w="0.450" h="0.040" content="Service Number / Numéro de matricule" threshold="0.3"/>
+          <!--Dynamic mandatory field "DocumentNumber"-->
+          <findElementsIntersecting dst="ml1_var4" x="0.319" y="0.287" w="0.287" h="0.001"/>
+          <assignField src="ml1_var4" field="DocumentNumber"/>
+          <rejectIfNotValid src="ml1_var4" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Surname / Nom]"-->
+          <calculateOffset x="0.326" y="0.485" w="0.172" h="0.040" content="Surname / Nom" threshold="0.3"/>
+          <!--Static optional field "[Given names / Prénoms]"-->
+          <calculateOffset x="0.323" y="0.634" w="0.273" h="0.035" content="Given names / Prénoms" threshold="0.3"/>
+          <!--Dynamic mandatory field "LastName"-->
+          <findElementsIntersecting dst="ml1_var7" x="0.321" y="0.563" w="0.671" h="0.001"/>
+          <assignField src="ml1_var7" field="LastName"/>
+          <rejectIfNotValid src="ml1_var7" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "GivenName"-->
+          <findElementsIntersecting dst="ml1_var8" x="0.317" y="0.704" w="0.674" h="0.001"/>
+          <assignField src="ml1_var8" field="GivenName"/>
+          <rejectIfNotValid src="ml1_var8" label="NEXT_DOCUMENT"/>
+          <assignResult field="DocumentModel" src="$_CAN-00-IDC-2018-CAF-01-01"/>
+          <jump dst="END_CAPTURE"/>
+          <label src="NEXT_DOCUMENT"/>
+
+          <!--Static mandatory field "[NTI Enrolment Card]"-->
+          <calculateOffset x="0.094" y="0.369" w="0.540" h="0.077" content="NTI Enrolment Card" threshold="0.3"/>
+          <findElementsIntersecting dst="ml0_var0" x="0.094" y="0.369" w="0.540" h="0.077"/>
+          <assignIfContent overwrite="false" src="ml0_var0" dst="ml0_found0" value="Y" op="distance" param="NTI Enrolment Card" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml0_found0" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "DocumentNumber"-->
+          <findElementsIntersecting dst="ml0_var1" x="0.087" y="0.584" w="0.421" h="0.001"/>
+          <assignField src="ml0_var1" field="DocumentNumber"/>
+          <rejectIfNotValid src="ml0_var1" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "LastName"-->
+          <findElementsIntersecting dst="ml0_var2" x="0.087" y="0.720" w="0.725" h="0.001"/>
+          <assignField src="ml0_var2" field="LastName"/>
+          <rejectIfNotValid src="ml0_var2" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "GivenName"-->
+          <findElementsIntersecting dst="ml0_var3" x="0.086" y="0.814" w="0.726" h="0.001"/>
+          <assignField src="ml0_var3" field="GivenName"/>
+          <rejectIfNotValid src="ml0_var3" label="NEXT_DOCUMENT"/>
+          <assignResult field="DocumentModel" src="$_CAN-NU-IDC-0000-NTI-01-01"/>
+          <jump dst="END_CAPTURE"/>
+          <label src="NEXT_DOCUMENT"/>
+
+          <!--Static optional field "[Identification Card / Carte d'identité]"-->
+          <calculateOffset x="0.494" y="0.086" w="0.411" h="0.050" content="Identification Card / Carte d'identité" threshold="0.3"/>
+          <!--Static optional field "[No/Nº]"-->
+          <calculateOffset x="0.068" y="0.208" w="0.057" h="0.041" content="No/Nº" threshold="0.3"/>
+          <!--Static optional field "[Iss/Dél]"-->
+          <calculateOffset x="0.066" y="0.261" w="0.073" h="0.034" content="Iss/Dél" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfIssue"-->
+          <findElementsIntersecting dst="ml0_match_var3" x="0.148" y="0.276" w="0.155" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml0_match_var3" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml0_var3"/>
+          <assignField src="ml0_var3" field="DateOfIssue"/>
+          <rejectIfNotValid src="ml0_var3" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "DateOfExpiry"-->
+          <findElementsIntersecting dst="ml0_match_var4" x="0.151" y="0.321" w="0.152" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml0_match_var4" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml0_var4"/>
+          <assignField src="ml0_var4" field="DateOfExpiry"/>
+          <rejectIfNotValid src="ml0_var4" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[DOB/DDN]"-->
+          <calculateOffset x="0.363" y="0.262" w="0.097" h="0.037" content="DOB/DDN" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfBirth"-->
+          <findElementsIntersecting dst="ml0_match_var6" x="0.466" y="0.281" w="0.187" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml0_match_var6" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml0_var6"/>
+          <assignField src="ml0_var6" field="DateOfBirth"/>
+          <rejectIfNotValid src="ml0_var6" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "LastName"-->
+          <findElementsIntersecting dst="ml0_var7" x="0.068" y="0.371" w="0.627" h="0.001"/>
+          <assignField src="ml0_var7" field="LastName"/>
+          <rejectIfNotValid src="ml0_var7" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "GivenName"-->
+          <findElementsIntersecting dst="ml0_var8" x="0.066" y="0.432" w="0.627" h="0.001"/>
+          <assignField src="ml0_var8" field="GivenName"/>
+          <rejectIfNotValid src="ml0_var8" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "LicenseNumber"-->
+          <findElementsIntersecting dst="ml0_var9" x="0.150" y="0.222" w="0.308" h="0.001"/>
+          <assignField src="ml0_var9" field="LicenseNumber"/>
+          <rejectIfNotValid src="ml0_var9" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Exp]"-->
+          <calculateOffset x="0.069" y="0.306" w="0.045" h="0.037" content="Exp" threshold="0.3"/>
+          <!--Static optional field "[Sex/Sexe]"-->
+          <calculateOffset x="0.225" y="0.693" w="0.094" h="0.037" content="Sex/Sexe" threshold="0.3"/>
+          <!--Dynamic optional field "Gender"-->
+          <findElementsIntersecting dst="ml0_var12" x="0.353" y="0.711" w="0.065" h="0.001"/>
+          <assignField src="ml0_var12" field="Gender"/>
+          <!--Dynamic mandatory field "Address1"-->
+          <findElementsIntersecting dst="ml0_var13" x="0.073" y="0.538" w="0.623" h="0.001"/>
+          <assignField src="ml0_var13" field="Address1"/>
+          <rejectIfNotValid src="ml0_var13" label="NEXT_DOCUMENT"/>
+          <!--Dynamic optional field "Address2"-->
+          <findElementsIntersecting dst="ml0_var14" x="0.073" y="0.596" w="0.623" h="0.001"/>
+          <assignField src="ml0_var14" field="Address2"/>
+          <!--Dynamic optional field "Address3"-->
+          <findElementsIntersecting dst="ml0_var15" x="0.073" y="0.648" w="0.624" h="0.001"/>
+          <assignField src="ml0_var15" field="Address3"/>
+          <assignResult field="DocumentModel" src="$_CAN-NS-IDC-2017-001-01-01"/>
+          <jump dst="END_CAPTURE"/>
+          <label src="NEXT_DOCUMENT"/>
+
+          <!--Static optional field "[NORTHWEST TERRITORIES]"-->
+          <calculateOffset x="0.174" y="0.048" w="0.265" h="0.036" content="NORTHWEST TERRITORIES" threshold="0.3"/>
+          <!--Static optional field "[TERRITOIRES DU NORD-OUEST]"-->
+          <calculateOffset x="0.551" y="0.052" w="0.314" h="0.032" content="TERRITOIRES DU NORD-OUEST" threshold="0.3"/>
+          <!--Static mandatory field "[IDENTIFICATION CARD]"-->
+          <calculateOffset x="0.052" y="0.086" w="0.388" h="0.052" content="IDENTIFICATION CARD" threshold="0.3"/>
+          <findElementsIntersecting dst="ml0_var2" x="0.052" y="0.086" w="0.388" h="0.052"/>
+          <assignIfContent overwrite="false" src="ml0_var2" dst="ml0_found2" value="Y" op="distance" param="IDENTIFICATION CARD" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml0_found2" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[CARTE D'IDENTITÉ]"-->
+          <calculateOffset x="0.552" y="0.086" w="0.331" h="0.050" content="CARTE D'IDENTITÉ" threshold="0.3"/>
+          <!--Dynamic mandatory field "LastName"-->
+          <findElementsIntersecting dst="ml0_var4" x="0.325" y="0.231" w="0.609" h="0.001"/>
+          <assignField src="ml0_var4" field="LastName"/>
+          <rejectIfNotValid src="ml0_var4" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Date of Birth - Date de naissance]"-->
+          <calculateOffset x="0.326" y="0.313" w="0.206" h="0.026" content="Date of Birth - Date de naissance" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfBirth"-->
+          <findElementsIntersecting dst="ml0_match_var6" x="0.319" y="0.364" w="0.212" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml0_match_var6" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml0_var6"/>
+          <assignField src="ml0_var6" field="DateOfBirth"/>
+          <rejectIfNotValid src="ml0_var6" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Date of Expiry - Date d'expiration]"-->
+          <calculateOffset x="0.329" y="0.401" w="0.208" h="0.022" content="Date of Expiry - Date d'expiration" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfExpiry"-->
+          <findElementsIntersecting dst="ml0_match_var8" x="0.322" y="0.448" w="0.215" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml0_match_var8" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml0_var8"/>
+          <assignField src="ml0_var8" field="DateOfExpiry"/>
+          <rejectIfNotValid src="ml0_var8" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Sex - Sexe]"-->
+          <calculateOffset x="0.590" y="0.401" w="0.065" h="0.020" content="Sex - Sexe" threshold="0.3"/>
+          <!--Dynamic mandatory field "GivenName"-->
+          <findElementsIntersecting dst="ml0_var10" x="0.325" y="0.279" w="0.609" h="0.001"/>
+          <assignField src="ml0_var10" field="GivenName"/>
+          <rejectIfNotValid src="ml0_var10" label="NEXT_DOCUMENT"/>
+          <!--Dynamic optional field "Gender"-->
+          <findElementsIntersecting dst="ml0_var11" x="0.581" y="0.450" w="0.071" h="0.001"/>
+          <assignField src="ml0_var11" field="Gender"/>
+          <!--Static optional field "[Date of Issue - Date de délivrance]"-->
+          <calculateOffset x="0.327" y="0.656" w="0.211" h="0.024" content="Date of Issue - Date de délivrance" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfIssue"-->
+          <findElementsIntersecting dst="ml0_match_var13" x="0.324" y="0.708" w="0.212" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml0_match_var13" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml0_var13"/>
+          <assignField src="ml0_var13" field="DateOfIssue"/>
+          <rejectIfNotValid src="ml0_var13" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Address - Adresse]"-->
+          <calculateOffset x="0.329" y="0.753" w="0.110" h="0.026" content="Address - Adresse" threshold="0.3"/>
+          <!--Dynamic mandatory field "Address1"-->
+          <findElementsIntersecting dst="ml0_var15" x="0.320" y="0.800" w="0.384" h="0.001"/>
+          <assignField src="ml0_var15" field="Address1"/>
+          <rejectIfNotValid src="ml0_var15" label="NEXT_DOCUMENT"/>
+          <!--Dynamic optional field "Address2"-->
+          <findElementsIntersecting dst="ml0_var16" x="0.321" y="0.847" w="0.384" h="0.001"/>
+          <assignField src="ml0_var16" field="Address2"/>
+          <!--Dynamic optional field "Address3"-->
+          <findElementsIntersecting dst="ml0_var17" x="0.322" y="0.893" w="0.384" h="0.001"/>
+          <assignField src="ml0_var17" field="Address3"/>
+          <!--Static optional field "[No - Nº]"-->
+          <calculateOffset x="0.734" y="0.935" w="0.046" h="0.024" content="No - Nº" threshold="0.3"/>
+          <!--Dynamic mandatory field "DocumentNumber"-->
+          <findElementsIntersecting dst="ml0_var19" x="0.790" y="0.942" w="0.193" h="0.001"/>
+          <assignField src="ml0_var19" field="DocumentNumber"/>
+          <rejectIfNotValid src="ml0_var19" label="NEXT_DOCUMENT"/>
+          <assignResult field="DocumentModel" src="$_CAN-NT-IDC-2020-001-01-01"/>
+          <jump dst="END_CAPTURE"/>
+          <label src="NEXT_DOCUMENT"/>
+
+          <!--Static mandatory field "[Photo Card]"-->
+          <calculateOffset x="0.406" y="0.032" w="0.229" h="0.062" content="Photo Card" threshold="0.3"/>
+          <findElementsIntersecting dst="ml0_var0" x="0.406" y="0.032" w="0.229" h="0.062"/>
+          <assignIfContent overwrite="false" src="ml0_var0" dst="ml0_found0" value="Y" op="distance" param="Photo Card" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml0_found0" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[ON]"-->
+          <calculateOffset x="0.804" y="0.040" w="0.070" h="0.068" content="ON" threshold="0.3"/>
+          <!--Static optional field "[Carte - photo]"-->
+          <calculateOffset x="0.406" y="0.098" w="0.270" h="0.070" content="Carte - photo" threshold="0.3"/>
+          <!--Dynamic mandatory field "LastName"-->
+          <findElementsIntersecting dst="ml0_var3" x="0.348" y="0.270" w="0.561" h="0.001"/>
+          <assignField src="ml0_var3" field="LastName"/>
+          <rejectIfNotValid src="ml0_var3" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "GivenName"-->
+          <findElementsIntersecting dst="ml0_var4" x="0.351" y="0.323" w="0.559" h="0.001"/>
+          <assignField src="ml0_var4" field="GivenName"/>
+          <rejectIfNotValid src="ml0_var4" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "Address1"-->
+          <findElementsIntersecting dst="ml0_var5" x="0.367" y="0.375" w="0.543" h="0.001"/>
+          <assignField src="ml0_var5" field="Address1"/>
+          <rejectIfNotValid src="ml0_var5" label="NEXT_DOCUMENT"/>
+          <!--Static mandatory field "[CANADA]"-->
+          <calculateOffset x="0.781" y="0.110" w="0.117" h="0.040" content="CANADA" threshold="0.3"/>
+          <findElementsIntersecting dst="ml0_var6" x="0.781" y="0.110" w="0.117" h="0.040"/>
+          <assignIfContent overwrite="false" src="ml0_var6" dst="ml0_found6" value="Y" op="distance" param="CANADA" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml0_found6" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[NAME/NOM]"-->
+          <calculateOffset x="0.369" y="0.204" w="0.102" h="0.034" content="NAME/NOM" threshold="0.3"/>
+          <!--Static optional field "[NUMBER/]"-->
+          <calculateOffset x="0.369" y="0.512" w="0.083" h="0.038" content="NUMBER/" threshold="0.3"/>
+          <!--Static optional field "[NUMERO]"-->
+          <calculateOffset x="0.371" y="0.548" w="0.077" h="0.034" content="NUMERO" threshold="0.3"/>
+          <!--Static optional field "[EXP./EXP.]"-->
+          <calculateOffset x="0.723" y="0.598" w="0.084" h="0.034" content="EXP./EXP." threshold="0.3"/>
+          <!--Dynamic mandatory field "DocumentNumber"-->
+          <findElementsIntersecting dst="ml0_var11" x="0.465" y="0.546" w="0.499" h="0.001"/>
+          <assignField src="ml0_var11" field="DocumentNumber"/>
+          <rejectIfNotValid src="ml0_var11" label="NEXT_DOCUMENT"/>
+          <!--Dynamic optional field "DateOfExpiry"-->
+          <findElementsIntersecting dst="ml0_match_var12" x="0.822" y="0.618" w="0.170" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml0_match_var12" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml0_var12"/>
+          <assignField src="ml0_var12" field="DateOfExpiry"/>
+          <!--Dynamic optional field "Address2"-->
+          <findElementsIntersecting dst="ml0_var13" x="0.362" y="0.429" w="0.540" h="0.001"/>
+          <assignField src="ml0_var13" field="Address2"/>
+          <!--Dynamic optional field "Address3"-->
+          <findElementsIntersecting dst="ml0_var14" x="0.364" y="0.485" w="0.552" h="0.001"/>
+          <assignField src="ml0_var14" field="Address3"/>
+          <!--Static optional field "[ISS/DEL.]"-->
+          <calculateOffset x="0.371" y="0.602" w="0.075" h="0.034" content="ISS/DEL." threshold="0.3"/>
+          <!--Dynamic optional field "DateOfIssue"-->
+          <findElementsIntersecting dst="ml0_match_var16" x="0.459" y="0.617" w="0.215" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml0_match_var16" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml0_var16"/>
+          <assignField src="ml0_var16" field="DateOfIssue"/>
+          <!--Static optional field "[SEX/SEXE]"-->
+          <calculateOffset x="0.372" y="0.730" w="0.089" h="0.034" content="SEX/SEXE" threshold="0.3"/>
+          <!--Dynamic optional field "Gender"-->
+          <findElementsIntersecting dst="ml0_var18" x="0.477" y="0.748" w="0.078" h="0.001"/>
+          <assignField src="ml0_var18" field="Gender"/>
+          <!--Static optional field "[DOB/DDN]"-->
+          <calculateOffset x="0.056" y="0.933" w="0.083" h="0.034" content="DOB/DDN" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfBirth"-->
+          <findElementsIntersecting dst="ml0_match_var20" x="0.145" y="0.954" w="0.193" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml0_match_var20" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml0_var20"/>
+          <assignField src="ml0_var20" field="DateOfBirth"/>
+          <rejectIfNotValid src="ml0_var20" label="NEXT_DOCUMENT"/>
+          <assignResult field="DocumentModel" src="$_CAN-ON-IDC-2012-001-01-01"/>
+          <jump dst="END_CAPTURE"/>
+          <label src="NEXT_DOCUMENT"/>
+
+          <!--Static optional field "[identification card]"-->
+          <calculateOffset x="0.501" y="0.062" w="0.471" h="0.090" content="identification card" threshold="0.3"/>
+          <!--Dynamic mandatory field "LastName"-->
+          <findElementsIntersecting dst="ml1_var1" x="0.329" y="0.312" w="0.641" h="0.001"/>
+          <assignField src="ml1_var1" field="LastName"/>
+          <rejectIfNotValid src="ml1_var1" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "GivenName"-->
+          <findElementsIntersecting dst="ml1_var2" x="0.327" y="0.361" w="0.643" h="0.001"/>
+          <assignField src="ml1_var2" field="GivenName"/>
+          <rejectIfNotValid src="ml1_var2" label="NEXT_DOCUMENT"/>
+          <!--Static mandatory field "[Saskatchewan]"-->
+          <calculateOffset x="0.034" y="0.062" w="0.365" h="0.081" content="Saskatchewan" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var3" x="0.034" y="0.062" w="0.365" h="0.081"/>
+          <assignIfContent overwrite="false" src="ml1_var3" dst="ml1_found3" value="Y" op="distance" param="Saskatchewan" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found3" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Customer Number]"-->
+          <calculateOffset x="0.328" y="0.182" w="0.183" h="0.030" content="Customer Number" threshold="0.3"/>
+          <!--Dynamic mandatory field "DocumentNumber"-->
+          <findElementsIntersecting dst="ml1_var5" x="0.327" y="0.247" w="0.268" h="0.001"/>
+          <assignField src="ml1_var5" field="DocumentNumber"/>
+          <rejectIfNotValid src="ml1_var5" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Date Of Birth]"-->
+          <calculateOffset x="0.333" y="0.581" w="0.124" h="0.034" content="Date Of Birth" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfBirth"-->
+          <findElementsIntersecting dst="ml1_match_var7" x="0.335" y="0.651" w="0.191" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var7" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([A-Za-z0-9]{3})(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/($2)/([N]$1)" dst="ml1_var7"/>
+          <assignField src="ml1_var7" field="DateOfBirth"/>
+          <rejectIfNotValid src="ml1_var7" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Sex]"-->
+          <calculateOffset x="0.905" y="0.586" w="0.038" h="0.029" content="Sex" threshold="0.3"/>
+          <!--Dynamic optional field "Gender"-->
+          <findElementsIntersecting dst="ml1_var9" x="0.902" y="0.649" w="0.032" h="0.001"/>
+          <assignField src="ml1_var9" field="Gender"/>
+          <!--Dynamic mandatory field "Address1"-->
+          <findElementsIntersecting dst="ml1_var10" x="0.332" y="0.459" w="0.659" h="0.001"/>
+          <assignField src="ml1_var10" field="Address1"/>
+          <rejectIfNotValid src="ml1_var10" label="NEXT_DOCUMENT"/>
+          <!--Dynamic optional field "Address2"-->
+          <findElementsIntersecting dst="ml1_var11" x="0.332" y="0.506" w="0.659" h="0.001"/>
+          <assignField src="ml1_var11" field="Address2"/>
+          <!--Static optional field "[Date Of Issue]"-->
+          <calculateOffset x="0.332" y="0.691" w="0.127" h="0.031" content="Date Of Issue" threshold="0.3"/>
+          <!--Static optional field "[Date Of Expiry]"-->
+          <calculateOffset x="0.329" y="0.804" w="0.140" h="0.031" content="Date Of Expiry" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfIssue"-->
+          <findElementsIntersecting dst="ml1_match_var14" x="0.331" y="0.764" w="0.194" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var14" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([A-Za-z0-9]{3})(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/($2)/([N]$1)" dst="ml1_var14"/>
+          <assignField src="ml1_var14" field="DateOfIssue"/>
+          <rejectIfNotValid src="ml1_var14" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "DateOfExpiry"-->
+          <findElementsIntersecting dst="ml1_match_var15" x="0.329" y="0.870" w="0.201" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var15" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([A-Za-z0-9]{3})(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/($2)/([N]$1)" dst="ml1_var15"/>
+          <assignField src="ml1_var15" field="DateOfExpiry"/>
+          <rejectIfNotValid src="ml1_var15" label="NEXT_DOCUMENT"/>
+          <assignResult field="DocumentModel" src="$_CAN-SK-IDC-2016-001-01-01"/>
+          <jump dst="END_CAPTURE"/>
+          <label src="NEXT_DOCUMENT"/>
+
+          <!--Static mandatory field "[GENERAL IDENTIFICATION CARD]"-->
+          <calculateOffset x="0.296" y="0.042" w="0.531" h="0.046" content="GENERAL IDENTIFICATION CARD" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var0" x="0.296" y="0.042" w="0.531" h="0.046"/>
+          <assignIfContent overwrite="false" src="ml1_var0" dst="ml1_found0" value="Y" op="distance" param="GENERAL IDENTIFICATION CARD" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found0" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[CARTE D'IDENTITÉ GENERALE]"-->
+          <calculateOffset x="0.297" y="0.092" w="0.496" h="0.048" content="CARTE D'IDENTITÉ GENERALE" threshold="0.3"/>
+          <!--Dynamic mandatory field "DocumentNumber"-->
+          <findElementsIntersecting dst="ml1_var2" x="0.685" y="0.228" w="0.289" h="0.001"/>
+          <assignField src="ml1_var2" field="DocumentNumber"/>
+          <rejectIfNotValid src="ml1_var2" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "LastName"-->
+          <findElementsIntersecting dst="ml1_var3" x="0.083" y="0.207" w="0.562" h="0.001"/>
+          <assignField src="ml1_var3" field="LastName"/>
+          <rejectIfNotValid src="ml1_var3" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "GivenName"-->
+          <findElementsIntersecting dst="ml1_var4" x="0.086" y="0.268" w="0.565" h="0.001"/>
+          <assignField src="ml1_var4" field="GivenName"/>
+          <rejectIfNotValid src="ml1_var4" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[DOB/DDN]"-->
+          <calculateOffset x="0.298" y="0.515" w="0.098" h="0.030" content="DOB/DDN" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfBirth"-->
+          <findElementsIntersecting dst="ml1_match_var6" x="0.443" y="0.527" w="0.205" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var6" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml1_var6"/>
+          <assignField src="ml1_var6" field="DateOfBirth"/>
+          <rejectIfNotValid src="ml1_var6" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "Address1"-->
+          <findElementsIntersecting dst="ml1_var7" x="0.083" y="0.340" w="0.568" h="0.001"/>
+          <assignField src="ml1_var7" field="Address1"/>
+          <rejectIfNotValid src="ml1_var7" label="NEXT_DOCUMENT"/>
+          <!--Dynamic optional field "Address2"-->
+          <findElementsIntersecting dst="ml1_var8" x="0.274" y="0.402" w="0.379" h="0.001"/>
+          <assignField src="ml1_var8" field="Address2"/>
+          <!--Dynamic optional field "Address3"-->
+          <findElementsIntersecting dst="ml1_var9" x="0.272" y="0.455" w="0.386" h="0.001"/>
+          <assignField src="ml1_var9" field="Address3"/>
+          <!--Static optional field "[Iss/Del]"-->
+          <calculateOffset x="0.311" y="0.573" w="0.070" h="0.030" content="Iss/Del" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfIssue"-->
+          <findElementsIntersecting dst="ml1_match_var11" x="0.438" y="0.600" w="0.211" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var11" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml1_var11"/>
+          <assignField src="ml1_var11" field="DateOfIssue"/>
+          <rejectIfNotValid src="ml1_var11" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Exp/Exp]"-->
+          <calculateOffset x="0.310" y="0.640" w="0.081" h="0.034" content="Exp/Exp" threshold="0.3"/>
+          <!--Dynamic mandatory field "DateOfExpiry"-->
+          <findElementsIntersecting dst="ml1_match_var13" x="0.438" y="0.666" w="0.213" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var13" regex="((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})(?: |[^A-Za-z0-9])*([0Oo][1-9lI]|[1lI][0-2oO])(?: |[^A-Za-z0-9])*([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])" value="([N]$3)/([N]$2)/([N]$1)" dst="ml1_var13"/>
+          <assignField src="ml1_var13" field="DateOfExpiry"/>
+          <rejectIfNotValid src="ml1_var13" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[Sex/Sexe]"-->
+          <calculateOffset x="0.246" y="0.725" w="0.090" h="0.032" content="Sex/Sexe" threshold="0.3"/>
+          <!--Dynamic optional field "Gender"-->
+          <findElementsIntersecting dst="ml1_var15" x="0.260" y="0.791" w="0.031" h="0.001"/>
+          <assignField src="ml1_var15" field="Gender"/>
+          <assignResult field="DocumentModel" src="$_CAN-YT-IDC-2010-001-01-01"/>
+          <jump dst="END_CAPTURE"/>
+          <label src="NEXT_DOCUMENT"/>
+
+          <!--Static mandatory field "[IDENTIFICATION CARD]"-->
+          <calculateOffset x="0.325" y="0.066" w="0.521" h="0.060" content="IDENTIFICATION CARD" threshold="0.3"/>
+          <findElementsIntersecting dst="ml1_var0" x="0.325" y="0.066" w="0.521" h="0.060"/>
+          <assignIfContent overwrite="false" src="ml1_var0" dst="ml1_found0" value="Y" op="distance" param="IDENTIFICATION CARD" param_2="0.3"/>
+          <rejectIfNotValid reason="DocumentNotExpected" src="ml1_found0" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "DocumentNumber"-->
+          <findElementsIntersecting dst="ml1_var1" x="0.354" y="0.198" w="0.388" h="0.001"/>
+          <assignField src="ml1_var1" field="DocumentNumber"/>
+          <rejectIfNotValid src="ml1_var1" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "FullName"-->
+          <findElementsIntersecting dst="ml1_var2" x="0.324" y="0.359" w="0.609" h="0.001"/>
+          <assignField src="ml1_var2" field="FullName"/>
+          <rejectIfNotValid src="ml1_var2" label="NEXT_DOCUMENT"/>
+          <!--Dynamic mandatory field "Address1"-->
+          <findElementsIntersecting dst="ml1_var3" x="0.324" y="0.405" w="0.608" h="0.001"/>
+          <assignField src="ml1_var3" field="Address1"/>
+          <rejectIfNotValid src="ml1_var3" label="NEXT_DOCUMENT"/>
+          <!--Static optional field "[No]"-->
+          <calculateOffset x="0.328" y="0.201" w="0.022" h="0.023" content="No" threshold="0.3"/>
+          <!--Static optional field "[Exp]"-->
+          <calculateOffset x="0.328" y="0.245" w="0.030" h="0.033" content="Exp" threshold="0.3"/>
+          <!--Dynamic optional field "DateOfExpiry"-->
+          <findElementsIntersecting dst="ml1_match_var6" x="0.362" y="0.255" w="0.246" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var6" regex="([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])(?: |[^A-Za-z0-9])*([A-Za-z0-9]{3})(?: |[^A-Za-z0-9])*((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})" value="([N]$1)/($2)/([N]$3)" dst="ml1_var6"/>
+          <assignField src="ml1_var6" field="DateOfExpiry"/>
+          <!--Static optional field "[DOB]"-->
+          <calculateOffset x="0.329" y="0.620" w="0.036" h="0.031" content="DOB" threshold="0.3"/>
+          <!--Dynamic optional field "DateOfBirth"-->
+          <findElementsIntersecting dst="ml1_match_var8" x="0.366" y="0.620" w="0.288" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var8" regex="([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])(?: |[^A-Za-z0-9])*([A-Za-z0-9]{3})(?: |[^A-Za-z0-9])*((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})" value="([N]$1)/($2)/([N]$3)" dst="ml1_var8"/>
+          <assignField src="ml1_var8" field="DateOfBirth"/>
+          <!--Dynamic optional field "Address2"-->
+          <findElementsIntersecting dst="ml1_var9" x="0.324" y="0.453" w="0.605" h="0.001"/>
+          <assignField src="ml1_var9" field="Address2"/>
+          <!--Static optional field "[Sex]"-->
+          <calculateOffset x="0.330" y="0.677" w="0.026" h="0.022" content="Sex" threshold="0.3"/>
+          <!--Dynamic optional field "Gender"-->
+          <findElementsIntersecting dst="ml1_var11" x="0.360" y="0.682" w="0.028" h="0.001"/>
+          <assignField src="ml1_var11" field="Gender"/>
+          <!--Static optional field "[Iss]"-->
+          <calculateOffset x="0.330" y="0.776" w="0.020" h="0.027" content="Iss" threshold="0.3"/>
+          <!--Dynamic optional field "DateOfIssue"-->
+          <findElementsIntersecting dst="ml1_match_var13" x="0.351" y="0.781" w="0.208" h="0.001"/>
+          <matchIfValid overwrite="false" src="ml1_match_var13" regex="([0oO][1-9lI]|[1-2lI][0-9oOlI]|3[0-1oOlI])(?: |[^A-Za-z0-9])*([A-Za-z0-9]{3})(?: |[^A-Za-z0-9])*((?:[1lI][8-9]|2[0-2oOlI])[0-9oOlI]{2})" value="([N]$1)/($2)/([N]$3)" dst="ml1_var13"/>
+          <assignField src="ml1_var13" field="DateOfIssue"/>
+          <assignResult field="DocumentModel" src="$_CAN-AB-IDC-2018-001-01-01"/>
+          <jump dst="END_CAPTURE"/>
+          <label src="NEXT_DOCUMENT"/>
+          
+          <rejectIfNotValid src="dummy"/>
+          <label src="END_CAPTURE"/>
+        </ML>
+      </Front>
+      <Back>
+        <PDF417 optional="yes" decode="custom:AAMVA"/>
+      </Back>
+    </Version>
+  </DocumentID>
 
     <Supported
         Front="AL,AT,BE,BA,BG,HR,CY,CZ,EE,FI,FR,GE,DE,GR,HU,IT,XK,LV,LT,LU,MT,MD,ME,NL,PL,PT,RS,SK,SI,ES,SE,CH,UA,DZ,BH,BW,BF,CM,EG,GH,IQ,IL,JO,KE,KW,LB,MU,MA,NG,OM,QA,SA,SN,ZA,TR,AE,UG,AR,BS,BO,CL,CO,CR,DO,EC,SV,GT,HT,HN,MX,NI,PY,PE,PR,TT,UY,AM,AZ,BD,BN,CN,IN,KZ,KG,MY,MV,PK,PH,SG,KR,LK,TW,TH,VN,AU,CA,US,RO,RW,TN,PA,VE,KH,HK,ID"
