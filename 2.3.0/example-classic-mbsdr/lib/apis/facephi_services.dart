@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-String baseUrlPlatform  = 'external-selphid-sdk.facephi.dev';
+String baseUrlPlatform  = '';
 int timeout             = 30;
 
 class FacephiServices
@@ -92,6 +92,38 @@ class FacephiServices
     } catch (e) {
       if (kDebugMode) {
         print("error livenessRequest: $e");
+      }
+    }
+    return response;
+  }
+
+  Future<dynamic> iadRequest({required String iad}) async
+  {
+    dynamic response;
+    try
+    {
+      final uri     = Uri.https(baseUrlPlatform, "/");
+      final header  = <String, String> {
+        'Content-Type': 'application/octet-stream; charset=UTF-8',
+        'x-api-key': '000',
+      };
+
+      final r = await client.post(uri, headers: header, body: base64Decode(iad)).timeout(Duration(seconds: timeout));
+      if (r.statusCode == 200) {
+        response = jsonEncode(r.body);
+      }
+    }
+    on TimeoutException catch (e) {
+      if (kDebugMode) {
+        print("error iadRequest: $e");
+      }
+    } on Error catch (e) {
+      if (kDebugMode) {
+        print("error iadRequest: $e");
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("error iadRequest: $e");
       }
     }
     return response;

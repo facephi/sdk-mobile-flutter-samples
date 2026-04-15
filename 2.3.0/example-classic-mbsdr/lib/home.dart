@@ -24,15 +24,19 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
 {
-  final ValueNotifier<Uint8List?> _frontDocumentImage = ValueNotifier(null);
-  final ValueNotifier<Uint8List?> _backDocumentImage = ValueNotifier(null);
-  final ValueNotifier<Uint8List?> _faceImage = ValueNotifier(null);
-  final ValueNotifier<Uint8List?> _bestImage = ValueNotifier(null);
+  final ValueNotifier<Uint8List?> _bestImage          = ValueNotifier(null);
+  final ValueNotifier<SelphIDResult?> _selphIDResult  = ValueNotifier(null);
+  final ValueNotifier<String> _message                = ValueNotifier("");
 
-  final ValueNotifier<Map<String, dynamic>?> _ocrResult = ValueNotifier(null);
-
-  final ValueNotifier<String> _tokenFaceImage = ValueNotifier("");
-  final ValueNotifier<String> _message = ValueNotifier("");
+  // final List<Uint8List> _allocations = [];
+  /*
+  void _consumeMemory() {
+    setState(() {
+      // Asignar 50 MB por clic (ajusta según tu objetivo)
+      _allocations.add(Uint8List(50 * 1024 * 1024));
+    });
+  }
+  */
 
   @override
   void initState() {
@@ -41,6 +45,14 @@ class _MyHomePageState extends State<MyHomePage>
 
     launchInitSession(setState, _message);
     launchListenerTrackingError();
+    /*
+    for (var i in List.generate(16, (index) => index)) {
+      if (kDebugMode) {
+        print("Ciclo $i");
+      }
+      _consumeMemory();
+    }
+    */
   }
 
   @override
@@ -59,23 +71,15 @@ class _MyHomePageState extends State<MyHomePage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Visibility(visible: _bestImage.value != null, child: const CustomLabel(text: "Best Image", color: Color(0xff2196f3))),
-                Visibility(visible: _bestImage.value != null, child: SelphiImage(_bestImage.value)),
+                SelphiImage(_bestImage.value),
                 Visibility(
-                  visible: _frontDocumentImage.value != null || _backDocumentImage.value != null,
+                  visible: _selphIDResult.value?.frontDocumentImage != null || _selphIDResult.value?.backDocumentImage != null,
                   child: Column(
                     children: [
-                      const CustomLabel(text: "Front", color: Color(0xff2196f3)),
-                      SelphIDImage(_frontDocumentImage.value, 0.25, 1),
-                      const CustomLabel(text: "Back", color: Color(0xff2196f3)),
-                      SelphIDImage(_backDocumentImage.value, 0.25, 1),
-                      const CustomLabel(text: "Face", color: Color(0xff2196f3)),
-                      SelphIDImage(_faceImage.value, 0.25, 0.25),
-
-                      if (_ocrResult.value != null && _ocrResult.value!.length > 1)
-                        const CustomLabel(text: "Data", color: Color(0xff2196f3)),
-                      if (_ocrResult.value != null && _ocrResult.value!.length > 1)
-                        SelphIDList(_ocrResult.value, 0.5, 0.75),
+                      SelphIDImage("Front", _selphIDResult.value?.frontDocumentImage, 0.25, 0.75),
+                      SelphIDImage("Back", _selphIDResult.value?.backDocumentImage, 0.25, 0.75),
+                      SelphIDImage("Face", _selphIDResult.value?.faceImage, 0.25, 0.50),
+                      SelphIDList(_selphIDResult.value?.documentData == null ? null : json.decode(_selphIDResult.value!.documentData), 0.5, 0.75),
                     ],
                   ),
                 ),
@@ -86,14 +90,17 @@ class _MyHomePageState extends State<MyHomePage>
                   },
                 ),
                 CustomButton(text: "Selphi", function: () => launchSelphiAuthenticate(setState, _message, _bestImage)),
-                CustomButton(text: "SelphID", function: () => launchSelphIDCapture(setState, _message, _frontDocumentImage, _backDocumentImage, _faceImage, _ocrResult, _tokenFaceImage)),
-                CustomButton(text: "Get ExtraData", function: () => launchGetExtraData(setState, _message, _bestImage, _tokenFaceImage)),
+                CustomButton(text: "SelphID", function: () => launchSelphIDCapture(setState, _message, _selphIDResult)),
+                Visibility(
+                  visible: _bestImage.value != null && _selphIDResult.value?.tokenFaceImage != null,
+                  child: CustomButton(text: "Get ExtraData", function: () => launchGetExtraData(setState, _message, _bestImage, _selphIDResult.value?.tokenFaceImage))
+                ),
                 CustomButton(text: "Launch Flow", function: launchFlow),
                 CustomButton(text: "Next Step Flow", function: () => launchNextStepFlow(setState, _message)),
                 CustomButton(text: "Cancel Flow", function: () => launchCancelFlow(setState, _message)),
                 CustomButton(text: "Init Operation", function: () => launchInitOperation(setState, _message)),
                 CustomButton(text: "Init Session", function: () => launchInitSession(setState, _message)),
-                CustomButton(text: "Close Session", function: () => launchCloseSession(setState, _message)),
+                CustomButton(text: "Close Session", function: () => launchCloseSession(setState, _message, _selphIDResult, _bestImage)),
               ],
             ),
           ),
