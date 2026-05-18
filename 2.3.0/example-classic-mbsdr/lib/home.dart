@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:example/models/selphid_result.dart';
 import 'package:example/providers/core.dart';
 import 'package:example/providers/selphi.dart';
 import 'package:example/providers/selphid.dart';

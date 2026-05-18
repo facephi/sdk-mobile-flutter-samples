@@ -16,18 +16,18 @@ class SelphIDWidget
 
   /// Sample of standard plugin configuration 
   SelphIDConfiguration createStandardConfiguration() {
-    SelphIDConfiguration configurationWidget    = SelphIDConfiguration();
-    configurationWidget.documentType            = SelphIDDocumentType.DT_IDCARD; // IDCard, Passport, DriverLic or ForeignCard
-    configurationWidget.fullscreen              = true;
-    configurationWidget.scanMode                = SelphIDScanMode.CAP_MODE_SEARCH;
-    configurationWidget.specificData            = 'AR|<ALL>';
-    configurationWidget.showResultAfterCapture  = true;
-    configurationWidget.timeout                 = SelphIDTimeout.T_SHORT;
-    configurationWidget.showDiagnostic          = true;
-    configurationWidget.wizardMode              = true;
-    //configurationWidget.params                = { 'PromiscuousMode': 'Full'};
-    //configurationWidget.videoFilename         = "/storage/self/primary/Download/videoNameSelphid.mp4";
-    return configurationWidget;
+    SelphIDConfiguration cfg    = SelphIDConfiguration();
+    cfg.documentType            = SelphIDDocumentType.DT_IDCARD; // IDCard, Passport, DriverLic or ForeignCard
+    cfg.fullscreen              = true;
+    cfg.scanMode                = SelphIDScanMode.CAP_MODE_SEARCH;
+    cfg.specificData            = 'AR|<ALL>';
+    cfg.showResultAfterCapture  = true;
+    cfg.timeout                 = SelphIDTimeout.T_SHORT;
+    cfg.showDiagnostic          = true;
+    cfg.wizardMode              = true;
+    //cfg.params                = { 'PromiscuousMode': 'None'};
+    //cfg.videoFilename         = "/storage/self/primary/Download/videoNameSelphid.mp4";
+    return cfg;
   }
 
   Future setSelphidFlow() async

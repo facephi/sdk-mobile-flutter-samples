@@ -7,7 +7,7 @@ class CoreResult
   final String finishStatusDescription;
   final String errorDiagnostic;
   final String? errorMessage;
-  final String? data;
+  final dynamic data;
   
   const CoreResult({
     required this.finishStatus,

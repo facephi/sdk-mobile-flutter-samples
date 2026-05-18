@@ -17,7 +17,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 2.3.0+1
+version: 2.6.0+1
 
 environment:
   sdk: '>=2.18.1 <4.0.0'
@@ -35,27 +35,26 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  # dartz: ^0.10.1
   http: ^1.6.0
   fphi_sdkmobile_core:
-    #path: ../2.6.0/fphi_sdkmobile_core
+    #path: ../2.8.0/fphi_sdkmobile_core
     hosted:
       name: fphi_sdkmobile_core
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
     #version: '<=2.2.99'
-    version: ^2.6.0
+    version: ^2.8.0
   fphi_sdkmobile_selphi:
-    #path: ../2.6.0/fphi_sdkmobile_selphi
+    #path: ../2.8.0/fphi_sdkmobile_selphi
     hosted:
       name: fphi_sdkmobile_selphi
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
-    version: ^2.6.0
+    version: ^2.8.0
   fphi_sdkmobile_selphid:
-    #path: ../2.6.0/fphi_sdkmobile_selphid
+    #path: ../2.8.0/fphi_sdkmobile_selphid
     hosted:
       name: fphi_sdkmobile_selphid
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
-    version: ^2.6.0
+    version: ^2.8.0
 
 dev_dependencies:
   flutter_test:

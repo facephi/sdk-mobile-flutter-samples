@@ -18,12 +18,13 @@ class CoreWidget
 
   Future initSession() async
   {
-    dynamic r = await FphiSdkmobileCore().initSession(widgetConfigurationJSON: CoreConfigurationInitSession(
-        //mLicense: (Platform.isAndroid) ? licenseAndroid : licenseIOS,
-        mLicenseUrl: licenseUrl,
-        mLicenseApiKey: (Platform.isAndroid) ? licenseApiKeyAndroid : licenseApiKeyIOS,
-        mEnableTracking: true
-    ));
+    CoreConfigurationInitSession cfg = CoreConfigurationInitSession();
+    // cfg.license          = (Platform.isAndroid) ? licenseAndroid : licenseIOS;
+    cfg.licenseUrl          = licenseUrl;
+    cfg.licenseApiKey       = (Platform.isAndroid) ? licenseApiKeyAndroid : licenseApiKeyIOS;
+    cfg.enableTracking      = true;
+
+    dynamic r = await FphiSdkmobileCore().initSession(widgetConfigurationJSON: cfg);
     return r;
   }
 
