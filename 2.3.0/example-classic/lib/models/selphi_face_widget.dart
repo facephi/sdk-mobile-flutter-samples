@@ -15,17 +15,17 @@ class SelphiFaceWidget
   /// Sample of standard plugin configuration
   SelphiFaceConfiguration createStandardConfiguration()
   {
-    SelphiFaceConfiguration configurationWidget   = SelphiFaceConfiguration();
-    configurationWidget.livenessMode              = SelphiFaceLivenessMode.LM_PASSIVE; // Liveness mode
-    configurationWidget.fullscreen                = true;
-    configurationWidget.logImages                 = false;
-    configurationWidget.jpgQuality                = 0.95;
-    configurationWidget.enableGenerateTemplateRaw = true;
-    configurationWidget.showPreviousTip           = false;
-    configurationWidget.showTutorial              = false;
-    // configurationWidget.params                 = {"DesiredCameraWidth": "1280", "DesiredCameraHeight": "720"};
-    //configurationWidget.videoFilename           = "/storage/self/primary/Download/videoName.mp4";
-    return configurationWidget;
+    SelphiFaceConfiguration cfg   = SelphiFaceConfiguration();
+    cfg.livenessMode              = SelphiFaceLivenessMode.LM_PASSIVE; // Liveness mode
+    cfg.fullscreen                = true;
+    cfg.logImages                 = false;
+    cfg.jpgQuality                = 0.95;
+    cfg.enableGenerateTemplateRaw = true;
+    cfg.showPreviousTip           = false;
+    cfg.showTutorial              = false;
+    // cfg.params                 = {"DesiredCameraWidth": "1280", "DesiredCameraHeight": "720"};
+    //cfg.videoFilename           = "/storage/self/primary/Download/videoName.mp4";
+    return cfg;
   }
 
   Future setSelphiFlow() async

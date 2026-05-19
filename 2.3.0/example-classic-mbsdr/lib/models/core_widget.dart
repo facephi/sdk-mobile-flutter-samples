@@ -44,12 +44,10 @@ class CoreWidget
     return r;
   }
 
-  Future initFlow() async
+  Future initFlow(String flow) async
   {
     dynamic r = await FphiSdkmobileCore().initFlow(
-        widgetConfigurationJSON: FlowConfiguration(
-            mCustomerId: customerId, mFlow: "770c5d93-20ea-44cd-a848-41666486c5b0"
-        )
+        widgetConfigurationJSON: FlowConfiguration(mCustomerId: customerId, mFlow: flow)
     );
     return r;
   }
@@ -58,6 +56,12 @@ class CoreWidget
   {
     dynamic r = await FphiSdkmobileCore().startFlow();
     return r;
+  }
+
+  Future getFlowIntegrationData() async
+  {
+      final Map m = await FphiSdkmobileCore().getFlowIntegrationData();
+      return m;
   }
 
   Future cancelFlow() async

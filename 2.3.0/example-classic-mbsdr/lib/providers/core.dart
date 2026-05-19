@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'package:example/models/core_result.dart';
+import 'package:example/models/flows_result.dart';
+import 'package:example/widgets/flows_bottom_sheet.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_finish_status.dart';
 import 'package:example/models/core_widget.dart';
@@ -113,42 +116,14 @@ void launchGetExtraData(
   });
 }
 
-void launchCancelFlow(void Function(VoidCallback fn) setState, ValueNotifier<String> message) async
-{
-  CoreWidget().cancelFlow().then((res)
-  {
-    if (kDebugMode) {
-      print(res);
-    }
-  }).catchError((e) {
-    setState(() {
-      message.value = e.toString();
-    });
-  });
-}
-
-void launchNextStepFlow(void Function(VoidCallback fn) setState, ValueNotifier<String> message) async
-{
-  CoreWidget().nextStepFlow().then((res) {
-    if (kDebugMode) {
-      print(res);
-    }
-  })
-  .catchError((e) {
-    setState(() {
-      message.value = e.toString();
-    });
-  });
-}
-
-void launchFlow() async
+void launchFlow(
+    void Function(VoidCallback fn) setState,
+    ValueNotifier<String> message,
+    ValueNotifier<String> flow) async
 {
   const channel = BasicMessageChannel<dynamic>('core.flow', StringCodec());
   channel.setMessageHandler((message) async
   {
-    if (kDebugMode) {
-      print(jsonDecode(message!));
-    }
     if (jsonDecode(message!)['flow'] == "SELPHID")
     {
       if (kDebugMode) {
@@ -161,10 +136,16 @@ void launchFlow() async
         print(SelphiFaceResult.fromMap(jsonDecode(message)));
       }
     }
+    else
+    {
+      if (kDebugMode) {
+        print(jsonDecode(message));
+      }
+    }
     return '';
   });
 
-  CoreWidget().initFlow().then((res) async
+  CoreWidget().initFlow(flow.value).then((res) async
   {
     CoreResult r = CoreResult.fromMap(res);
     if (r.finishStatus == SdkFinishStatus.STATUS_OK)
@@ -180,7 +161,8 @@ void launchFlow() async
         }
       });
 
-      await CoreWidget().startFlow().then((value) {
+      CoreWidget().startFlow().then((value)
+      {
         if (kDebugMode) {
           print(value);
         }
@@ -207,4 +189,42 @@ void launchListenerTrackingError() async
     }
     return '';
   });
+}
+
+void launchGetFlowIntegrationData(
+    BuildContext context,
+    void Function(VoidCallback fn) setState,
+    ValueNotifier<String> message,
+    ValueNotifier<List<FlowsResult>?> flows,
+    ValueNotifier<String> flow) async
+{
+  await CoreWidget().getFlowIntegrationData()
+      .then((res)
+      {
+        CoreResult r = CoreResult.fromMap(res);
+        if (r.finishStatus == SdkFinishStatus.STATUS_OK)
+        {
+          final list = (r.data as List)
+              .map((e) => FlowsResult.fromMap(e as Map<dynamic, dynamic>))
+              .toList();
+          setState(() {
+            flows.value = list;
+          });
+          if (!context.mounted) {
+            return;
+          }
+          showFlowsResultsBottomSheet(context, list, setState, flow);
+        }
+        else
+        {
+          setState(() {
+            message.value = r.errorDiagnostic;
+          });
+        }
+      })
+      .catchError((e) {
+        setState(() {
+          message.value = e.toString();
+        });
+      });
 }

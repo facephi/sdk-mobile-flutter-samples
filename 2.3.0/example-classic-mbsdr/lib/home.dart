@@ -12,6 +12,7 @@ import 'package:example/widgets/selphi_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'models/flows_result.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title, required this.notifier, required this.mode});
@@ -29,6 +30,8 @@ class _MyHomePageState extends State<MyHomePage>
   final ValueNotifier<Uint8List?> _bestImage          = ValueNotifier(null);
   final ValueNotifier<SelphIDResult?> _selphIDResult  = ValueNotifier(null);
   final ValueNotifier<String> _message                = ValueNotifier("");
+  final ValueNotifier<List<FlowsResult>?> _flows      = ValueNotifier(null);
+  final ValueNotifier<String> _flow                   = ValueNotifier("");
 
   // final List<Uint8List> _allocations = [];
   /*
@@ -97,9 +100,8 @@ class _MyHomePageState extends State<MyHomePage>
                   visible: _bestImage.value != null && _selphIDResult.value?.tokenFaceImage != null,
                   child: CustomButton(text: "Get ExtraData", function: () => launchGetExtraData(setState, _message, _bestImage, _selphIDResult.value?.tokenFaceImage))
                 ),
-                CustomButton(text: "Launch Flow", function: launchFlow),
-                CustomButton(text: "Next Step Flow", function: () => launchNextStepFlow(setState, _message)),
-                CustomButton(text: "Cancel Flow", function: () => launchCancelFlow(setState, _message)),
+                Visibility(visible: _flows.value != null, child: CustomButton(text: "Launch Flow", function: () => launchFlow(setState, _message, _flow))),
+                CustomButton(text: "Get Flows", function: () => launchGetFlowIntegrationData(context, setState, _message, _flows, _flow)),
                 CustomButton(text: "Init Operation", function: () => launchInitOperation(setState, _message)),
                 CustomButton(text: "Init Session", function: () => launchInitSession(setState, _message)),
                 CustomButton(text: "Close Session", function: () => launchCloseSession(setState, _message, _selphIDResult, _bestImage)),
