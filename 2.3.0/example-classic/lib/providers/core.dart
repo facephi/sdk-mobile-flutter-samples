@@ -14,6 +14,8 @@ import 'package:example/apis/facephi_services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_operation_event.dart';
 
+BasicMessageChannel<dynamic>? channel;
+
 void launchInitSession(void Function(VoidCallback fn) setState, ValueNotifier<String> message) async
 {
   CoreWidget().initSession().then((res)
@@ -71,6 +73,11 @@ void launchCloseSession(
         selphidResult.value = null;
         bestImage.value     = null;
       });
+
+      if (channel != null) {
+        channel?.setMessageHandler(null);
+        channel = null;
+      }
     }
   }).catchError((e) {
     setState(() {
@@ -121,8 +128,8 @@ void launchFlow(
     ValueNotifier<String> message,
     ValueNotifier<String> flow) async
 {
-  const channel = BasicMessageChannel<dynamic>('core.flow', StringCodec());
-  channel.setMessageHandler((message) async
+  channel = BasicMessageChannel<dynamic>('core.flow', StringCodec());
+  channel!.setMessageHandler((message) async
   {
     if (jsonDecode(message!)['flow'] == "SELPHID")
     {

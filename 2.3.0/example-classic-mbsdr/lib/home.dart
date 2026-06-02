@@ -100,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage>
                   visible: _bestImage.value != null && _selphIDResult.value?.tokenFaceImage != null,
                   child: CustomButton(text: "Get ExtraData", function: () => launchGetExtraData(setState, _message, _bestImage, _selphIDResult.value?.tokenFaceImage))
                 ),
-                Visibility(visible: _flows.value != null, child: CustomButton(text: "Launch Flow", function: () => launchFlow(setState, _message, _flow))),
+                Visibility(visible: _flow.value != "", child: CustomButton(text: "Launch Flow", function: () => launchFlow(setState, _message, _flow))),
                 CustomButton(text: "Get Flows", function: () => launchGetFlowIntegrationData(context, setState, _message, _flows, _flow)),
                 CustomButton(text: "Init Operation", function: () => launchInitOperation(setState, _message)),
                 CustomButton(text: "Init Session", function: () => launchInitSession(setState, _message)),
