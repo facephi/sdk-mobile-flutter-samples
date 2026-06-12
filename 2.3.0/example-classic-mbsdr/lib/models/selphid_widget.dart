@@ -25,7 +25,7 @@ class SelphIDWidget
     cfg.timeout                 = SelphIDTimeout.T_SHORT;
     cfg.showDiagnostic          = true;
     cfg.wizardMode              = true;
-    //cfg.params                = { 'PromiscuousMode': 'None'};
+    cfg.params                = { 'PromiscuousMode': 'None'}; // FOR ARG.
     //cfg.videoFilename         = "/storage/self/primary/Download/videoNameSelphid.mp4";
     return cfg;
   }

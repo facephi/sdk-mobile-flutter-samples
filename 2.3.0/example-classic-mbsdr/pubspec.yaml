@@ -43,7 +43,7 @@ dependencies:
       url: https://facephicorp.jfrog.io/artifactory/api/pub/pub-pro-fphi/
     #version: '<=2.2.99'
     version: ^2.8.0
-  fphi_sdkmobile_selphi:
+  fphi_sdkmobile_selphi_iad:
     #path: ../2.8.0/fphi_sdkmobile_selphi_iad
     hosted:
       name: fphi_sdkmobile_selphi_iad

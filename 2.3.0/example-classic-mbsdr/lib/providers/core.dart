@@ -61,7 +61,7 @@ void launchInitOperation(void Function(VoidCallback fn) setState, ValueNotifier<
 void launchCloseSession(
     void Function(VoidCallback fn) setState,
     ValueNotifier<String> message,
-    ValueNotifier<SelphIDResult?> selphidResult,
+    SelphIDResult? selphidResult,
     ValueNotifier<Uint8List?> bestImage) async
 {
   CoreWidget().closeSession(SdkOperationEvent.SUCCESS)
@@ -69,9 +69,9 @@ void launchCloseSession(
     if (kDebugMode) {
       print("launchCloseSession r: $res");
       setState(() {
-        message.value       = "";
-        selphidResult.value = null;
-        bestImage.value     = null;
+        message.value     = "";
+        selphidResult     = null;
+        bestImage.value   = null;
       });
 
       if (channel != null) {

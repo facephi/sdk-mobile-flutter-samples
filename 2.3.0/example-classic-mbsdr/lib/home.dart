@@ -27,11 +27,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
 {
-  final ValueNotifier<Uint8List?> _bestImage          = ValueNotifier(null);
-  final ValueNotifier<SelphIDResult?> _selphIDResult  = ValueNotifier(null);
-  final ValueNotifier<String> _message                = ValueNotifier("");
-  final ValueNotifier<List<FlowsResult>?> _flows      = ValueNotifier(null);
-  final ValueNotifier<String> _flow                   = ValueNotifier("");
+  final SelphIDResult? _selphIDResult             = null;
+  final ValueNotifier<Uint8List?> _bestImage      = ValueNotifier(null);
+  final ValueNotifier<String> _message            = ValueNotifier("");
+  final ValueNotifier<List<FlowsResult>?> _flows  = ValueNotifier(null);
+  final ValueNotifier<String> _flow               = ValueNotifier("");
 
   // final List<Uint8List> _allocations = [];
   /*
@@ -78,13 +78,13 @@ class _MyHomePageState extends State<MyHomePage>
               children: <Widget>[
                 SelphiImage(_bestImage.value),
                 Visibility(
-                  visible: _selphIDResult.value?.frontDocumentImage != null || _selphIDResult.value?.backDocumentImage != null,
+                  visible: _selphIDResult?.frontDocumentImage != null || _selphIDResult?.backDocumentImage != null,
                   child: Column(
                     children: [
-                      SelphIDImage("Front", _selphIDResult.value?.frontDocumentImage, 0.25, 0.75),
-                      SelphIDImage("Back", _selphIDResult.value?.backDocumentImage, 0.25, 0.75),
-                      SelphIDImage("Face", _selphIDResult.value?.faceImage, 0.25, 0.50),
-                      SelphIDList(_selphIDResult.value?.documentData == null ? null : json.decode(_selphIDResult.value!.documentData), 0.5, 0.75),
+                      SelphIDImage("Front", _selphIDResult?.frontDocumentImage, 0.25, 0.75),
+                      SelphIDImage("Back", _selphIDResult?.backDocumentImage, 0.25, 0.75),
+                      SelphIDImage("Face", _selphIDResult?.faceImage, 0.25, 0.50),
+                      SelphIDList(_selphIDResult?.documentData == null ? null : json.decode(_selphIDResult!.documentData), 0.5, 0.75),
                     ],
                   ),
                 ),
@@ -97,8 +97,8 @@ class _MyHomePageState extends State<MyHomePage>
                 CustomButton(text: "Selphi", function: () => launchSelphiAuthenticate(setState, _message, _bestImage)),
                 CustomButton(text: "SelphID", function: () => launchSelphIDCapture(setState, _message, _selphIDResult)),
                 Visibility(
-                  visible: _bestImage.value != null && _selphIDResult.value?.tokenFaceImage != null,
-                  child: CustomButton(text: "Get ExtraData", function: () => launchGetExtraData(setState, _message, _bestImage, _selphIDResult.value?.tokenFaceImage))
+                  visible: _bestImage.value != null && _selphIDResult?.tokenFaceImage != null,
+                  child: CustomButton(text: "Get ExtraData", function: () => launchGetExtraData(setState, _message, _bestImage, _selphIDResult?.tokenFaceImage))
                 ),
                 Visibility(visible: _flow.value != "", child: CustomButton(text: "Launch Flow", function: () => launchFlow(setState, _message, _flow))),
                 CustomButton(text: "Get Flows", function: () => launchGetFlowIntegrationData(context, setState, _message, _flows, _flow)),
