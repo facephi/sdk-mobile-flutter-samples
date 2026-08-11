@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- GENERAL -->
+    <!-- GENERAL
     <color name="sdkPrimaryColor">#6200EE</color>
     <color name="sdkPrimaryVariantColor">#3700B3</color>
     <color name="sdkSecondaryColor">#03DAC5</color>
@@ -9,9 +9,9 @@
     <color name="sdkBackgroundColor">#f2f2f7</color>
     <color name="sdkTopIconsColor">#121212</color>
     <color name="sdkErrorColor">#DD3631</color>
-    <color name="sdkSuccessColor">#07A13A</color>
+    <color name="sdkSuccessColor">#07A13A</color> -->
     <!-- SDK BUTTONS -->
-    <dimen name="sdk_buttons_corner_dimen">32dp</dimen>
+    <!-- <dimen name="sdk_buttons_corner_dimen">32dp</dimen> -->
     <!-- SDK LOGO
     <drawable name="sdk_logo">@drawable/ic_demo_logo</drawable>-->
     <!-- VOICE -->
