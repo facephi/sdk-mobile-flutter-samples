@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "sdk-core-spm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/facephi/SDK-Core-SPM.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "3464eabe15dddedef0671402d59676002907fb67"
+      }
+    },
+    {
+      "identity" : "sdk-sdk-spm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/facephi/SDK-Sdk-SPM",
+      "state" : {
+        "branch" : "master",
+        "revision" : "528d5339dcc0844532d6e6d20a5260f7c3ff2ea3"
+      }
+    }
+  ],
+  "version" : 2
+}
