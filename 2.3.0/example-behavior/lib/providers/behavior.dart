@@ -35,7 +35,7 @@ Future<bool> launchInitialize({ErrorCallback? onError}) async {
 
   try {
     final res = await BehaviorWidget().initialize();
-    final result = _parseResult(res);
+    final BehaviorResult result = _parseResult(res);
     if (kDebugMode) {
       print(result.toMap());
     }
@@ -72,11 +72,11 @@ Future<bool> launchSetSessionId({ErrorCallback? onError}) async {
     print('Starting launchSetSessionId...');
   }
 
-  final sessionId = await Fip360Service().getSessionId();
+  final String sessionId = await Fip360Service().getSessionId();
 
   try {
     final res = await BehaviorWidget().setSessionId(sessionId);
-    final result = _parseResult(res);
+    final BehaviorResult result = _parseResult(res);
     if (kDebugMode) {
       print(result.toMap());
     }
@@ -110,7 +110,7 @@ Future<bool> launchSetUserId(String userId, {ErrorCallback? onError}) async {
 
   try {
     final res = await BehaviorWidget().setUserId(userId);
-    final result = _parseResult(res);
+    final BehaviorResult result = _parseResult(res);
     if (kDebugMode) {
       print(result.toMap());
     }
@@ -144,7 +144,7 @@ Future<bool> launchSetPosition(String position, {ErrorCallback? onError}) async 
 
   try {
     final res = await BehaviorWidget().setPosition(position);
-    final result = _parseResult(res);
+    final BehaviorResult result = _parseResult(res);
     if (kDebugMode) {
       print(result.toMap());
     }
@@ -176,7 +176,7 @@ Future<void> launchClearSession({ErrorCallback? onError}) async {
 
   try {
     final res = await BehaviorWidget().clearSessionData();
-    final result = _parseResult(res);
+    final BehaviorResult result = _parseResult(res);
     if (kDebugMode) {
       print(result.toMap());
     }

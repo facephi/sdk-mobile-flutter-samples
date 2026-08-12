@@ -103,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final errorText = _localError.isNotEmpty ? _localError : _message;
+    final String errorText = _localError.isNotEmpty ? _localError : _message;
 
     return Scaffold(
       appBar: AppBar(
