@@ -7,12 +7,11 @@ class NfcResult
   final String finishStatusDescription;
   final String errorDiagnostic;
   final String? errorMessage;
-  final int timeoutStatus;
   final String? facialImage;
   final String? signatureImage;
-  final String tokenFacialImage;
-  final String tokenSignatureImage;
-  final String tokenOCR;
+  final String? tokenFacialImage;
+  final String? tokenSignatureImage;
+  final String? tokenOCR;
   final dynamic nfcDocumentInformation;
   final dynamic nfcRawData;
   final dynamic nfcSecurityData;
@@ -24,7 +23,6 @@ class NfcResult
     required this.finishStatusDescription,
     required this.errorDiagnostic,
     required this.errorMessage,
-    required this.timeoutStatus,
     required this.tokenOCR,
     required this.facialImage,
     required this.signatureImage,
@@ -43,7 +41,6 @@ class NfcResult
       'finishStatusDescription': finishStatusDescription,
       'errorDiagnostic': errorDiagnostic,
       'errorMessage': errorMessage ?? "",
-      'timeoutStatus': timeoutStatus,
       'tokenOCR': tokenOCR,
       'facialImage': facialImage,
       'signatureImage': signatureImage,
@@ -63,7 +60,6 @@ class NfcResult
       finishStatusDescription: map['finishStatusDescription'],
       errorDiagnostic: map['errorDiagnostic'] ?? "",
       errorMessage: map['errorMessage'] ?? "",
-      timeoutStatus: map['timeoutStatus'] ?? 0,
       tokenOCR: map['tokenOCR'] ?? "",
       facialImage: map['facialImage'] ?? "",
       signatureImage: map['signatureImage'] ?? "",
@@ -79,6 +75,6 @@ class NfcResult
 
   @override
   String toString() {
-    return 'NfcResult(finishStatus: $finishStatus, errorDiagnostic: $errorDiagnostic, errorMessage: $errorMessage, finishStatusDescription: $finishStatusDescription, timeoutStatus: $timeoutStatus)';
+    return 'NfcResult(finishStatus: $finishStatus, errorDiagnostic: $errorDiagnostic, errorMessage: $errorMessage, finishStatusDescription: $finishStatusDescription)';
   }
 }

@@ -9,7 +9,7 @@ class NfcWidget
   Future<Either<Exception, NfcResult>> launchNfc() async {
     try
     {
-      Map? resultJson = await FphiSdkmobileNfc().startNfcComponent(
+      Map? r = await FphiSdkmobileNfc().startNfcComponent(
           widgetConfigurationJSON: NfcConfiguration(
             mBirthDate: "16/08/1979",
             mDocNumber: "YB7606398",
@@ -19,7 +19,7 @@ class NfcWidget
             mDocType: NfcDocumentType.PASSPORT
           )
       );
-      return Right(NfcResult.fromMap(resultJson));
+      return Right(NfcResult.fromMap(r));
     }
     on Exception catch (e)
     {
@@ -31,8 +31,8 @@ class NfcWidget
   {
     try
     {
-      Map? resultJson = await FphiSdkmobileNfc().setNfcFlow();
-      return Right(NfcResult.fromMap(resultJson));
+      Map? r = await FphiSdkmobileNfc().setNfcFlow();
+      return Right(NfcResult.fromMap(r));
     } on Exception catch (e) {
       return (Left(e));
     }
