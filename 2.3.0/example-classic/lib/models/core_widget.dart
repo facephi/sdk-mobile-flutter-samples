@@ -23,6 +23,8 @@ class CoreWidget
     cfg.licenseUrl          = licenseUrl;
     cfg.licenseApiKey       = (Platform.isAndroid) ? licenseApiKeyAndroid : licenseApiKeyIOS;
     cfg.enableTracking      = true;
+    // cfg.internalOptions  = {"SKIP_ENV_CHECK": "true"};
+    // cfg.orientation      = SdkViewOrientation.followSystem;
 
     dynamic r = await FphiSdkmobileCore().initSession(widgetConfigurationJSON: cfg);
     return r;
