@@ -15,8 +15,8 @@ class CoreWidget
   {
     try
     {
-      final Map resultJson = await FphiSdkmobileCore().closeSession();
-      return Right(CoreResult.fromMap(resultJson));
+      final Map r = await FphiSdkmobileCore().closeSession();
+      return Right(CoreResult.fromMap(r));
     } on Exception catch (e) {
       return (Left(e));
     }
@@ -26,16 +26,17 @@ class CoreWidget
   {
     try
     {
-      String apiKey = (Platform.isAndroid) ? licenseApiKeyAndroid : licenseApiKeyIOS;
-      String lic    = (Platform.isAndroid) ? licenseAndroid : licenseIOS;
-      final Map resultJson = await FphiSdkmobileCore().initSession(widgetConfigurationJSON: CoreConfigurationInitSession(
-          // mLicense: lic,
-          mLicenseUrl: licenseUrl,
-          mLicenseApiKey: apiKey,
-          mEnableTracking: true
-      ));
+      CoreConfigurationInitSession cfg = CoreConfigurationInitSession();
+      // cfg.license          = (Platform.isAndroid) ? licenseAndroid : licenseIOS;
+      cfg.licenseUrl          = licenseUrl;
+      cfg.licenseApiKey       = (Platform.isAndroid) ? licenseApiKeyAndroid : licenseApiKeyIOS;
+      cfg.enableTracking      = true;
+      // cfg.internalOptions  = {"SKIP_ENV_CHECK": "true"};
+      // cfg.orientation      = SdkViewOrientation.followSystem;
 
-      return Right(CoreResult.fromMap(resultJson));
+      final Map m = await FphiSdkmobileCore().initSession(widgetConfigurationJSON: cfg);
+
+      return Right(CoreResult.fromMap(m));
     } on Exception catch (e) {
       return (Left(e));
     }
@@ -45,8 +46,8 @@ class CoreWidget
   {
     try
     {
-      final Map resultJson = await FphiSdkmobileCore().getExtraData();
-      return Right(CoreResult.fromMap(resultJson));
+      final Map r = await FphiSdkmobileCore().getExtraData();
+      return Right(CoreResult.fromMap(r));
     }
     on Exception catch (e) {
       return (Left(e));
@@ -57,10 +58,10 @@ class CoreWidget
   {
     try
     {
-      final Map resultJson = await FphiSdkmobileCore().initOperation(
+      final Map r = await FphiSdkmobileCore().initOperation(
         widgetConfigurationJSON: TrackingConfiguration(mCustomerId: customerId, mType: TrackingOperationType.ONBOARDING),
       );
-      return Right(CoreResult.fromMap(resultJson));
+      return Right(CoreResult.fromMap(r));
     } on Exception catch (e) {
       return (Left(e));
     }

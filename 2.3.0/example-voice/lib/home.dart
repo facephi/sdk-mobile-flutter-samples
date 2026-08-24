@@ -38,8 +38,8 @@ class _MyHomePageState extends State<MyHomePage>
   {
     setState(() { _message = ""; });
 
-    final trackingWidgetResult = await _coreWidget.initOperation();
-    trackingWidgetResult.fold((l) {
+    final r = await _coreWidget.initOperation();
+    r.fold((l) {
       setState(() {
         _message = l.toString();
       });
@@ -59,8 +59,8 @@ class _MyHomePageState extends State<MyHomePage>
   {
     setState(() { _message = ""; });
 
-    final coreWidgetResult = await _coreWidget.initSession(); // SUCCESS/DENIED
-    coreWidgetResult.fold((l) {
+    final r = await _coreWidget.initSession(); // SUCCESS/DENIED
+    r.fold((l) {
       setState(() {
         _message = l.toString();
       });
@@ -79,8 +79,8 @@ class _MyHomePageState extends State<MyHomePage>
 
   void _launchCloseSession() async
   {
-    final coreWidgetResult = await _coreWidget.closeSession(SdkOperationEvent.SUCCESS); // SUCCESS/DENIED
-    coreWidgetResult.fold((l) {
+    final r = await _coreWidget.closeSession(SdkOperationEvent.SUCCESS); // SUCCESS/DENIED
+    r.fold((l) {
       setState(() {
         _message = l.toString();
       });
@@ -96,8 +96,8 @@ class _MyHomePageState extends State<MyHomePage>
   {
     setState(() { _message = ""; });
 
-    final voiceWidgetResult = await _voiceWidget.launchVoice();
-    voiceWidgetResult.fold((l) {
+    final r = await _voiceWidget.launchVoice();
+    r.fold((l) {
       setState(() { _message = l.toString(); });
     }, (r) {
       if (r.finishStatus == SdkFinishStatus.STATUS_ERROR) {
