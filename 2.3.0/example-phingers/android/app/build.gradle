@@ -24,9 +24,15 @@ if (flutterVersionName == null) {
 }
 
 android {
-    packagingOptions {
-        pickFirst("**/*.so") // SELPHI + VOICE
-        pickFirst("META-INF/versions/9/OSGI-INF/MANIFEST.MF") // NFC
+    packaging {
+        jniLibs {
+            pickFirsts += [
+                    'lib/arm64-v8a/libc++_shared.so',
+                    'lib/armeabi-v7a/libc++_shared.so',
+                    'lib/x86/libc++_shared.so',
+                    'lib/x86_64/libc++_shared.so'
+            ]
+        }
     }
 
     namespace = "com.facephi.sdk.demo"

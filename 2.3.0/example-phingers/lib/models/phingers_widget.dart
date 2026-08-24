@@ -3,7 +3,6 @@ import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers_configuration.da
 import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers.dart';
 import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers_filter.dart';
 import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers_reticle_orientation.dart';
-import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers_selector_hand_orientation.dart';
 import 'package:fphi_sdkmobile_phingers/fphi_sdkmobile_phingers_selector_options.dart';
 import 'phingers_result.dart';
 
