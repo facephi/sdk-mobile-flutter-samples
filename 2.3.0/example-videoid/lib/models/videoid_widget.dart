@@ -44,8 +44,8 @@ class VideoIdWidget
   {
     try
     {
-      Map? resultJson = await FphiSdkmobileVideoid().setVideoIdFlow();
-      return Right(VideoIdResult.fromMap(resultJson));
+      Map? r = await FphiSdkmobileVideoid().setVideoIdFlow();
+      return Right(VideoIdResult.fromMap(r));
     } on Exception catch (e) {
       return (Left(e));
     }
