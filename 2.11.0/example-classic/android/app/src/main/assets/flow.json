@@ -1,0 +1,73 @@
+[{
+  "id": "FLOW_A",
+  "operation": {
+    "operationType": "ONBOARDING",
+    "steps": [
+      "SELPHI_COMPONENT",
+      "SELPHID_COMPONENT",
+      "QR_CAPTURE_COMPONENT",
+      "PHACTURA_CAPTURE_COMPONENT",
+      "PHINGERS_COMPONENT",
+      "VOICE_COMPONENT"
+    ]
+  },
+  "steps": [
+    {
+      "index": 5,
+      "key": "SELPHI_COMPONENT",
+      "data": "{\"debug\":false,\"fullscreen\":true,\"cropPercent\":null,\"livenessMode\":null,\"locale\":null,\"stabilizationMode\":null,\"templateRawOptimized\":null,\"qrMode\":false,\"resourcesPath\":\"fphi-selphi-widget-resources-sdk.zip\",\"videoFilename\":null,\"cameraId\":null,\"showTutorial\":true,\"viewsContent\":null,\"translationsContent\":null,\"cameraFlashEnabled\":false,\"showResultAfterCapture\":false}"
+    },
+    {
+      "index": 1,
+      "key": "SELPHID_COMPONENT",
+      "data": "{\"debug\":false,\"wizardMode\":true,\"showResultAfterCapture\":false,\"showTutorial\":true,\"tutorialOnly\":false,\"scanMode\":\"MODE_SEARCH\",\"specificData\":\"AR|<ALL>\",\"fullscreen\":true,\"tokenImageQuality\":null,\"locale\":null,\"documentType\":\"ID_CARD\",\"documentSide\":\"FRONT\",\"timeout\":\"LONG\",\"generateRawImages\":false,\"translationsContent\":null,\"viewsContent\":null,\"documentModels\":null,\"resourcesPath\":\"fphi-selphid-widget-resources-sdk.zip\",\"cameraId\":null,\"videoFilename\":null,\"tokenPreviousCaptureData\":null,\"params\":null}"
+    },
+    {
+      "index": 2,
+      "key": "QR_CAPTURE_COMPONENT",
+      "data": "{\"extractionTimeout\": 50000,\"cameraSelected\": \"BACK\",\"vibrationEnabled\": true,\"showStroke\": false,\"transparentBackground\": true,\"qrMode\": \"QR_READER_SQUARE\"}"
+    },
+    {
+      "index": 3,
+      "key": "PHACTURA_CAPTURE_COMPONENT",
+      "data": "{\"extractionTimeout\": 50000,\"cameraSelected\": \"BACK\",\"vibrationEnabled\": true,\"showStroke\": false,\"transparentBackground\": true,\"qrMode\": \"QR_READER_SQUARE\"}"
+    },
+    {
+      "index": 4,
+      "key": "NFC_COMPONENT",
+      "data": "{\"extractionTimeout\": 50000,\"vibrationEnabled\": true,\"showTutorial\": true,\"showReadingScreen\": true}"
+    },
+    {
+      "index": 6,
+      "key": "PHINGERS_COMPONENT",
+      "data": "{\"reticleOrientation\": \"LEFT\",\"useFlash\": true,\"returnProcessedImage\": true,\"returnRawImage\": true,\"useLiveness\": true,\"returnWSQ\": true,\"returnFullFrameImage\": true,\"extractionTimeout\": 50000,\"showTutorial\": true,\"threshold\": 0.8,\"showSpinner\": false,\"cropWidth\": null,\"cropHeight\": null,\"cropFactor\": null}"
+    },
+    {
+      "index": 0,
+      "key": "VOICE_COMPONENT",
+      "data": "{\"phrases\": [\"Tu nombre, tu dirección y tu DNI con letra\"],\"vibrationEnabled\": true,\"showTutorial\": true}"
+    }
+  ]
+},
+  {
+    "id": "FLOW_B",
+    "operation" : {
+      "operationType": "ONBOARDING",
+      "steps" : [
+        "SELPHID_COMPONENT",
+        "SELPHI_COMPONENT"
+      ]
+    },
+    "steps": [
+      {
+        "index": 0,
+        "key": "SELPHID_COMPONENT",
+        "data": "{\"debug\":false,\"wizardMode\":true,\"showResultAfterCapture\":true,\"showTutorial\":false,\"tutorialOnly\":false,\"scanMode\":\"MODE_SEARCH\",\"specificData\":\"AR|<ALL>\",\"fullscreen\":true,\"tokenImageQuality\":null,\"locale\":null,\"documentType\":\"ID_CARD\",\"documentSide\":\"FRONT\",\"timeout\":\"LONG\",\"generateRawImages\":false,\"translationsContent\":null,\"viewsContent\":null,\"documentModels\":null,\"resourcesPath\":\"fphi-selphid-widget-resources-sdk.zip\",\"cameraId\":null,\"videoFilename\":null,\"tokenPreviousCaptureData\":null,\"params\":null}"
+      },
+      {
+        "index": 1,
+        "key": "SELPHI_COMPONENT",
+        "data": "{\"debug\":false,\"fullscreen\":false,\"cropPercent\":null,\"livenessMode\":null,\"locale\":null,\"stabilizationMode\":null,\"templateRawOptimized\":null,\"qrMode\":false,\"resourcesPath\":\"fphi-selphi-widget-resources-sdk.zip\",\"videoFilename\":null,\"cameraId\":null,\"tutorialFlag\":false,\"viewsContent\":null,\"translationsContent\":null,\"cameraFlashEnabled\":false,\"showResultAfterCapture\":false}"
+      }
+    ]
+  }]
