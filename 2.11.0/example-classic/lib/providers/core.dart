@@ -26,7 +26,7 @@ void launchInitSession(void Function(VoidCallback fn) setState, ValueNotifier<St
     }
     setState(() {
       if (r.finishStatus == SdkFinishStatus.STATUS_ERROR) {
-        message.value = r.errorDiagnostic.toString();
+        message.value = r.errorDiagnostic.replaceAll('_', ' ');
       }
     });
   }).catchError((e) {
@@ -47,7 +47,7 @@ void launchInitOperation(void Function(VoidCallback fn) setState, ValueNotifier<
     }
     setState(() {
       if (r.finishStatus == SdkFinishStatus.STATUS_ERROR) {
-        message.value = r.errorDiagnostic.toString();
+        message.value = r.errorDiagnostic.replaceAll('_', ' ');
       }
     });
   })
@@ -225,7 +225,7 @@ void launchGetFlowIntegrationData(
         else
         {
           setState(() {
-            message.value = r.errorDiagnostic;
+            message.value = r.errorDiagnostic.replaceAll('_', ' ');
           });
         }
       })

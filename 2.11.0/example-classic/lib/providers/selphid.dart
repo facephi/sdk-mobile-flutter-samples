@@ -1,7 +1,6 @@
 import 'package:example/models/selphid_result.dart';
 import 'package:example/models/selphid_widget.dart';
 import 'package:flutter/foundation.dart';
-import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_error_type.dart';
 import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_finish_status.dart';
 
 void launchSelphIDCapture(
@@ -21,7 +20,7 @@ void launchSelphIDCapture(
           selphidResult.value = r;
           break;
         case SdkFinishStatus.STATUS_ERROR: // Error
-          message.value       = SdkErrorType.getDiagnosticError(r.errorDiagnostic);
+          message.value       = r.errorDiagnostic.replaceAll('_', ' ');
           selphidResult.value = null;
           break;
       }

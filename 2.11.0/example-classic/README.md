@@ -286,7 +286,7 @@ switch (r.finishStatus) {
     // use r.bestImage, templates, …
     break;
   case SdkFinishStatus.STATUS_ERROR:
-    final msg = SdkErrorType.getDiagnosticError(r.errorDiagnostic);
+    final msg = r.errorDiagnostic.replaceAll('_', ' ');
     break;
 }
 ```
