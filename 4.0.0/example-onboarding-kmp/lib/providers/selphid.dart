@@ -1,0 +1,37 @@
+import 'package:example/models/selphid_result.dart';
+import 'package:example/models/selphid_widget.dart';
+import 'package:flutter/foundation.dart';
+import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_finish_status.dart';
+import 'package:fphi_sdkmobile_selphid/fphi_sdkmobile_selphid_configuration.dart';
+
+void launchSelphIDCapture(
+    void Function(VoidCallback fn) setState,
+    ValueNotifier<String> message,
+    ValueNotifier<SelphIDResult?> selphidResult,
+    SelphIDConfiguration configuration) async
+{
+  SelphIDWidget().launchSelphIDCapture(configuration)
+  .then((res) {
+    SelphIDResult r = SelphIDResult.fromMap(res);
+    setState(()
+    {
+      switch (r.finishStatus)
+      {
+        case SdkFinishStatus.STATUS_OK: // OK
+          message.value       = '';
+          selphidResult.value = r;
+          break;
+        case SdkFinishStatus.STATUS_ERROR: // Error
+          message.value       = r.errorDiagnostic.replaceAll('_', ' ');
+          selphidResult.value = null;
+          break;
+      }
+    });
+  })
+  .catchError((e) {
+    setState(() {
+      message.value       = e.toString();
+      selphidResult.value = null;
+    });
+  });
+}
