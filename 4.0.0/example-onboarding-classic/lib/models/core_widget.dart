@@ -1,0 +1,78 @@
+import 'dart:io' show Platform;
+import 'package:example/license.dart';
+import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core.dart';
+import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_operation_event.dart';
+import 'package:fphi_sdkmobile_core/fphi_sdkmobile_core_configuration.dart';
+import 'package:fphi_sdkmobile_core/fphi_sdkmobile_tracking_configuration.dart';
+import 'package:fphi_sdkmobile_core/fphi_sdkmobile_tracking_operation_type.dart';
+import 'package:fphi_sdkmobile_core/fphi_sdkmobile_flow_configuration.dart';
+
+/// This sample class calls the Core Plugin and launch the native widget. Return the result to the UI
+class CoreWidget
+{
+  Future closeSession(SdkOperationEvent event) async
+  {
+    dynamic r = await FphiSdkmobileCore().closeSession();
+    return r;
+  }
+
+  Future initSession() async
+  {
+    CoreConfigurationInitSession cfg = CoreConfigurationInitSession();
+    // cfg.license          = (Platform.isAndroid) ? licenseAndroid : licenseIOS;
+    cfg.licenseUrl          = licenseUrl;
+    cfg.licenseApiKey       = (Platform.isAndroid) ? licenseApiKeyAndroid : licenseApiKeyIOS;
+    cfg.enableTracking      = true;
+    // cfg.internalOptions  = {"SKIP_ENV_CHECK": "true"};
+    // cfg.orientation      = SdkViewOrientation.followSystem;
+
+    dynamic r = await FphiSdkmobileCore().initSession(widgetConfigurationJSON: cfg);
+    return r;
+  }
+
+  Future getExtraData() async
+  {
+    dynamic r = await FphiSdkmobileCore().getExtraData();
+    return r;
+  }
+
+  Future initOperation() async
+  {
+    dynamic r = await FphiSdkmobileCore().initOperation(
+      widgetConfigurationJSON: TrackingConfiguration(mCustomerId: customerId, mType: TrackingOperationType.ONBOARDING),
+    );
+    return r;
+  }
+
+  Future initFlow(String flow) async
+  {
+    dynamic r = await FphiSdkmobileCore().initFlow(
+        widgetConfigurationJSON: FlowConfiguration(mCustomerId: customerId, mFlow: flow)
+    );
+    return r;
+  }
+
+  Future startFlow() async
+  {
+    dynamic r = await FphiSdkmobileCore().startFlow();
+    return r;
+  }
+
+  Future getFlowIntegrationData() async
+  {
+      final Map m = await FphiSdkmobileCore().getFlowIntegrationData();
+      return m;
+  }
+
+  Future cancelFlow() async
+  {
+    dynamic r = await FphiSdkmobileCore().cancelFlow();
+    return r;
+  }
+
+  Future nextStepFlow() async
+  {
+    dynamic r = await FphiSdkmobileCore().nextStep();
+    return r;
+  }
+}

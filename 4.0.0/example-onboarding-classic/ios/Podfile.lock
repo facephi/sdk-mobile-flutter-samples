@@ -1,0 +1,123 @@
+PODS:
+  - FingerprintPro (2.14.0)
+  - Flutter (1.0.0)
+  - FPBRecognition (6.1.3)
+  - FPBTokenizer (4.0.4)
+  - fphi_sdkmobile_core (2.7.0):
+    - Flutter
+    - FPHISDKCoreComponent (~> 2.7.0)
+    - FPHISDKMainComponent (~> 2.7.0)
+    - FPHISDKStatusComponent (~> 2.7.0)
+    - FPHISDKTokenizeComponent (~> 2.7.0)
+    - FPHISDKTrackingComponent (~> 2.7.0)
+  - fphi_sdkmobile_selphidx (2.7.1):
+    - Flutter
+    - fphi_sdkmobile_core
+    - FPHISDKMainComponent (~> 2.7.0)
+    - FPHISDKSelphIDXComponent (~> 2.7.1)
+    - FPHISelphIDExtractorCore (~> 1.0.1)
+    - FPHISelphIDExtractorV4 (~> 1.0.4)
+  - FPHILicenseManager (0.5.7)
+  - FPHILottieSDKFramework (4.4.3)
+  - FPHIRecognitionHelper (6.1.3):
+    - FPBRecognition (= 6.1.3)
+  - FPHISDKCoreComponent (2.7.0):
+    - FPHISDKLicenseCheckerComponent (~> 2.7.0)
+  - FPHISDKLicenseCheckerComponent (2.7.0):
+    - FPHILicenseManager (~> 0.5.7)
+  - FPHISDKMainComponent (2.7.0):
+    - FPHISDKCoreComponent (= 2.7.0)
+  - FPHISDKSelphIDXComponent (2.7.1):
+    - FPHISDKCoreComponent (= 2.7.0)
+    - FPHISDKLicenseCheckerComponent (= 2.7.0)
+    - FPHISelphIDExtractorCore (~> 1.0.1)
+    - FPHISelphidWidget (= 2.0.14)
+  - FPHISDKStatusComponent (2.7.0):
+    - FPHILottieSDKFramework (~> 4.4.0)
+    - FPHISDKCoreComponent (= 2.7.0)
+  - FPHISDKTokenizeComponent (2.7.0):
+    - FPBTokenizer (~> 4.0.4)
+    - FPHISDKCoreComponent (= 2.7.0)
+  - FPHISDKTrackingComponent (2.7.2):
+    - FingerprintPro (~> 2.14.0)
+    - FPHISDKCoreComponent (= 2.7.0)
+    - FPHITrackingWidget (= 1.3.0)
+  - FPHISelphIDExtractorCore (1.0.1):
+    - FPHILicenseManager (< 0.6.0, >= 0.5.6)
+  - FPHISelphIDExtractorV4 (1.0.4):
+    - FPHILicenseManager (< 0.6.0, >= 0.5.6)
+    - FPHIRecognitionHelper (= 6.1.3)
+    - FPHISelphIDExtractorCore (~> 1.0.1)
+  - FPHISelphidWidget (2.0.14):
+    - FPBTokenizer (= 4.0.4)
+    - FPHILicenseManager (< 0.6.0, >= 0.5.6)
+    - FPHISelphidWidgetResources (= 2.0.14)
+  - FPHISelphidWidgetResources (2.0.14)
+  - FPHITrackingWidget (1.3.0)
+  - Protobuf (5.34.1)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - fphi_sdkmobile_core (from `.symlinks/plugins/fphi_sdkmobile_core/ios`)
+  - fphi_sdkmobile_selphidx (from `.symlinks/plugins/fphi_sdkmobile_selphidx/ios`)
+  - Protobuf
+
+SPEC REPOS:
+  https://facephicorp.jfrog.io/artifactory/api/pods/cocoa-dev-fphi:
+    - FPBRecognition
+    - FPHILottieSDKFramework
+    - FPHIRecognitionHelper
+    - FPHISDKMainComponent
+    - FPHISDKSelphIDXComponent
+    - FPHISDKStatusComponent
+    - FPHISDKTokenizeComponent
+    - FPHISDKTrackingComponent
+    - FPHISelphIDExtractorCore
+    - FPHISelphIDExtractorV4
+    - FPHISelphidWidget
+    - FPHISelphidWidgetResources
+    - FPHITrackingWidget
+  https://facephicorp.jfrog.io/artifactory/api/pods/cocoa-pro-fphi:
+    - FPBTokenizer
+    - FPHILicenseManager
+    - FPHISDKCoreComponent
+    - FPHISDKLicenseCheckerComponent
+  trunk:
+    - FingerprintPro
+    - Protobuf
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  fphi_sdkmobile_core:
+    :path: ".symlinks/plugins/fphi_sdkmobile_core/ios"
+  fphi_sdkmobile_selphidx:
+    :path: ".symlinks/plugins/fphi_sdkmobile_selphidx/ios"
+
+SPEC CHECKSUMS:
+  FingerprintPro: 0316a80c096a09d64f29033417337b134fdf2fe0
+  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
+  FPBRecognition: dcecf45d20d3ed675f47faed0db92c0adc7dd888
+  FPBTokenizer: e51bdb9b960a9000d17f719e23a152f186b8a61f
+  fphi_sdkmobile_core: 4e0341ee538d8bbe225efd0aea56fae871322a4a
+  fphi_sdkmobile_selphidx: 59621d363fbe5a3b85eb73303331640b88e7b842
+  FPHILicenseManager: 2caea218006ce21cb52dfb2fa65fd528d4af1b9b
+  FPHILottieSDKFramework: ce03bb94f25d1d0e4c18ab464052c1b9ca158ca7
+  FPHIRecognitionHelper: bde646baecabaef4e2016be41fe060b4a139a24a
+  FPHISDKCoreComponent: 425444c74cee6f2c898090cd26adabfd438d8ba4
+  FPHISDKLicenseCheckerComponent: 226d3c3b1f44990b56798a9524c3b580dbf56585
+  FPHISDKMainComponent: 08e33df1d911a0f093ffacf25c0a69ac7d7a1832
+  FPHISDKSelphIDXComponent: bf8c6279a3577567895e845244f80f916562ce36
+  FPHISDKStatusComponent: 85fb4b6a38e576f2850a2072bef2a12d3691e2d7
+  FPHISDKTokenizeComponent: 29b110dfafa61dde48469c6dc54246b96c2f5785
+  FPHISDKTrackingComponent: 09a93a2695db160a848cadf007d01040432d4e44
+  FPHISelphIDExtractorCore: 16acd8b811c99fa4c0e78f49d360b80e1c7eca56
+  FPHISelphIDExtractorV4: c3faf15357d06bc797fd4c87b4d81c57fbf680f4
+  FPHISelphidWidget: 6842ea4a4df0c514dc2ec10e16c79a26c89f58f5
+  FPHISelphidWidgetResources: 69bae4a18b49acc03dd90c75b094eb062b3661bf
+  FPHITrackingWidget: dfe3868871827d2618bbbdb06dae94eb5d28ee23
+  Protobuf: b51e2d95aace0c1ce911b7483315efb7c3ab037f
+
+PODFILE CHECKSUM: 79f21f6065c79d8c65bd312ba989fb35a28a5bab
+
+COCOAPODS: 1.16.2
